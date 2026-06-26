@@ -502,7 +502,7 @@ function init() {
   if (kakaoBtn) {
     kakaoBtn.addEventListener('click', () => {
       // 실제 카카오 채널 URL로 교체하세요
-      window.open('https://pf.kakao.com/_your_channel', '_blank');
+      window.open('http://pf.kakao.com/_xdIpXX', '_blank');
     });
   }
 
