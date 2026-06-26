@@ -313,7 +313,7 @@ function startQuiz() {
   Object.keys(state.scores).forEach(k => { state.scores[k] = 0; });
 
   showScreen('screen-quiz');
-  document.body.style.overflow = 'hidden';
+  
   renderQuestion();
 }
 
@@ -434,7 +434,7 @@ function getTopPattern() {
 
 function renderResult() {
   showScreen('screen-result');
-  document.body.style.overflow = '';
+  
   window.scrollTo(0, 0);
 
   const key = getTopPattern();
