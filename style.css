@@ -189,7 +189,7 @@ body {
 /* ── 6. LANDING ─────────────────────────────────────── */
 
 /* Hero */
-.hero { padding: 72px 0 56px; }
+.hero { padding: 72px 0 56px; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
 
 .hero-title {
   font-size: clamp(36px, 9.5vw, 48px);
@@ -644,4 +644,16 @@ body {
   .hero-title { font-size: 32px; }
   .q-text { font-size: 18px; }
   .q-opt { padding: 14px 16px; font-size: 14px; }
+}
+
+/* ── HERO CENTER OVERRIDE ── */
+.hero .inner {
+  text-align: center;
+  width: 100%;
+}
+.hero .badge {
+  justify-content: center;
+}
+.hero .hero-sub {
+  text-align: center;
 }
