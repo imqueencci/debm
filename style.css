@@ -657,3 +657,44 @@ body {
 .hero .hero-sub {
   text-align: center;
 }
+
+
+/* ── CENTERING FIX ── */
+
+/* Prevent scrollbar layout shift */
+html {
+  scrollbar-gutter: stable;
+}
+
+/* Keep all screens in same horizontal position */
+#screen-land,
+#screen-quiz,
+#screen-load,
+#screen-result {
+  box-sizing: border-box;
+}
+
+/* Quiz — center content to match landing */
+.quiz-wrap {
+  text-align: center;
+}
+
+/* Options stay left-aligned for readability */
+.q-opts {
+  text-align: left;
+}
+
+/* Loading — always centered */
+#screen-load {
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+}
+
+/* Quiz overlay — no scrollbar shift */
+#screen-quiz {
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+  overflow-y: auto;
+}
