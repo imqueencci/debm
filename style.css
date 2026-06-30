@@ -18,16 +18,16 @@
 
 /* ── 1. VARIABLES ──────────────────────────────────── */
 :root {
-  --primary:    #70658B;
-  --secondary:  #665B8B;
-  --lavender:   #EAE4F4;
-  --bg:         #FAF9FC;
+  --primary:    #9889C9;
+  --secondary:  #8779BD;
+  --lavender:   #F1ECFB;
+  --bg:         #FDFBFF;
   --white:      #FFFFFF;
   --text:       #2F2A39;
-  --sub:        #6F6A79;
-  --border:     #ECE7F5;
+  --sub:        #7A7588;
+  --border:     #F1EBFA;
 
-  --grad: linear-gradient(135deg, #70658B 0%, #665B8B 100%);
+  --grad: linear-gradient(135deg, #AB9EDD 0%, #8779BD 100%);
 
   --r-card:  24px;
   --r-btn:   18px;

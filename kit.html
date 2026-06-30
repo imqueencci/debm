@@ -6,7 +6,7 @@
 <title>FIT-TI 심층 진단 키트</title>
 <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
 <style>
-:root{--p:#70658B;--s:#665B8B;--lav:#EAE4F4;--bg:#FAF9FC;--w:#FFF;--tx:#2F2A39;--sub:#6F6A79;--bd:#ECE7F5;--grad:linear-gradient(135deg,#70658B,#665B8B);--font:'Pretendard',-apple-system,'Apple SD Gothic Neo',sans-serif}
+:root{--p:#43335E;--s:#2C2042;--lav:#E2D4F0;--bg:#FAF8F4;--w:#FFF;--tx:#1C1626;--sub:#6B6478;--bd:#E5DAEF;--gold:#B8975A;--grad:linear-gradient(135deg,#574270,#2C2042);--font:'Pretendard',-apple-system,'Apple SD Gothic Neo',sans-serif}
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{overflow-y:scroll}
 body{font-family:var(--font);background:var(--bg);color:var(--tx);-webkit-font-smoothing:antialiased;line-height:1.6}
@@ -15,8 +15,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--tx);-webkit-font-s
 @keyframes fu{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 /* WELCOME */
 #sw{align-items:center;justify-content:center;padding:56px 24px;text-align:center}
-.kit-badge{display:inline-flex;align-items:center;gap:6px;background:var(--lav);color:var(--p);border-radius:100px;padding:6px 14px;font-size:12px;font-weight:700;letter-spacing:.05em;margin-bottom:28px}
-.kit-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--p);flex-shrink:0}
+.kit-badge{display:inline-flex;align-items:center;gap:7px;background:var(--tx);color:var(--gold);border:1px solid var(--gold);border-radius:100px;padding:6px 16px;font-size:11px;font-weight:800;letter-spacing:.1em;margin-bottom:28px}
+.kit-badge::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0}
 .kit-title{font-size:clamp(26px,7vw,36px);font-weight:900;letter-spacing:-.04em;line-height:1.25;margin-bottom:16px}
 .kit-title em{color:var(--p);font-style:normal}
 .kit-sub{font-size:15px;color:var(--sub);line-height:1.85;margin-bottom:40px}
@@ -56,7 +56,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--tx);-webkit-font-s
 #sr{background:var(--bg)}
 .res-hero{background:var(--tx);padding:64px 24px 48px}
 .res-hero-inner{max-width:480px;margin:0 auto}
-.res-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.1);color:rgba(255,255,255,.65);border-radius:100px;padding:5px 14px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:24px}
+.res-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(184,151,90,.12);color:var(--gold);border:1px solid rgba(184,151,90,.4);border-radius:100px;padding:5px 14px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:24px}
 .res-icon{font-size:44px;margin-bottom:16px}
 .res-pattern{font-size:12px;font-weight:700;color:rgba(234,228,244,.6);letter-spacing:.08em;margin-bottom:10px}
 .res-title{font-size:clamp(21px,5.5vw,28px);font-weight:900;letter-spacing:-.03em;line-height:1.42;color:#fff;margin-bottom:18px}
@@ -156,8 +156,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--tx);-webkit-font-s
 .interp-badge{font-size:9px;font-weight:700;background:var(--p);color:#fff;border-radius:100px;padding:2px 8px;letter-spacing:.04em;flex-shrink:0}
 .interp-desc{font-size:12px;line-height:1.75;color:var(--sub)}
 /* ── Warning Signals ── */
-.warn-card{background:var(--tx);border-radius:22px;padding:26px}
-.warn-ey{font-size:10px;font-weight:700;color:rgba(255,255,255,.35);letter-spacing:.14em;text-transform:uppercase;display:block;margin-bottom:10px}
+.warn-card{background:var(--tx);border-radius:22px;padding:26px;border:1px solid rgba(184,151,90,.35)}
+.warn-ey{font-size:10px;font-weight:700;color:var(--gold);letter-spacing:.14em;text-transform:uppercase;display:block;margin-bottom:10px}
 .warn-t{font-size:17px;font-weight:800;color:#fff;line-height:1.4;letter-spacing:-.02em}
 .warn-list{display:flex;flex-direction:column;gap:12px;margin-top:18px}
 .warn-item{display:flex;gap:12px;align-items:flex-start}
