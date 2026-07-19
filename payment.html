@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>FIT-TI 심층 분석 | ₩8,900</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
+  <style>
+    /* ── 변수 ── */
+    :root {
+      --p:    #7C6FE0;
+      --p2:   #9B8FF5;
+      --lav:  #EDE9FF;
+      --lav2: #F6F4FF;
+      --bg:   #FAFAFE;
+      --w:    #FFFFFF;
+      --tx:   #0D0B18;
+      --tx2:  #2E2A45;
+      --sub:  #6B6483;
+      --bd:   #E8E3F5;
+      --dark: #100E1E;
+      --dark2:#1A1730;
+      --grad: linear-gradient(135deg,#7C6FE0,#9B8FF5);
+      --font: 'Pretendard',-apple-system,'Apple SD Gothic Neo',sans-serif;
+      --r:    18px;
+      --max:  480px;
+    }
+
+    *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+    html { -webkit-text-size-adjust:100%; }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--tx);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+    a { text-decoration:none; color:inherit; }
+    button { cursor:pointer; font-family:var(--font); border:none; background:none; }
+
+    /* ── 레이아웃 ── */
+    .pay-wrap {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 20px 60px;
+    }
+
+    /* ── 상단 nav ── */
+    .pay-nav {
+      padding: 20px 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .pay-logo {
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: -.04em;
+      background: var(--grad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .pay-back {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--sub);
+      background: var(--lav);
+      border-radius: 100px;
+      padding: 7px 16px;
+      transition: background .2s;
+    }
+    .pay-back:hover { background: var(--bd); }
+
+    /* ── 히어로 (다크) ── */
+    .pay-hero {
+      background: var(--dark);
+      border-radius: 24px;
+      padding: 32px 24px 28px;
+      margin-bottom: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+    .pay-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 50% at 50% 0%, rgba(124,111,224,.3) 0%, transparent 65%),
+        radial-gradient(ellipse 40% 30% at 90% 80%, rgba(155,143,245,.15) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .pay-hero-inner { position: relative; }
+    .pay-tag {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.45);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 100px;
+      padding: 4px 12px;
+      margin-bottom: 16px;
+    }
+    .pay-hero-title {
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: -.04em;
+      line-height: 1.28;
+      color: #fff;
+      margin-bottom: 20px;
+    }
+    .pay-price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+    .pay-amount {
+      font-size: 36px;
+      font-weight: 900;
+      letter-spacing: -.04em;
+      color: #fff;
+    }
+    .pay-period {
+      font-size: 13px;
+      color: rgba(255,255,255,.45);
+      font-weight: 500;
+    }
+
+    /* ── 포함 항목 ── */
+    .pay-features {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .pay-features li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      color: rgba(255,255,255,.75);
+      font-weight: 400;
+    }
+    .pay-features li::before {
+      content: '✔';
+      color: var(--p2);
+      font-weight: 800;
+      font-size: 11px;
+      flex-shrink: 0;
+    }
+
+    /* ── 결제 버튼 ── */
+    .pay-methods {
+      background: var(--w);
+      border: 1px solid var(--bd);
+      border-radius: 24px;
+      padding: 24px 20px;
+      margin-bottom: 14px;
+    }
+    .pay-methods-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--sub);
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .pay-methods-desc {
+      font-size: 13px;
+      color: var(--sub);
+      line-height: 1.65;
+      margin-bottom: 16px;
+    }
+    .pay-btns { display: flex; flex-direction: column; gap: 10px; }
+
+    .pay-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 16px;
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: -.02em;
+      transition: transform .2s cubic-bezier(.34,1.56,.64,1), opacity .2s;
+    }
+    .pay-btn:hover  { transform: translateY(-2px); }
+    .pay-btn:active { transform: scale(.97); opacity: .88; }
+
+    .pay-btn--kakao {
+      background: #FEE500;
+      color: #191919;
+    }
+
+    .pay-btn-icon { font-size: 18px; }
+
+    /* ── 안내 + 코드 입력 ── */
+    .pay-code-section {
+      background: var(--lav2);
+      border: 1.5px solid var(--lav);
+      border-radius: 24px;
+      padding: 24px 20px;
+    }
+    .pay-code-title {
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: -.03em;
+      color: var(--tx);
+      margin-bottom: 8px;
+    }
+    .pay-code-desc {
+      font-size: 13px;
+      color: var(--sub);
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+    .pay-kakao-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      width: 100%;
+      padding: 12px;
+      background: #FEE500;
+      color: #191919;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      transition: opacity .2s;
+    }
+    .pay-kakao-link:hover { opacity: .88; }
+
+    .pay-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .pay-divider-line {
+      flex: 1;
+      height: 1px;
+      background: var(--bd);
+    }
+    .pay-divider-text {
+      font-size: 12px;
+      color: var(--sub);
+      font-weight: 600;
+      letter-spacing: .04em;
+      white-space: nowrap;
+    }
+
+    .pay-input-wrap {
+      display: flex;
+      gap: 8px;
+    }
+    .pay-input {
+      flex: 1;
+      padding: 13px 16px;
+      border: 1.5px solid var(--bd);
+      border-radius: 12px;
+      font-family: var(--font);
+      font-size: 15px;
+      color: var(--tx);
+      background: var(--w);
+      outline: none;
+      letter-spacing: .06em;
+      transition: border-color .2s;
+    }
+    .pay-input:focus { border-color: var(--p); }
+    .pay-input::placeholder { color: var(--sub); letter-spacing: .02em; font-size: 14px; }
+
+    .pay-submit {
+      padding: 13px 20px;
+      background: var(--grad);
+      color: #fff;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      white-space: nowrap;
+      box-shadow: 0 4px 16px rgba(124,111,224,.3);
+      transition: transform .2s, opacity .2s;
+    }
+    .pay-submit:hover  { transform: translateY(-1px); }
+    .pay-submit:active { transform: scale(.96); opacity: .9; }
+
+    .pay-error {
+      margin-top: 10px;
+      font-size: 13px;
+      color: #E85454;
+      font-weight: 600;
+      text-align: center;
+    }
+    .pay-error.hidden { display: none; }
+
+    /* ── 성공 오버레이 ── */
+    .pay-success {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(13,11,24,.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 999;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .pay-success.show { display: flex; }
+    .pay-success-card {
+      background: var(--w);
+      border-radius: 28px;
+      padding: 36px 28px;
+      max-width: 360px;
+      width: 100%;
+      text-align: center;
+      animation: popIn .4s cubic-bezier(.34,1.56,.64,1);
+    }
+    @keyframes popIn {
+      from { opacity:0; transform:scale(.85); }
+      to   { opacity:1; transform:scale(1); }
+    }
+    .pay-success-icon { font-size: 48px; margin-bottom: 16px; }
+    .pay-success-title {
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: -.04em;
+      color: var(--tx);
+      margin-bottom: 8px;
+    }
+    .pay-success-desc {
+      font-size: 14px;
+      color: var(--sub);
+      line-height: 1.7;
+      margin-bottom: 24px;
+    }
+    .pay-go-btn {
+      display: block;
+      width: 100%;
+      padding: 16px;
+      background: var(--grad);
+      color: #fff;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: -.02em;
+      text-align: center;
+      box-shadow: 0 6px 24px rgba(124,111,224,.35);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="pay-wrap">
+
+    <!-- 상단 -->
+    <nav class="pay-nav">
+      <span class="pay-logo">FIT-TI</span>
+      <a href="index.html" class="pay-back">← 돌아가기</a>
+    </nav>
+
+    <!-- 히어로 (상품 설명) -->
+    <div class="pay-hero">
+      <div class="pay-hero-inner">
+        <span class="pay-tag">FIT-TI 심층 분석</span>
+        <h1 class="pay-hero-title">
+          당신의 반복이<br>왜 만들어지는지<br>끝까지 분석합니다.
+        </h1>
+        <div class="pay-price-row">
+          <span class="pay-amount">₩8,900</span>
+          <span class="pay-period">1회 결제 · 평생 열람</span>
+        </div>
+        <ul class="pay-features">
+          <li>왜 항상 같은 상황에서 흔들리는가</li>
+          <li>무엇이 운동보다 항상 우선되는가</li>
+          <li>어떤 말로 나 자신을 설득하는가</li>
+          <li>왜 하루가 일주일이 되는가</li>
+          <li>왜 시작은 쉬운데 유지가 어려운가</li>
+          <li>어떤 방식으로 습관을 바꿔야 오래가는가</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 결제 방법 -->
+    <div class="pay-methods">
+      <p class="pay-methods-title">결제 방법</p>
+      <p class="pay-methods-desc">
+        아래 버튼으로 <strong>8,900원</strong>을 송금해주세요.<br>
+        결제 완료 후 카카오 채널로 스크린샷을 보내주시면<br>확인 코드를 드립니다.
+      </p>
+      <div class="pay-btns">
+        <a
+          href="https://qr.kakaopay.com/FNMAOS4g0116202953"
+          target="_blank"
+          rel="noopener"
+          class="pay-btn pay-btn--kakao"
+          id="kakao-btn"
+        >
+          <span class="pay-btn-icon">💛</span>
+          카카오페이로 8,900원 보내기
+        </a>
+      </div>
+    </div>
+
+    <!-- 코드 입력 -->
+    <div class="pay-code-section">
+      <p class="pay-code-title">결제 완료 후 코드를 입력하세요</p>
+      <p class="pay-code-desc">
+        결제 스크린샷을 카카오 채널로 보내주시면<br>
+        확인 코드를 바로 보내드립니다.
+      </p>
+      <a
+        href="http://pf.kakao.com/_xdIpXX"
+        target="_blank"
+        class="pay-kakao-link"
+      >
+        💬 카카오 채널로 스크린샷 보내기
+      </a>
+      <div class="pay-divider">
+        <div class="pay-divider-line"></div>
+        <span class="pay-divider-text">코드 받으셨나요?</span>
+        <div class="pay-divider-line"></div>
+      </div>
+      <div class="pay-input-wrap">
+        <input
+          type="text"
+          id="code-input"
+          class="pay-input"
+          placeholder="확인 코드 입력"
+          autocomplete="off"
+          autocapitalize="characters"
+          maxlength="20"
+          onkeydown="if(event.key==='Enter') verifyCode()"
+        >
+        <button class="pay-submit" onclick="verifyCode()">확인</button>
+      </div>
+      <p class="pay-error hidden" id="pay-error">코드가 올바르지 않습니다. 다시 확인해주세요.</p>
+    </div>
+
+  </div>
+
+  <!-- 성공 오버레이 -->
+  <div class="pay-success" id="pay-success">
+    <div class="pay-success-card">
+      <div class="pay-success-icon">✅</div>
+      <h2 class="pay-success-title">결제 확인 완료!</h2>
+      <p class="pay-success-desc">
+        심층 분석 페이지로 이동합니다.<br>
+        이제 당신의 반복이 만들어지는 이유를<br>
+        끝까지 분석할 수 있습니다.
+      </p>
+      <a href="kit.html" class="pay-go-btn">심층 분석 시작하기 →</a>
+    </div>
+  </div>
+
+  <script>
+    /*
+     * ══════════════════════════════════════════════
+     * ⚠️ 여왕님 설정 영역
+     * 아래 CODES 배열에 발급할 코드를 추가하세요.
+     * 새 코드 추가: CODES.push('새코드')
+     * ══════════════════════════════════════════════
+     */
+    const CODES = [
+      'FITTI89',   // 기본 코드 (원하시면 변경 가능)
+      'FIT8900',   // 추가 코드
+      // 필요 시 더 추가:
+      // 'QUEEN2024',
+      // 'DEEPKIT',
+    ];
+
+    /*
+     * 카카오페이/토스 링크 설정
+     * 본인 링크로 교체해주세요.
+     */
+    // 카카오페이 링크 적용 완료
+    // 토스 링크: 추후 추가 예정
+
+    /* ── 코드 검증 ── */
+    function verifyCode() {
+      const input = document.getElementById('code-input').value.trim().toUpperCase();
+      const error = document.getElementById('pay-error');
+
+      if (!input) {
+        error.textContent = '코드를 입력해주세요.';
+        error.classList.remove('hidden');
+        return;
+      }
+
+      if (CODES.includes(input)) {
+        // 접근 허용 저장
+        try { localStorage.setItem('fitti_paid', '1'); } catch(e) {}
+        // 성공 팝업
+        document.getElementById('pay-success').classList.add('show');
+        error.classList.add('hidden');
+      } else {
+        error.textContent = '코드가 올바르지 않습니다. 다시 확인해주세요.';
+        error.classList.remove('hidden');
+        // 입력창 흔들기
+        const inp = document.getElementById('code-input');
+        inp.style.borderColor = '#E85454';
+        setTimeout(() => { inp.style.borderColor = ''; }, 1200);
+      }
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>RESET21 어드민 | FIT-TI</title>
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
+<style>
+:root{
+  --lav:#C8B6FF;--lav2:#9B7BFF;--lav3:#7358FF;
+  --lav-s:#F0EBFF;--lav-m:#E0D4FF;
+  --navy:#1E2B4F;--bg:#F8F6FF;--card:#FFF;
+  --tx:#1F2430;--tx2:#6B7280;--bd:rgba(0,0,0,.07);
+  --ok:#7FD59A;--ok-bg:rgba(127,213,154,.1);
+  --warn:#FFC857;--warn-bg:rgba(255,200,87,.1);
+  --red:#F06C6C;--red-bg:rgba(240,108,108,.1);
+  --font:'Pretendard',-apple-system,sans-serif;
+  --ease:cubic-bezier(.4,0,.2,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);background:var(--bg);color:var(--tx);-webkit-font-smoothing:antialiased;min-height:100vh}
+button{cursor:pointer;font-family:var(--font);border:none;background:none}
+input,textarea,select{font-family:var(--font)}
+.hidden{display:none!important}
+
+/* LOGIN */
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.login-box{width:100%;max-width:360px;background:var(--card);border-radius:28px;padding:40px 32px;box-shadow:0 8px 40px rgba(30,43,79,.1)}
+.login-logo{font-size:20px;font-weight:900;color:var(--navy);letter-spacing:-.04em;margin-bottom:4px}
+.login-logo em{font-style:normal;color:var(--lav2)}
+.login-tag{display:inline-block;font-size:10px;font-weight:700;color:var(--lav2);background:var(--lav-s);border-radius:999px;padding:3px 10px;margin-bottom:24px;letter-spacing:.08em}
+.login-input{width:100%;height:50px;border:1.5px solid var(--bd);border-radius:14px;padding:0 16px;font-size:16px;background:var(--bg);outline:none;transition:border-color .2s;margin-bottom:12px}
+.login-input:focus{border-color:var(--lav2)}
+.login-btn{width:100%;height:50px;background:linear-gradient(135deg,var(--lav2),var(--lav3));color:#fff;border-radius:999px;font-size:15px;font-weight:800;transition:transform .2s}
+.login-btn:hover{transform:scale(1.02)}
+.login-err{font-size:13px;color:var(--red);text-align:center;margin-top:10px}
+
+/* MAIN */
+.admin-wrap{max-width:900px;margin:0 auto;padding:20px 20px 80px}
+.admin-top{display:flex;justify-content:space-between;align-items:center;padding:20px 0 24px}
+.admin-logo{font-size:18px;font-weight:900;color:var(--navy)}
+.admin-logo em{font-style:normal;color:var(--lav2)}
+.admin-actions{display:flex;gap:10px;align-items:center}
+.logout-btn{font-size:13px;color:var(--tx2);background:var(--lav-s);padding:7px 16px;border-radius:999px}
+.add-btn{font-size:13px;font-weight:700;color:#fff;background:var(--lav2);padding:8px 18px;border-radius:999px;transition:transform .2s}
+.add-btn:hover{transform:scale(1.04)}
+
+/* STATS */
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px}
+.stat-card{background:var(--card);border:1px solid var(--bd);border-radius:20px;padding:20px 16px;text-align:center}
+.stat-num{font-size:36px;font-weight:900;letter-spacing:-.04em;color:var(--lav2)}
+.stat-label{font-size:12px;color:var(--tx2);margin-top:4px;font-weight:600}
+
+/* ALERT */
+.alert-box{background:var(--red-bg);border:1.5px solid var(--red);border-radius:16px;padding:14px 18px;margin-bottom:16px;display:flex;align-items:center;gap:12px}
+.alert-box.hidden{display:none}
+.alert-icon{font-size:20px;flex-shrink:0}
+.alert-text{font-size:13px;color:var(--tx);line-height:1.6}
+.alert-text strong{color:var(--red)}
+
+/* MEMBER LIST */
+.section-title{font-size:13px;font-weight:700;color:var(--tx2);letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.member-grid{display:flex;flex-direction:column;gap:10px}
+.member-card{background:var(--card);border:1.5px solid var(--bd);border-radius:18px;padding:16px 18px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all .2s}
+.member-card:hover{transform:translateY(-1px);box-shadow:0 4px 20px rgba(30,43,79,.08)}
+.member-card.red{border-color:var(--red);background:var(--red-bg)}
+.member-card.yellow{border-color:var(--warn);background:var(--warn-bg)}
+.member-card.green{border-color:var(--ok);background:var(--ok-bg)}
+.member-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.dot-red{background:var(--red)} .dot-yellow{background:var(--warn)} .dot-green{background:var(--ok)} .dot-gray{background:#ccc}
+.member-info{flex:1;min-width:0}
+.member-name{font-size:15px;font-weight:700;color:var(--tx)}
+.member-meta{font-size:12px;color:var(--tx2);margin-top:2px}
+.member-day{font-size:22px;font-weight:900;color:var(--navy);letter-spacing:-.04em}
+.member-day-label{font-size:11px;color:var(--tx2)}
+.member-last{font-size:11px;text-align:right}
+.last-ok{color:var(--ok);font-weight:700}
+.last-warn{color:var(--warn);font-weight:700}
+.last-red{color:var(--red);font-weight:700}
+
+/* DETAIL MODAL */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;display:flex;align-items:flex-end;justify-content:center}
+.modal-bg.hidden{display:none}
+.modal{background:var(--card);border-radius:28px 28px 0 0;width:100%;max-width:600px;max-height:90vh;overflow-y:auto;padding:28px 24px 40px}
+.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.modal-title{font-size:18px;font-weight:900;color:var(--navy)}
+.modal-close{font-size:24px;color:var(--tx2);padding:4px}
+.modal-meta{font-size:13px;color:var(--tx2);margin-bottom:20px;line-height:1.7}
+.modal-notes-label{font-size:12px;font-weight:700;color:var(--tx2);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+.modal-notes{width:100%;height:70px;border:1.5px solid var(--bd);border-radius:12px;padding:10px 14px;font-size:14px;background:var(--bg);outline:none;resize:none;transition:border-color .2s;margin-bottom:14px}
+.modal-notes:focus{border-color:var(--lav2)}
+.save-notes-btn{font-size:13px;font-weight:700;color:var(--lav2);background:var(--lav-s);padding:8px 18px;border-radius:999px;margin-bottom:24px;transition:background .2s}
+.save-notes-btn:hover{background:var(--lav-m)}
+.checkin-list{display:flex;flex-direction:column;gap:10px}
+.ci-card{background:var(--bg);border:1px solid var(--bd);border-radius:14px;padding:14px 16px}
+.ci-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.ci-day{font-size:14px;font-weight:800;color:var(--navy)}
+.ci-date{font-size:12px;color:var(--tx2)}
+.ci-workout{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;margin-bottom:8px}
+.ci-workout.done{background:var(--ok-bg);color:var(--ok)}
+.ci-workout.skip{background:var(--warn-bg);color:var(--warn)}
+.ci-field{font-size:13px;color:var(--tx2);line-height:1.6;margin-bottom:4px}
+.ci-field strong{color:var(--tx);font-weight:600}
+
+/* ADD MODAL */
+.add-modal{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:flex;align-items:center;justify-content:center;padding:24px}
+.add-modal.hidden{display:none}
+.add-box{background:var(--card);border-radius:24px;padding:28px 24px;width:100%;max-width:400px;max-height:90vh;overflow-y:auto}
+.add-title{font-size:18px;font-weight:900;color:var(--navy);margin-bottom:20px}
+.add-field{margin-bottom:14px}
+.add-label{font-size:12px;font-weight:700;color:var(--tx2);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px;display:block}
+.add-input{width:100%;height:46px;border:1.5px solid var(--bd);border-radius:12px;padding:0 14px;font-size:15px;background:var(--bg);outline:none;transition:border-color .2s}
+.add-input:focus{border-color:var(--lav2)}
+.add-select{width:100%;height:46px;border:1.5px solid var(--bd);border-radius:12px;padding:0 14px;font-size:15px;background:var(--bg);outline:none;color:var(--tx)}
+.add-btns{display:flex;gap:10px;margin-top:20px}
+.add-cancel{flex:1;height:46px;border:1.5px solid var(--bd);border-radius:999px;font-size:14px;font-weight:700;color:var(--tx2);background:var(--card)}
+.add-save{flex:2;height:46px;background:linear-gradient(135deg,var(--lav2),var(--lav3));color:#fff;border-radius:999px;font-size:14px;font-weight:800}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-wrap" class="login-wrap">
+  <div class="login-box">
+    <div class="login-logo">FIT<em>-TI</em></div>
+    <div class="login-tag">RESET21 ADMIN</div>
+    <input id="pw-input" class="login-input" type="password" placeholder="어드민 비밀번호">
+    <button class="login-btn" onclick="adminLogin()">로그인</button>
+    <p class="login-err hidden" id="pw-err">비밀번호가 틀렸습니다.</p>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div id="admin-main" class="hidden">
+  <div class="admin-wrap">
+    <div class="admin-top">
+      <div class="admin-logo">FIT<em>-TI</em> RESET21</div>
+      <div class="admin-actions">
+        <button class="add-btn" onclick="openAdd()">+ 회원 추가</button>
+        <button class="logout-btn" onclick="adminLogout()">로그아웃</button>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-num" id="s-total">-</div><div class="stat-label">전체 회원</div></div>
+      <div class="stat-card"><div class="stat-num" id="s-today">-</div><div class="stat-label">오늘 체크인</div></div>
+      <div class="stat-card"><div class="stat-num" id="s-danger" style="color:var(--red)">-</div><div class="stat-label">3일↑ 미기록</div></div>
+    </div>
+
+    <div class="alert-box hidden" id="alert-box">
+      <div class="alert-icon">🚨</div>
+      <div class="alert-text" id="alert-text"></div>
+    </div>
+
+    <div class="section-title">전체 회원 현황</div>
+    <div class="member-grid" id="member-grid"></div>
+  </div>
+</div>
+
+<!-- MEMBER DETAIL MODAL -->
+<div class="modal-bg hidden" id="detail-modal" onclick="closeDetail(event)">
+  <div class="modal" id="modal-inner">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-name">-</div>
+      <button class="modal-close" onclick="$('detail-modal').classList.add('hidden')">✕</button>
+    </div>
+    <div class="modal-meta" id="modal-meta"></div>
+    <div class="modal-notes-label">여왕쌤 메모</div>
+    <textarea class="modal-notes" id="modal-notes" placeholder="회원 관련 메모 (비공개)"></textarea>
+    <button class="save-notes-btn" onclick="saveNotes()">메모 저장</button>
+    <div class="checkin-list" id="modal-checkins"></div>
+  </div>
+</div>
+
+<!-- ADD MEMBER MODAL -->
+<div class="add-modal hidden" id="add-modal">
+  <div class="add-box">
+    <div class="add-title">회원 추가</div>
+    <div class="add-field"><label class="add-label">이름</label><input class="add-input" id="add-name" placeholder="이름"></div>
+    <div class="add-field"><label class="add-label">연락처</label><input class="add-input" id="add-phone" placeholder="010-0000-0000"></div>
+    <div class="add-field"><label class="add-label">접근 코드 (회원에게 전달)</label><input class="add-input" id="add-code" placeholder="예) RESET001"></div>
+    <div class="add-field"><label class="add-label">주 운동 횟수</label>
+      <select class="add-select" id="add-freq">
+        <option value="2">주 2회</option>
+        <option value="3" selected>주 3회</option>
+        <option value="5">주 5회</option>
+      </select>
+    </div>
+    <div class="add-field"><label class="add-label">시작일</label><input class="add-input" id="add-start" type="date"></div>
+    <div class="add-btns">
+      <button class="add-cancel" onclick="closeAdd()">취소</button>
+      <button class="add-save" onclick="saveMember()">추가하기</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = 'https://zjxadvumrhherdwekvwc.supabase.co';
+const ADMIN_KEY = 'sb_publishable_BppWS2XbAgPVjI3BOk2Wow_sggGgypS';
+const ADMIN_PW = 'FITTI2026';  // ← 원하시면 변경하세요
+const { createClient } = supabase;
+const db = createClient(SUPABASE_URL, ADMIN_KEY);
+
+const $ = id => document.getElementById(id);
+let allMembers = [];
+let currentMemberId = null;
+
+function today(){ return new Date().toISOString().split('T')[0]; }
+function daysBetween(a,b){ return Math.floor((new Date(b)-new Date(a))/(1000*60*60*24)); }
+function daysSince(d){ if(!d) return 999; return daysBetween(d, today()); }
+
+// ── AUTH ──
+function adminLogin(){
+  if($('pw-input').value === ADMIN_PW){
+    $('login-wrap').classList.add('hidden');
+    $('admin-main').classList.remove('hidden');
+    loadAll();
+  } else {
+    $('pw-err').classList.remove('hidden');
+  }
+}
+function adminLogout(){
+  $('admin-main').classList.add('hidden');
+  $('login-wrap').classList.remove('hidden');
+  $('pw-input').value='';
+}
+document.addEventListener('keydown', e=>{ if(e.key==='Enter' && !$('login-wrap').classList.contains('hidden')) adminLogin(); });
+
+// ── LOAD DATA ──
+async function loadAll(){
+  const [mRes, cRes] = await Promise.all([
+    db.from('members').select('*').order('created_at'),
+    db.from('checkins').select('member_id,checkin_date')
+  ]);
+  allMembers = mRes.data||[];
+  const checkins = cRes.data||[];
+
+  // checkins per member
+  const ciMap = {};
+  checkins.forEach(c=>{
+    if(!ciMap[c.member_id]) ciMap[c.member_id]=[];
+    ciMap[c.member_id].push(c.checkin_date);
+  });
+
+  const todayStr = today();
+  let todayCount=0, dangerCount=0, dangerNames=[];
+
+  const cards = allMembers.map(m=>{
+    const dates = ciMap[m.id]||[];
+    const lastDate = dates.sort().slice(-1)[0]||null;
+    const dayNum = Math.min(daysBetween(m.start_date, todayStr)+1, 21);
+    const sinceCheckin = daysSince(lastDate);
+    const checkedToday = dates.includes(todayStr);
+
+    if(checkedToday) todayCount++;
+    if(sinceCheckin>=3){ dangerCount++; dangerNames.push(m.name); }
+
+    let color='gray', statusText='기록 없음';
+    if(checkedToday){ color='green'; statusText='오늘 완료'; }
+    else if(sinceCheckin<=1){ color='yellow'; statusText='1일 미기록'; }
+    else if(sinceCheckin>=3){ color='red'; statusText=`${sinceCheckin}일 미기록 🚨`; }
+    else { color='yellow'; statusText=`${sinceCheckin}일 미기록`; }
+
+    return {m, dayNum, sinceCheckin, checkedToday, color, statusText, dates};
+  });
+
+  // Stats
+  $('s-total').textContent = allMembers.length;
+  $('s-today').textContent = todayCount;
+  $('s-danger').textContent = dangerCount;
+
+  // Alert
+  if(dangerCount>0){
+    $('alert-box').classList.remove('hidden');
+    $('alert-text').innerHTML = `<strong>${dangerNames.join(', ')}</strong>님이 3일 이상 기록을 남기지 않았습니다. 확인해주세요.`;
+  }
+
+  // Render cards
+  const grid = $('member-grid');
+  grid.innerHTML='';
+  cards.forEach(({m,dayNum,sinceCheckin,color,statusText,dates})=>{
+    const div = document.createElement('div');
+    div.className = `member-card ${color}`;
+    div.innerHTML=`
+      <div class="member-dot dot-${color}"></div>
+      <div class="member-info">
+        <div class="member-name">${m.name}</div>
+        <div class="member-meta">주 ${m.frequency}회 · 시작일 ${m.start_date} · 총 ${dates.length}회 기록</div>
+      </div>
+      <div style="text-align:center;margin:0 12px">
+        <div class="member-day">${dayNum}</div>
+        <div class="member-day-label">/ 21일</div>
+      </div>
+      <div class="member-last">
+        <div class="${color==='green'?'last-ok':color==='red'?'last-red':'last-warn'}">${statusText}</div>
+        <div style="font-size:11px;color:var(--tx2);margin-top:2px">${sinceCheckin<999?`마지막: ${dates.sort().slice(-1)[0]||'없음'}`:'기록 없음'}</div>
+      </div>`;
+    div.onclick = ()=>openDetail(m.id);
+    grid.appendChild(div);
+  });
+}
+
+// ── MEMBER DETAIL ──
+async function openDetail(memberId){
+  currentMemberId = memberId;
+  const m = allMembers.find(x=>x.id===memberId);
+  $('modal-name').textContent = m.name;
+  $('modal-meta').innerHTML = `연락처: ${m.phone||'없음'} · 주 ${m.frequency}회 · 시작일: ${m.start_date}<br>접근 코드: <strong>${m.access_code}</strong>`;
+  $('modal-notes').value = m.notes||'';
+
+  const {data} = await db.from('checkins').select('*').eq('member_id',memberId).order('checkin_date',{ascending:false});
+  const list = $('modal-checkins');
+  list.innerHTML = (data||[]).map(c=>`
+    <div class="ci-card">
+      <div class="ci-header">
+        <div class="ci-day">DAY ${c.day_number||'?'}</div>
+        <div class="ci-date">${c.checkin_date}</div>
+      </div>
+      <div class="ci-workout ${c.workout_done?'done':'skip'}">${c.workout_done?'✅ 운동 완료':'😅 운동 없음'}${c.workout_done&&c.workout_type?` · ${c.workout_type}`:''}</div>
+      ${c.pre_condition?`<div class="ci-field"><strong>컨디션:</strong> ${'⭐'.repeat(c.pre_condition)}</div>`:''}
+      ${c.pre_goal?`<div class="ci-field"><strong>목표:</strong> ${c.pre_goal}</div>`:''}
+      ${c.post_feeling?`<div class="ci-field"><strong>운동 후:</strong> ${c.post_feeling} ${c.post_note||''}</div>`:''}
+      ${c.redesign_moment?`<div class="ci-field"><strong>흔들린 순간:</strong> ${c.redesign_moment}</div>`:''}
+      ${c.redesign_choice?`<div class="ci-field"><strong>선택:</strong> ${c.redesign_choice}</div>`:''}
+      ${c.redesign_tomorrow?`<div class="ci-field"><strong>내일 변화:</strong> ${c.redesign_tomorrow}</div>`:''}
+    </div>`).join('');
+
+  $('detail-modal').classList.remove('hidden');
+}
+
+function closeDetail(e){
+  if(e.target===$('detail-modal')) $('detail-modal').classList.add('hidden');
+}
+
+async function saveNotes(){
+  const notes = $('modal-notes').value;
+  await db.from('members').update({notes}).eq('id',currentMemberId);
+  alert('메모가 저장됐어요 ✓');
+  loadAll();
+}
+
+// ── ADD MEMBER ──
+function openAdd(){
+  $('add-start').value = today();
+  $('add-modal').classList.remove('hidden');
+}
+function closeAdd(){ $('add-modal').classList.add('hidden'); }
+
+async function saveMember(){
+  const name=$('add-name').value.trim();
+  const phone=$('add-phone').value.trim();
+  const code=$('add-code').value.trim().toUpperCase();
+  const freq=parseInt($('add-freq').value);
+  const start=$('add-start').value;
+  if(!name||!code){ alert('이름과 코드는 필수예요.'); return; }
+  const {error}=await db.from('members').insert({name,phone,access_code:code,frequency:freq,start_date:start});
+  if(error){ alert('코드가 중복됐거나 오류가 발생했어요: '+error.message); return; }
+  closeAdd();
+  $('add-name').value=''; $('add-phone').value=''; $('add-code').value='';
+  loadAll();
+}
+</script>
+</body>
+</html>
