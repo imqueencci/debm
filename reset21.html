@@ -446,7 +446,6 @@ function renderForm(){
       </div>
       <div class="form-q" style="margin-top:20px">오늘 컨디션은 어때요?</div>
       <div class="stars" id="stars">
-      <div class="stars" id="stars">
         ${[1,2,3,4,5].map(i=>`<button class='star-btn ${(formData.pre_condition||0)>=i?"on":""}' onclick='setStar(${i})'>★</button>`).join('')}
       </div>
       <div class="form-sub">작아도 괜찮아요. 구체적일수록 좋아요.</div>
