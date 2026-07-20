@@ -434,22 +434,25 @@ function renderForm(){
   if(formStep===1) c.innerHTML=`
     <div class="form-section">
       <div class="form-section-title"><span>🌅</span>${titles[0]}</div>
+
       <div class="form-q">오늘 운동을 시작할 수 있게 한 생각은?</div>
       <div class="form-sub">가장 가까운 것을 선택해주세요.</div>
       <div class="radio-list" id="motiv-list">
-        ${motivations.map(m=>`
-          <button class="radio-btn ${formData.pre_motivation===m?'on':''}" onclick="setMotiv('${m}',this)">${m}</button>
-        `).join('')}
+        ${motivations.map(m=>`<button class="radio-btn ${formData.pre_motivation===m?'on':''}" onclick="setMotiv('${m}',this)">${m}</button>`).join('')}
       </div>
       <div id="kita-box" style="display:none;margin-top:8px">
         <input class="kita-input" id="kita-input" type="text" placeholder="직접 입력해주세요">
       </div>
+
       <div class="form-q" style="margin-top:20px">오늘 컨디션은 어때요?</div>
       <div class="stars" id="stars">
-        ${[1,2,3,4,5].map(i=>`<button class='star-btn ${(formData.pre_condition||0)>=i?"on":""}' onclick='setStar(${i})'>★</button>`).join('')}
+        ${starsHtml()}
       </div>
+
+      <div class="form-q" style="margin-top:18px">오늘 목표 한 가지</div>
       <div class="form-sub">작아도 괜찮아요. 구체적일수록 좋아요.</div>
       <textarea class="form-ta" id="pre-goal" rows="2" placeholder="예) 유튜브 영상 1편 따라하기">${formData.pre_goal||''}</textarea>
+
       <div class="form-q" style="margin-top:18px">오늘 운동할 건가요?</div>
       <div class="toggle-row">
         <button class="toggle-btn ${formData.workout_plan==='yes'?'on':''}" onclick="setToggle('yes')">✅ 할 거예요</button>
@@ -522,27 +525,15 @@ function setMotiv(v, el){
   const kb = document.getElementById('kita-box');
   if(kb) kb.style.display = (v==='기타') ? 'block' : 'none';
 }
-function renderStars(){
-  const wrap = document.getElementById('stars');
-  if(!wrap) return;
-  const val = formData.pre_condition || 0;
-  wrap.innerHTML = [1,2,3,4,5].map(i => {
-    const full = val >= i;
-    const half = !full && val >= i - 0.5;
-    const glyph = full ? '<span style="color:#FFD700;font-size:30px">★</span>'
-      : half ? '<span style="background:linear-gradient(90deg,#FFD700 50%,#D8D8D8 50%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:30px;display:inline-block">★</span>'
-      : '<span style="color:#D8D8D8;font-size:30px">★</span>';
-    return '<span class="star-box">'
-      + '<button class="star-left" onclick="setStar('+(i-0.5)+')"></button>'
-      + '<button class="star-right" onclick="setStar('+i+')"></button>'
-      + '<span class="star-glyph">'+glyph+'</span>'
-      + '</span>';
-  }).join('');
+function starsHtml(){
+  var v=formData.pre_condition||0,s='';
+  for(var i=1;i<=5;i++) s+='<button class="star-btn'+(v>=i?' on':'')+'" onclick="setStar('+i+')">★</button>';
+  return s;
 }
-
 function setStar(n){
   formData.pre_condition=n;
-  document.querySelectorAll('.star-btn').forEach((b,i)=>b.classList.toggle('on',i<n));
+  var w=document.getElementById('stars');
+  if(w) w.innerHTML=starsHtml();
 }
 function setToggle(v){
   formData.workout_plan=v;
