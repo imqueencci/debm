@@ -446,7 +446,7 @@ function renderForm(){
       </div>
       <div class="form-q" style="margin-top:20px">오늘 컨디션은 어때요?</div>
       <div class="stars" id="stars">
-        ${[1,2,3,4,5].map(i=>`<button class="star-btn ${(formData.pre_condition||0)>=i?'on':''}" onclick="setStar(${i})">⭐</button>`).join('')}
+        ${(()=>{const v=formData.pre_condition||0;return [1,2,3,4,5].map(i=>{const full=v>=i,half=!full&&v>=i-0.5;return '<span class="star-box"><button class="star-left" onclick="setStar('+(i-0.5)+')"></button><button class="star-right" onclick="setStar('+i+')"></button><span class="star-glyph" style="font-size:28px;color:'+(full||half?'#FFD700':'#D8D8D8')+'">'+(full||half?'★':'☆')+'</span></span>';}).join('');})()}
       </div>
       <div class="form-q" style="margin-top:18px">오늘 목표 한 가지</div>
       <div class="form-sub">작아도 괜찮아요. 구체적일수록 좋아요.</div>
@@ -514,7 +514,6 @@ function renderForm(){
       <textarea class="form-ta" id="r-self" rows="3" placeholder='"오늘도 충분했다."'>${formData.message_to_self||''}</textarea>
     </div>
     <button class="form-next" onclick="submitCheckin()">기록 완료 ✓</button>`;
-  if(formStep===1) setTimeout(renderStars, 50);
 }
 
 function setMotiv(v, el){
@@ -544,7 +543,11 @@ function renderStars(){
 
 function setStar(n){
   formData.pre_condition=n;
-  document.querySelectorAll('.star-btn').forEach((b,i)=>b.classList.toggle('on',i<n));
+  const w=document.getElementById('stars');
+  if(w) w.innerHTML=[1,2,3,4,5].map(i=>{
+    const full=n>=i,half=!full&&n>=i-0.5,c=full||half?'#FFD700':'#D8D8D8';
+    return '<span class="star-box"><button class="star-left" onclick="setStar('+(i-0.5)+')"></button><button class="star-right" onclick="setStar('+i+')"></button><span class="star-glyph" style="font-size:28px;color:'+c+'">'+(full||half?'★':'☆')+'</span></span>';
+  }).join('');
 }
 function setToggle(v){
   formData.workout_plan=v;
