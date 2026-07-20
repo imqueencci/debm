@@ -224,13 +224,10 @@ function renderResult(R) {
       </div>
     </section>`;
 
-  // Scroll animations
+  // 모든 요소 바로 표시 (fixed 컨테이너 IntersectionObserver 호환성 문제 해결)
   setTimeout(() => {
-    const io = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-    }, { threshold: 0.12 });
-    $$('.r-rec, .r-loop-item, .r-pat-card, .r-why, .r-upsell').forEach(el => io.observe(el));
-  }, 100);
+    $$('.r-rec, .r-loop-item, .r-pat-card, .r-why, .r-upsell').forEach(el => el.classList.add('visible'));
+  }, 50);
 }
 
 // ── KEYBOARD SUPPORT ──────────────────────────────────────
