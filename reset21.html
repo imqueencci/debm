@@ -235,20 +235,20 @@ input,textarea{font-family:var(--font)}
 
 
 <script>
-const URL  = 'https://zjxadvumrhherdwekvwc.supabase.co/rest/v1';
+const BASE = 'https://zjxadvumrhherdwekvwc.supabase.co/rest/v1';
 const KEY  = 'sb_publishable_BppWS2XbAgPVjI3BOk2Wow_sggGgypS';
 const H    = { 'apikey': KEY, 'Authorization': 'Bearer '+KEY, 'Content-Type': 'application/json' };
 
 async function dbGet(table, where={}, single=false) {
   let qs = Object.entries(where).map(([k,v])=>`${k}=eq.${encodeURIComponent(v)}`).join('&');
-  const r = await fetch(`${URL}/${table}?select=*${qs?'&'+qs:''}`, {headers:H});
+  const r = await fetch(`${BASE}/${table}?select=*${qs?'&'+qs:''}`, {headers:H});
   const d = await r.json();
   if(!r.ok) throw new Error(d.message||r.status);
   return single ? (d[0]||null) : d;
 }
 
 async function dbUpsert(table, data, conflict) {
-  const r = await fetch(`${URL}/${table}?on_conflict=${conflict}`, {
+  const r = await fetch(`${BASE}/${table}?on_conflict=${conflict}`, {
     method:'POST', headers:{...H,'Prefer':'resolution=merge-duplicates,return=minimal'},
     body: JSON.stringify(data)
   });
@@ -257,7 +257,7 @@ async function dbUpsert(table, data, conflict) {
 }
 
 async function dbInsert(table, data) {
-  const r = await fetch(`${URL}/${table}`, {
+  const r = await fetch(`${BASE}/${table}`, {
     method:'POST', headers:{...H,'Prefer':'return=minimal'},
     body: JSON.stringify(data)
   });
@@ -267,7 +267,7 @@ async function dbInsert(table, data) {
 
 async function dbUpdate(table, where, data) {
   let qs = Object.entries(where).map(([k,v])=>`${k}=eq.${encodeURIComponent(v)}`).join('&');
-  const r = await fetch(`${URL}/${table}?${qs}`, {
+  const r = await fetch(`${BASE}/${table}?${qs}`, {
     method:'PATCH', headers:{...H,'Prefer':'return=minimal'},
     body: JSON.stringify(data)
   });
