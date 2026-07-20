@@ -233,7 +233,7 @@ input,textarea{font-family:var(--font)}
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.50.1/dist/umd/supabase.js"></script>
 <script>
 const SUPABASE_URL = 'https://zjxadvumrhherdwekvwc.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_BppWS2XbAgPVjI3BOk2Wow_sggGgypS';
@@ -278,26 +278,36 @@ async function doLogin(){
 
   $('login-err').classList.add('hidden');
 
-  const {data,error} = await db.from('members').select('*').eq('access_code',code).single();
+  // 버튼 로딩
+  const btn = document.querySelector('.login-btn');
+  if(btn){ btn.textContent='확인 중...'; btn.disabled=true; }
 
-  if(error){
-    console.error('로그인 오류:', error);
-    if(error.code==='PGRST116'){
-      $('login-err').textContent = '코드를 찾을 수 없어요. 다시 확인해주세요.';
-    } else {
-      $('login-err').textContent = '연결 오류: '+error.message;
+  try {
+    const {data, error} = await db
+      .from('members')
+      .select('*')
+      .eq('access_code', code)
+      .maybeSingle();
+
+    if(error) throw error;
+
+    if(!data){
+      $('login-err').textContent = '코드 ['+code+']를 찾을 수 없어요. 어드민에서 코드를 확인해주세요.';
+      $('login-err').classList.remove('hidden');
+      return;
     }
+
+    member = data;
+    localStorage.setItem('r21_code', code);
+    await loadDash();
+
+  } catch(e) {
+    console.error(e);
+    $('login-err').textContent = '오류: ' + (e.message||JSON.stringify(e));
     $('login-err').classList.remove('hidden');
-    return;
+  } finally {
+    if(btn){ btn.textContent='시작하기'; btn.disabled=false; }
   }
-  if(!data){
-    $('login-err').textContent='코드가 올바르지 않아요.';
-    $('login-err').classList.remove('hidden');
-    return;
-  }
-  member = data;
-  localStorage.setItem('r21_code', code);
-  await loadDash();
 }
 
 async function autoLogin(){
