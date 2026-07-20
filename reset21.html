@@ -408,12 +408,7 @@ function renderDash(){
 }
 
 // ── CHECK-IN FORM ──
-function goCheckin(){
-  formStep=1; formData={};
-  try { renderForm(); }
-  catch(e) { alert('renderForm 오류: '+e.message); console.error(e); return; }
-  showScreen('form-screen');
-}
+function goCheckin(){ formStep=1; formData={}; renderForm(); showScreen('form-screen'); }
 function goBack(){
   if(formStep>1){ formStep--; renderForm(); }
   else goDash();
@@ -529,6 +524,24 @@ function setMotiv(v, el){
   const kb = document.getElementById('kita-box');
   if(kb) kb.style.display = (v==='기타') ? 'block' : 'none';
 }
+function renderStars(){
+  const wrap = document.getElementById('stars');
+  if(!wrap) return;
+  const val = formData.pre_condition || 0;
+  wrap.innerHTML = [1,2,3,4,5].map(i => {
+    const full = val >= i;
+    const half = !full && val >= i - 0.5;
+    const glyph = full ? '<span style="color:#FFD700;font-size:30px">★</span>'
+      : half ? '<span style="background:linear-gradient(90deg,#FFD700 50%,#D8D8D8 50%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:30px;display:inline-block">★</span>'
+      : '<span style="color:#D8D8D8;font-size:30px">★</span>';
+    return '<span class="star-box">'
+      + '<button class="star-left" onclick="setStar('+(i-0.5)+')"></button>'
+      + '<button class="star-right" onclick="setStar('+i+')"></button>'
+      + '<span class="star-glyph">'+glyph+'</span>'
+      + '</span>';
+  }).join('');
+}
+
 function setStar(n){
   formData.pre_condition=n;
   document.querySelectorAll('.star-btn').forEach((b,i)=>b.classList.toggle('on',i<n));
