@@ -408,7 +408,12 @@ function renderDash(){
 }
 
 // ── CHECK-IN FORM ──
-function goCheckin(){ formStep=1; formData={}; renderForm(); showScreen('form-screen'); }
+function goCheckin(){
+  formStep=1; formData={};
+  try { renderForm(); }
+  catch(e) { alert('renderForm 오류: '+e.message); console.error(e); return; }
+  showScreen('form-screen');
+}
 function goBack(){
   if(formStep>1){ formStep--; renderForm(); }
   else goDash();
