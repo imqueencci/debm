@@ -577,6 +577,9 @@ async function submitCheckin(){
   formData.redesign_tomorrow = $('r-tomorrow')?.value||'';
   formData.message_to_self = $('r-self')?.value||'';
 
+  // 저장 전 로컬 백업
+  saveProgress();
+
   const dayNum = Math.min(daysBetween(member.start_date, today())+1, 21);
   const payload = {
     member_id: member.id,
@@ -597,15 +600,30 @@ async function submitCheckin(){
     message_to_self: formData.message_to_self||null
   };
 
-  try {
-    await dbUpsert('checkins', payload, 'member_id,checkin_date');
-  } catch(e) {
-    alert('저장 오류: '+e.message);
-    return;
-  }
+  const submitBtn = document.querySelector('.form-next');
+  if(submitBtn){ submitBtn.textContent='저장 중...'; submitBtn.disabled=true; }
 
-  $('complete-tip').textContent = TIPS[dayNum % TIPS.length];
-  showScreen('complete-screen');
+  try {
+    const {error} = await db.from('checkins').upsert(payload, {onConflict:'member_id,checkin_date'});
+    if(error) throw error;
+
+    // 성공 → 로컬 백업 삭제
+    clearProgress();
+    $('complete-tip').textContent = TIPS[dayNum % TIPS.length];
+    showScreen('complete-screen');
+
+  } catch(e) {
+    console.error('저장 오류:', e);
+    if(submitBtn){ submitBtn.textContent='기록 완료 ✓'; submitBtn.disabled=false; }
+    const errDiv = document.createElement('div');
+    errDiv.style.cssText='margin-top:12px;padding:14px;background:#fff0f0;border:1.5px solid #ffcccc;border-radius:14px;text-align:center';
+    errDiv.innerHTML=`
+      <p style="font-size:13px;color:#c00;margin-bottom:10px">⚠️ 저장에 실패했어요.<br>작성한 내용은 유지되니 인터넷 확인 후 다시 눌러주세요.</p>
+      <button onclick="submitCheckin()" style="padding:9px 22px;background:#7358FF;color:#fff;border:none;border-radius:999px;font-size:14px;font-weight:700;cursor:pointer">다시 저장하기</button>
+    `;
+    const wrap = document.querySelector('.form-wrap');
+    if(wrap) wrap.appendChild(errDiv);
+  }
 }
 
 // URL 파라미터 자동 로그인
