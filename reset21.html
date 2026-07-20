@@ -372,6 +372,9 @@ function renderForm(){
           <button class="radio-btn ${formData.pre_motivation===m?'on':''}" onclick="setMotiv('${m}',this)">${m}</button>
         `).join('')}
       </div>
+      <div id="kita-box" style="display:none;margin-top:8px">
+        <input class="kita-input" id="kita-input" type="text" placeholder="직접 입력해주세요">
+      </div>
       <div class="form-q" style="margin-top:20px">오늘 컨디션은 어때요?</div>
       <div class="stars" id="stars">
         ${[1,2,3,4,5].map(i=>`<button class="star-btn ${(formData.pre_condition||0)>=i?'on':''}" onclick="setStar(${i})">⭐</button>`).join('')}
@@ -386,6 +389,7 @@ function renderForm(){
       </div>
     </div>
     <button class="form-next" onclick="nextStep1()">다음 →</button>`;
+  setTimeout(renderStars, 0);
 
   else if(formStep===2) c.innerHTML=`
     <div class="form-section">
@@ -432,6 +436,8 @@ function setMotiv(v, el){
   formData.pre_motivation = v;
   document.querySelectorAll('.radio-btn').forEach(b=>b.classList.remove('on'));
   el.classList.add('on');
+  const kb = document.getElementById('kita-box');
+  if(kb) kb.style.display = (v==='기타') ? 'block' : 'none';
 }
 function setStar(n){
   formData.pre_condition=n;
@@ -456,6 +462,10 @@ function setEmoji(e){
 
 function nextStep1(){
   formData.pre_goal = $('pre-goal')?.value||'';
+  if(formData.pre_motivation==='기타'){
+    const kv = $('kita-input')?.value?.trim();
+    if(kv) formData.pre_motivation = '기타: '+kv;
+  }
   if(!formData.pre_condition){ alert('컨디션을 선택해주세요 ⭐'); return; }
   formStep=2; renderForm();
 }
