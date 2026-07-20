@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>FIT-TI 연결 테스트</title>
+<style>
+body{font-family:sans-serif;padding:24px;background:#f8f6ff;max-width:480px;margin:0 auto}
+h2{color:#1E2B4F;margin-bottom:20px}
+.box{background:#fff;border-radius:16px;padding:20px;margin-bottom:16px;border:1px solid #e0d4ff}
+.status{font-size:14px;line-height:1.8}
+.ok{color:#27ae60;font-weight:700}
+.err{color:#e74c3c;font-weight:700}
+.raw{font-size:12px;background:#f5f5f5;padding:10px;border-radius:8px;word-break:break-all;margin-top:8px}
+button{background:#9B7BFF;color:#fff;border:none;border-radius:999px;padding:12px 24px;font-size:15px;font-weight:700;cursor:pointer;width:100%}
+</style>
+</head>
+<body>
+<h2>🔍 FIT-TI 연결 테스트</h2>
+
+<div class="box">
+  <div class="status" id="js-check">⏳ JavaScript 확인 중...</div>
+</div>
+
+<div class="box">
+  <div class="status" id="api-check">⏳ Supabase 연결 확인 중...</div>
+</div>
+
+<div class="box">
+  <div class="status" id="member-check">⏳ 회원 조회 대기 중...</div>
+</div>
+
+<div class="box">
+  <input id="code-test" type="text" placeholder="코드 입력 (예: FITTI001)" 
+    style="width:100%;padding:12px;border:1.5px solid #e0d4ff;border-radius:12px;font-size:16px;margin-bottom:10px;box-sizing:border-box">
+  <button onclick="testCode()">코드로 회원 조회 테스트</button>
+  <div class="status" id="code-result" style="margin-top:12px"></div>
+</div>
+
+<script>
+const BASE = 'https://zjxadvumrhherdwekvwc.supabase.co/rest/v1';
+const KEY  = 'sb_publishable_BppWS2XbAgPVjI3BOk2Wow_sggGgypS';
+const H    = {'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':'application/json'};
+
+// 1. JS 확인
+document.getElementById('js-check').innerHTML = '<span class="ok">✅ JavaScript 정상 작동</span>';
+
+// 2. API 연결 테스트
+async function testConnection() {
+  const el = document.getElementById('api-check');
+  try {
+    const r = await fetch(`${BASE}/members?select=count`, {headers:H});
+    const text = await r.text();
+    if(r.ok) {
+      el.innerHTML = `<span class="ok">✅ Supabase 연결 성공</span><br>HTTP ${r.status}<div class="raw">${text}</div>`;
+    } else {
+      el.innerHTML = `<span class="err">❌ Supabase 오류 HTTP ${r.status}</span><div class="raw">${text}</div>`;
+    }
+  } catch(e) {
+    el.innerHTML = `<span class="err">❌ 연결 실패: ${e.message}</span>`;
+  }
+}
+
+// 3. 코드 테스트
+async function testCode() {
+  const code = document.getElementById('code-test').value.trim().toUpperCase();
+  const el = document.getElementById('code-result');
+  if(!code){ el.innerHTML='<span class="err">코드를 입력하세요</span>'; return; }
+  
+  el.innerHTML = '⏳ 조회 중...';
+  try {
+    const r = await fetch(`${BASE}/members?select=*&access_code=eq.${encodeURIComponent(code)}`, {headers:H});
+    const text = await r.text();
+    if(r.ok) {
+      const data = JSON.parse(text);
+      if(data.length > 0) {
+        el.innerHTML = `<span class="ok">✅ 회원 찾음!</span><br>이름: <strong>${data[0].name}</strong><div class="raw">${text}</div>`;
+      } else {
+        el.innerHTML = `<span class="err">❌ 코드 [${code}] 회원 없음</span><div class="raw">${text}</div>`;
+      }
+    } else {
+      el.innerHTML = `<span class="err">❌ HTTP ${r.status}</span><div class="raw">${text}</div>`;
+    }
+  } catch(e) {
+    el.innerHTML = `<span class="err">❌ 오류: ${e.message}</span>`;
+  }
+}
+
+// 자동 실행
+testConnection();
+
+// member-check: 전체 회원 수
+async function checkMembers() {
+  const el = document.getElementById('member-check');
+  try {
+    const r = await fetch(`${BASE}/members?select=*`, {headers:H});
+    const text = await r.text();
+    if(r.ok) {
+      const data = JSON.parse(text);
+      el.innerHTML = `<span class="ok">✅ 회원 테이블 조회 성공</span><br>총 ${data.length}명<div class="raw">${text.slice(0,200)}...</div>`;
+    } else {
+      el.innerHTML = `<span class="err">❌ HTTP ${r.status}</span><div class="raw">${text}</div>`;
+    }
+  } catch(e) {
+    el.innerHTML = `<span class="err">❌ ${e.message}</span>`;
+  }
+}
+checkMembers();
+</script>
+</body>
+</html>
