@@ -216,13 +216,26 @@ input,textarea,select{font-family:var(--font)}
   </div>
 </div>
 
-<script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+
 <script>
-const SUPABASE_URL = 'https://zjxadvumrhherdwekvwc.supabase.co';
-const ADMIN_KEY = 'sb_publishable_BppWS2XbAgPVjI3BOk2Wow_sggGgypS';
-const ADMIN_PW = 'queen2026';
-const { createClient } = supabase;
-const db = createClient(SUPABASE_URL, ADMIN_KEY);
+const RURL='https://zjxadvumrhherdwekvwc.supabase.co/rest/v1';
+const RKEY='sb_publishable_BppWS2XbAgPVjI3BOk2Wow_sggGgypS';
+const RH={'apikey':RKEY,'Authorization':'Bearer '+RKEY,'Content-Type':'application/json'};
+const ADMIN_PW='queen2026';
+async function rGet(t,w={}){
+  let q=Object.entries(w).map(([k,v])=>k+'=eq.'+encodeURIComponent(v)).join('&');
+  const r=await fetch(RURL+'/'+t+'?select=*'+(q?'&'+q:''),{headers:RH});
+  return r.json();
+}
+async function rPost(t,d,prefer='return=minimal'){
+  const r=await fetch(RURL+'/'+t,{method:'POST',headers:{...RH,'Prefer':prefer},body:JSON.stringify(d)});
+  if(!r.ok){const e=await r.json();throw new Error(e.message||r.status);}
+}
+async function rPatch(t,w,d){
+  let q=Object.entries(w).map(([k,v])=>k+'=eq.'+encodeURIComponent(v)).join('&');
+  const r=await fetch(RURL+'/'+t+'?'+q,{method:'PATCH',headers:{...RH,'Prefer':'return=minimal'},body:JSON.stringify(d)});
+  if(!r.ok){const e=await r.json();throw new Error(e.message||r.status);}
+}
 
 const $ = id => document.getElementById(id);
 let allMembers = [];
@@ -251,12 +264,9 @@ document.addEventListener('keydown', e=>{ if(e.key==='Enter' && !$('login-wrap')
 
 // ── LOAD DATA ──
 async function loadAll(){
-  const [mRes, cRes] = await Promise.all([
-    db.from('members').select('*').order('created_at'),
-    db.from('checkins').select('member_id,checkin_date')
-  ]);
-  allMembers = mRes.data||[];
-  const checkins = cRes.data||[];
+  const [allM,allC] = await Promise.all([rGet('members'),rGet('checkins')]);
+  allMembers = (allM||[]).sort((a,b)=>a.created_at?.localeCompare(b.created_at||'')||0);
+  const checkins = allC||[];
 
   // checkins per member
   const ciMap = {};
@@ -339,9 +349,10 @@ $('modal-meta').innerHTML = `
   <div style="font-size:12px;color:var(--tx2);margin-top:6px">접근 코드: <strong>${m.access_code}</strong></div>`;
   $('modal-notes').value = m.notes||'';
 
-  const {data} = await db.from('checkins').select('*').eq('member_id',memberId).order('checkin_date',{ascending:false});
+  const rawD = await rGet('checkins',{member_id:memberId});
+  const data = (rawD||[]).sort((a,b)=>b.checkin_date.localeCompare(a.checkin_date));
   const list = $('modal-checkins');
-  list.innerHTML = (data||[]).map(c=>`
+  list.innerHTML = data.map(c=>`
     <div class="ci-card">
       <div class="ci-header">
         <div class="ci-day">DAY ${c.day_number||'?'}</div>
@@ -462,7 +473,7 @@ function copyLink(url){
 }
 async function saveNotes(){
   const notes = $('modal-notes').value;
-  await db.from('members').update({notes}).eq('id',currentMemberId);
+  await rPatch('members',{id:currentMemberId},{notes});
   alert('메모가 저장됐어요 ✓');
   loadAll();
 }
@@ -481,8 +492,7 @@ async function saveMember(){
   const freq=parseInt($('add-freq').value);
   const start=$('add-start').value;
   if(!name||!code){ alert('이름과 코드는 필수예요.'); return; }
-  const {error}=await db.from('members').insert({name,phone,access_code:code,frequency:freq,start_date:start});
-  if(error){ alert('코드가 중복됐거나 오류가 발생했어요: '+error.message); return; }
+  try{await rPost('members',{name,phone,access_code:code,frequency:freq,start_date:start});}catch(e){alert('오류: '+e.message);return;}
   closeAdd();
   $('add-name').value=''; $('add-phone').value=''; $('add-code').value='';
   loadAll();

@@ -233,12 +233,47 @@ input,textarea{font-family:var(--font)}
   </div>
 </div>
 
-<script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+
 <script>
-const SUPABASE_URL = 'https://zjxadvumrhherdwekvwc.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_BppWS2XbAgPVjI3BOk2Wow_sggGgypS';
-const { createClient } = supabase;
-const db = createClient(SUPABASE_URL, SUPABASE_KEY);
+const URL  = 'https://zjxadvumrhherdwekvwc.supabase.co/rest/v1';
+const KEY  = 'sb_publishable_BppWS2XbAgPVjI3BOk2Wow_sggGgypS';
+const H    = { 'apikey': KEY, 'Authorization': 'Bearer '+KEY, 'Content-Type': 'application/json' };
+
+async function dbGet(table, where={}, single=false) {
+  let qs = Object.entries(where).map(([k,v])=>`${k}=eq.${encodeURIComponent(v)}`).join('&');
+  const r = await fetch(`${URL}/${table}?select=*${qs?'&'+qs:''}`, {headers:H});
+  const d = await r.json();
+  if(!r.ok) throw new Error(d.message||r.status);
+  return single ? (d[0]||null) : d;
+}
+
+async function dbUpsert(table, data, conflict) {
+  const r = await fetch(`${URL}/${table}?on_conflict=${conflict}`, {
+    method:'POST', headers:{...H,'Prefer':'resolution=merge-duplicates,return=minimal'},
+    body: JSON.stringify(data)
+  });
+  if(!r.ok){ const e=await r.json(); throw new Error(e.message||r.status); }
+  return true;
+}
+
+async function dbInsert(table, data) {
+  const r = await fetch(`${URL}/${table}`, {
+    method:'POST', headers:{...H,'Prefer':'return=minimal'},
+    body: JSON.stringify(data)
+  });
+  if(!r.ok){ const e=await r.json(); throw new Error(e.message||r.status); }
+  return true;
+}
+
+async function dbUpdate(table, where, data) {
+  let qs = Object.entries(where).map(([k,v])=>`${k}=eq.${encodeURIComponent(v)}`).join('&');
+  const r = await fetch(`${URL}/${table}?${qs}`, {
+    method:'PATCH', headers:{...H,'Prefer':'return=minimal'},
+    body: JSON.stringify(data)
+  });
+  if(!r.ok){ const e=await r.json(); throw new Error(e.message||r.status); }
+  return true;
+}
 
 const TIPS = [
   "작은 성공도 성공입니다. 오늘 한 선택이 내일의 패턴이 됩니다.",
@@ -283,13 +318,7 @@ async function doLogin(){
   if(btn){ btn.textContent='확인 중...'; btn.disabled=true; }
 
   try {
-    const {data, error} = await db
-      .from('members')
-      .select('*')
-      .eq('access_code', code)
-      .maybeSingle();
-
-    if(error) throw error;
+    const data = await dbGet('members', {access_code: code}, true);
 
     if(!data){
       $('login-err').textContent = '코드 ['+code+']를 찾을 수 없어요. 어드민에서 코드를 확인해주세요.';
@@ -313,8 +342,10 @@ async function doLogin(){
 async function autoLogin(){
   const code = localStorage.getItem('r21_code');
   if(!code) return;
-  const {data} = await db.from('members').select('*').eq('access_code',code).single();
-  if(data){ member=data; await loadDash(); }
+  try {
+    const data = await dbGet('members', {access_code:code}, true);
+    if(data){ member=data; await loadDash(); }
+  } catch(e){ localStorage.removeItem('r21_code'); }
 }
 
 function doLogout(){
@@ -325,8 +356,8 @@ function doLogout(){
 
 // ── DASHBOARD ──
 async function loadDash(){
-  const {data} = await db.from('checkins').select('*').eq('member_id',member.id).order('checkin_date');
-  checkins = data||[];
+  const data = await dbGet('checkins', {member_id:member.id});
+  checkins = (data||[]).sort((a,b)=>a.checkin_date.localeCompare(b.checkin_date));
   renderDash();
   showScreen('dash-screen');
 }
@@ -566,8 +597,12 @@ async function submitCheckin(){
     message_to_self: formData.message_to_self||null
   };
 
-  const {error} = await db.from('checkins').upsert(payload, {onConflict:'member_id,checkin_date'});
-  if(error){ alert('저장 중 오류가 발생했어요. 다시 시도해주세요.'); console.error(error); return; }
+  try {
+    await dbUpsert('checkins', payload, 'member_id,checkin_date');
+  } catch(e) {
+    alert('저장 오류: '+e.message);
+    return;
+  }
 
   $('complete-tip').textContent = TIPS[dayNum % TIPS.length];
   showScreen('complete-screen');
