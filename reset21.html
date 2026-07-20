@@ -127,6 +127,10 @@ input,textarea{font-family:var(--font)}
 .back-dash-btn:hover{background:var(--lav-s)}
 
 /* REDESIGN TIPS */
+.radio-list{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.radio-btn{width:100%;padding:13px 16px;text-align:left;font-size:15px;font-weight:500;color:var(--tx);background:var(--bg);border:1.5px solid var(--bd);border-radius:14px;transition:all .18s;cursor:pointer}
+.radio-btn:hover{border-color:var(--lav2);background:var(--lav-s)}
+.radio-btn.on{border-color:var(--lav2);background:var(--lav-s);color:var(--lav2);font-weight:700}
 .redesign-tips=[
   "작은 성공도 성공입니다. 오늘 한 선택이 내일의 패턴이 됩니다.",
   "완벽하지 않아도 계속하면 됩니다. 방향이 맞으면 속도는 나중입니다.",
@@ -350,16 +354,31 @@ function renderForm(){
   $('step-label').textContent = labels[formStep-1];
 
   const c = $('form-content');
+  const motivations = [
+    '오늘은 약속한 날이라서',
+    '조금이라도 하면 된다고 생각해서',
+    '어제 많이 먹어서',
+    '몸이 찌뿌둥해서',
+    '그냥 해보기로 했어요',
+    '기타'
+  ];
   if(formStep===1) c.innerHTML=`
     <div class="form-section">
       <div class="form-section-title"><span>🌅</span>${titles[0]}</div>
-      <div class="form-q">오늘 컨디션은 어때요?</div>
+      <div class="form-q">오늘 운동을 시작할 수 있게 한 생각은?</div>
+      <div class="form-sub">가장 가까운 것을 선택해주세요.</div>
+      <div class="radio-list" id="motiv-list">
+        ${motivations.map(m=>`
+          <button class="radio-btn ${formData.pre_motivation===m?'on':''}" onclick="setMotiv('${m}',this)">${m}</button>
+        `).join('')}
+      </div>
+      <div class="form-q" style="margin-top:20px">오늘 컨디션은 어때요?</div>
       <div class="stars" id="stars">
         ${[1,2,3,4,5].map(i=>`<button class="star-btn ${(formData.pre_condition||0)>=i?'on':''}" onclick="setStar(${i})">⭐</button>`).join('')}
       </div>
       <div class="form-q" style="margin-top:18px">오늘 목표 한 가지</div>
       <div class="form-sub">작아도 괜찮아요. 구체적일수록 좋아요.</div>
-      <textarea class="form-ta" id="pre-goal" rows="3" placeholder="예) 유튜브 영상 1편 따라하기">${formData.pre_goal||''}</textarea>
+      <textarea class="form-ta" id="pre-goal" rows="2" placeholder="예) 유튜브 영상 1편 따라하기">${formData.pre_goal||''}</textarea>
       <div class="form-q" style="margin-top:18px">오늘 운동할 건가요?</div>
       <div class="toggle-row">
         <button class="toggle-btn ${formData.workout_plan==='yes'?'on':''}" onclick="setToggle('yes')">✅ 할 거예요</button>
@@ -376,15 +395,16 @@ function renderForm(){
         <button class="toggle-btn ${formData.workout_done===true?'on':''}" onclick="setWorkout(true)">✅ 했어요</button>
         <button class="toggle-btn ${formData.workout_done===false?'on':''}" onclick="setWorkout(false)">😅 못 했어요</button>
       </div>
-      <div id="workout-detail" style="${formData.workout_done===false?'opacity:.4':''}">
+      <div id="workout-detail" style="${formData.workout_done===false?'opacity:.4;pointer-events:none':''}">
         <div class="form-q" style="margin-top:18px">어떤 운동을 했나요?</div>
         <textarea class="form-ta" id="workout-type" rows="2" placeholder="예) 유튜브 영상 3번, 스쿼트 20개 3세트">${formData.workout_type||''}</textarea>
         <div class="form-q" style="margin-top:18px">운동 후 기분은?</div>
         <div class="emoji-row" id="emoji-row">
-          ${['😊','💪','😌','😅','😴','🥺','⚡'].map(e=>`<button class="emoji-btn ${formData.post_feeling===e?'on':''}" onclick="setEmoji('${e}')">${e}</button>`).join('')}
+          ${['😀','💪','😌','🥵','😴','😢'].map(e=>`<button class="emoji-btn ${formData.post_feeling===e?'on':''}" onclick="setEmoji('${e}')">${e}</button>`).join('')}
         </div>
-        <div class="form-q" style="margin-top:18px">한 줄 소감</div>
-        <textarea class="form-ta" id="post-note" rows="2" placeholder="예) 생각보다 덜 힘들었어요">${formData.post_note||''}</textarea>
+        <div class="form-q" style="margin-top:18px">운동을 하고 가장 먼저 든 생각은?</div>
+        <div class="form-sub">예) "생각보다 금방 끝났다." "하기 전이 더 힘들었다." "오늘도 하길 잘했다."</div>
+        <textarea class="form-ta" id="post-note" rows="3" placeholder='"내가 또 해냈네."'>${formData.post_note||''}</textarea>
       </div>
     </div>
     <button class="form-next" onclick="nextStep2()">다음 →</button>`;
@@ -392,19 +412,27 @@ function renderForm(){
   else if(formStep===3) c.innerHTML=`
     <div class="form-section">
       <div class="form-section-title"><span>💜</span>${titles[2]}</div>
-      <p style="font-size:13px;color:var(--tx2);line-height:1.7;margin-bottom:18px">오늘 나를 관찰해봐요.<br>정답이 없어요. 솔직하게 써보세요.</p>
-      <div class="form-q">오늘 가장 흔들렸던 순간은?</div>
-      <div class="form-sub">�귀찮았던 순간, 포기하고 싶었던 순간, 먹고 싶었던 순간</div>
-      <textarea class="form-ta" id="r-moment" rows="3" placeholder="예) 퇴근하고 소파에 누웠을 때">${formData.redesign_moment||''}</textarea>
-      <div class="form-q" style="margin-top:18px">그 순간 어떤 선택을 했나요?</div>
-      <textarea class="form-ta" id="r-choice" rows="3" placeholder="예) 그냥 누워있다가 결국 운동 안 했어요">${formData.redesign_choice||''}</textarea>
-      <div class="form-q" style="margin-top:18px">내일 하나만 바꾼다면?</div>
-      <div class="form-sub">아주 작아도 괜찮아요.</div>
-      <textarea class="form-ta" id="r-tomorrow" rows="3" placeholder="예) 퇴근하자마자 바로 운동복 입기">${formData.redesign_tomorrow||''}</textarea>
+      <p style="font-size:13px;color:var(--tx2);line-height:1.7;margin-bottom:18px">정답이 없어요.<br>오늘 나를 솔직하게 관찰해봐요.</p>
+      <div class="form-q">오늘 가장 흔들렸던 순간은 언제였나요?</div>
+      <div class="form-sub">예) 퇴근 후 · 점심 먹고 · 야식 먹고 싶을 때 · 운동 가기 직전</div>
+      <textarea class="form-ta" id="r-moment" rows="3" placeholder="퇴근하고 소파에 누웠을 때">${formData.redesign_moment||''}</textarea>
+      <div class="form-q" style="margin-top:18px">그때 나를 움직이게 한 생각은 무엇이었나요?</div>
+      <div class="form-sub">또는, 결국 어떤 선택을 했나요?</div>
+      <textarea class="form-ta" id="r-choice" rows="3" placeholder="그냥 누워있다가 결국 운동 안 했어요">${formData.redesign_choice||''}</textarea>
+      <div class="form-q" style="margin-top:18px">내일도 같은 상황이 온다면 딱 하나만 어떻게 해볼까요?</div>
+      <textarea class="form-ta" id="r-tomorrow" rows="3" placeholder="퇴근하자마자 바로 운동복 입기">${formData.redesign_tomorrow||''}</textarea>
+      <div class="form-q" style="margin-top:24px">오늘의 나에게 한마디 💌</div>
+      <div class="form-sub">예) "고생했어." "내일도 괜찮아." "잘 버텼다." "오늘도 충분했다."</div>
+      <textarea class="form-ta" id="r-self" rows="3" placeholder='"오늘도 충분했다."'>${formData.message_to_self||''}</textarea>
     </div>
     <button class="form-next" onclick="submitCheckin()">기록 완료 ✓</button>`;
 }
 
+function setMotiv(v, el){
+  formData.pre_motivation = v;
+  document.querySelectorAll('.radio-btn').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+}
 function setStar(n){
   formData.pre_condition=n;
   document.querySelectorAll('.star-btn').forEach((b,i)=>b.classList.toggle('on',i<n));
@@ -441,12 +469,14 @@ async function submitCheckin(){
   formData.redesign_moment = $('r-moment')?.value||'';
   formData.redesign_choice = $('r-choice')?.value||'';
   formData.redesign_tomorrow = $('r-tomorrow')?.value||'';
+  formData.message_to_self = $('r-self')?.value||'';
 
   const dayNum = Math.min(daysBetween(member.start_date, today())+1, 21);
   const payload = {
     member_id: member.id,
     checkin_date: today(),
     day_number: dayNum,
+    pre_motivation: formData.pre_motivation||null,
     pre_condition: formData.pre_condition||null,
     pre_goal: formData.pre_goal||null,
     workout_done: formData.workout_done||false,
@@ -455,7 +485,8 @@ async function submitCheckin(){
     post_note: formData.post_note||null,
     redesign_moment: formData.redesign_moment||null,
     redesign_choice: formData.redesign_choice||null,
-    redesign_tomorrow: formData.redesign_tomorrow||null
+    redesign_tomorrow: formData.redesign_tomorrow||null,
+    message_to_self: formData.message_to_self||null
   };
 
   const {error} = await db.from('checkins').upsert(payload, {onConflict:'member_id,checkin_date'});
