@@ -274,9 +274,27 @@ function daysBetween(a,b){
 // ── LOGIN ──
 async function doLogin(){
   const code = $('code-input').value.trim().toUpperCase();
-  if(!code) return;
+  if(!code){ $('login-err').textContent='코드를 입력해주세요.'; $('login-err').classList.remove('hidden'); return; }
+
+  $('login-err').classList.add('hidden');
+
   const {data,error} = await db.from('members').select('*').eq('access_code',code).single();
-  if(error||!data){ $('login-err').classList.remove('hidden'); return; }
+
+  if(error){
+    console.error('로그인 오류:', error);
+    if(error.code==='PGRST116'){
+      $('login-err').textContent = '코드를 찾을 수 없어요. 다시 확인해주세요.';
+    } else {
+      $('login-err').textContent = '연결 오류: '+error.message;
+    }
+    $('login-err').classList.remove('hidden');
+    return;
+  }
+  if(!data){
+    $('login-err').textContent='코드가 올바르지 않아요.';
+    $('login-err').classList.remove('hidden');
+    return;
+  }
   member = data;
   localStorage.setItem('r21_code', code);
   await loadDash();
