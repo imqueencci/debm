@@ -458,7 +458,6 @@ function renderForm(){
       </div>
     </div>
     <button class="form-next" onclick="nextStep1()">다음 →</button>`;
-  setTimeout(renderStars, 0);
 
   else if(formStep===2) c.innerHTML=`
     <div class="form-section">
@@ -515,6 +514,7 @@ function renderForm(){
       <textarea class="form-ta" id="r-self" rows="3" placeholder='"오늘도 충분했다."'>${formData.message_to_self||''}</textarea>
     </div>
     <button class="form-next" onclick="submitCheckin()">기록 완료 ✓</button>`;
+  if(formStep===1) setTimeout(renderStars, 50);
 }
 
 function setMotiv(v, el){
