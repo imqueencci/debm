@@ -101,6 +101,27 @@ input,textarea,select{font-family:var(--font)}
 .ci-workout.done{background:var(--ok-bg);color:var(--ok)}
 .ci-workout.skip{background:var(--warn-bg);color:var(--warn)}
 .ci-field{font-size:13px;color:var(--tx2);line-height:1.6;margin-bottom:4px}
+/* STATS */
+.stats-panel{background:var(--bg);border-radius:16px;padding:20px;margin-bottom:20px;display:flex;flex-direction:column;gap:16px}
+.stat-row{padding-bottom:14px;border-bottom:1px solid var(--bd)}
+.stat-row:last-child{border-bottom:none;padding-bottom:0}
+.stat-row-title{font-size:11px;font-weight:700;color:var(--tx2);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+.stat-big{font-size:28px;font-weight:900;color:var(--navy);letter-spacing:-.04em}
+.stat-sub{font-size:13px;color:var(--tx2);margin-top:2px}
+.stat-stars{font-size:20px;letter-spacing:2px}
+.top-list{display:flex;flex-direction:column;gap:4px}
+.top-item{font-size:13px;color:var(--tx);display:flex;gap:8px;align-items:center}
+.top-rank{font-size:11px;font-weight:700;color:var(--lav2);width:16px}
+.bar-row{display:flex;flex-direction:column;gap:8px}
+.bar-item{display:flex;align-items:center;gap:10px}
+.bar-label{font-size:13px;color:var(--tx);min-width:130px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar-bg{flex:1;height:8px;background:var(--lav-m);border-radius:999px;overflow:hidden}
+.bar-fill{height:100%;background:linear-gradient(90deg,var(--lav2),var(--lav3));border-radius:999px;transition:width .6s}
+.bar-pct{font-size:12px;font-weight:700;color:var(--lav2);min-width:32px;text-align:right}
+.recent7-wrap{display:flex;gap:6px}
+.r7-day{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;border:1.5px solid var(--bd)}
+.r7-day.done{background:var(--lav-s);border-color:var(--lav2)}
+.r7-day.skip{background:#f5f5f5}
 .ci-field strong{color:var(--tx);font-weight:600}
 
 /* ADD MODAL */
@@ -327,11 +348,101 @@ async function openDetail(memberId){
       ${c.redesign_tomorrow?`<div class="ci-field"><strong>내일 변화:</strong> ${c.redesign_tomorrow}</div>`:''}
     </div>`).join('');
 
+  // 통계 렌더링
+  const st = calcStats(data||[]);
+  const statsHtml = `
+    <div class="stats-panel">
+      <div class="stat-row">
+        <div class="stat-row-title">운동 성공률</div>
+        <div class="stat-stars">${st.starStr}</div>
+        <div class="stat-big">${st.done}<span style="font-size:16px;color:var(--tx2)"> / ${st.total}일</span></div>
+        <div class="stat-sub">${st.pct}% 달성</div>
+      </div>
+      ${st.top3.length>0?`
+      <div class="stat-row">
+        <div class="stat-row-title">운동을 시작한 이유 TOP${st.top3.length}</div>
+        <div class="top-list">
+          ${st.top3.map((r,i)=>`<div class="top-item"><span class="top-rank">0${i+1}</span>${r}</div>`).join('')}
+        </div>
+      </div>`:''}
+      ${st.feelings.length>0?`
+      <div class="stat-row">
+        <div class="stat-row-title">운동 후 기분 분포</div>
+        <div class="bar-row">
+          ${st.feelings.map(f=>`
+            <div class="bar-item">
+              <div class="bar-label">${f.label}</div>
+              <div class="bar-bg"><div class="bar-fill" style="width:${f.pct}%"></div></div>
+              <div class="bar-pct">${f.pct}%</div>
+            </div>`).join('')}
+        </div>
+      </div>`:''}
+      ${st.moments.length>0?`
+      <div class="stat-row">
+        <div class="stat-row-title">가장 흔들리는 순간 (최근)</div>
+        <div class="top-list">
+          ${st.moments.map(r=>`<div class="top-item" style="font-size:13px">· ${r}</div>`).join('')}
+        </div>
+      </div>`:''}
+      ${st.notes.length>0?`
+      <div class="stat-row">
+        <div class="stat-row-title">운동 후 남긴 말 (최근)</div>
+        <div class="top-list">
+          ${st.notes.map(n=>`<div class="top-item" style="color:var(--lav2)">"${n}"</div>`).join('')}
+        </div>
+      </div>`:''}
+      <div class="stat-row">
+        <div class="stat-row-title">최근 7일</div>
+        <div class="recent7-wrap">
+          ${st.last7.map(c=>`<div class="r7-day ${c.workout_done?'done':'skip'}">${c.workout_done?'✅':'·'}</div>`).join('')}
+          ${st.last7.length<7?Array(7-st.last7.length).fill('<div class="r7-day">·</div>').join(''):''}
+        </div>
+      </div>
+    </div>`;
+  $('modal-checkins').insertAdjacentHTML('beforebegin', statsHtml);
+
   $('detail-modal').classList.remove('hidden');
 }
 
 function closeDetail(e){
   if(e.target===$('detail-modal')) $('detail-modal').classList.add('hidden');
+}
+
+function calcStats(data) {
+  const total = data.length;
+  const done = data.filter(c=>c.workout_done).length;
+  const pct = total>0 ? Math.round((done/total)*100) : 0;
+  const stars = Math.min(5, Math.round(pct/20));
+
+  // 성공률 별점
+  const starStr = '⭐'.repeat(stars) + '☆'.repeat(5-stars);
+
+  // 운동 시작 이유 TOP3
+  const motivCounts = {};
+  data.forEach(c=>{
+    if(c.pre_motivation){ const k=c.pre_motivation.replace(/^기타: /,''); motivCounts[k]=(motivCounts[k]||0)+1; }
+  });
+  const top3 = Object.entries(motivCounts).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([k])=>k);
+
+  // 운동 후 기분 분포
+  const feelCounts = {};
+  data.filter(c=>c.workout_done&&c.post_feeling).forEach(c=>{
+    feelCounts[c.post_feeling]=(feelCounts[c.post_feeling]||0)+1;
+  });
+  const feelings = Object.entries(feelCounts).sort((a,b)=>b[1]-a[1])
+    .map(([label,count])=>({label,count,pct:done>0?Math.round((count/done)*100):0}));
+
+  // 최근 7일
+  const sorted = [...data].sort((a,b)=>b.checkin_date.localeCompare(a.checkin_date));
+  const last7 = sorted.slice(0,7).reverse();
+
+  // 가장 많이 남긴 말 (최근 3개)
+  const notes = data.filter(c=>c.post_note).slice(-3).map(c=>c.post_note).reverse();
+
+  // 가장 흔들리는 순간 (최근 3개)
+  const moments = data.filter(c=>c.redesign_moment).slice(-3).map(c=>c.redesign_moment).reverse();
+
+  return {total,done,pct,starStr,top3,feelings,last7,notes,moments};
 }
 
 async function saveNotes(){

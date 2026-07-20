@@ -97,7 +97,17 @@ input,textarea{font-family:var(--font)}
 .star-btn:hover{transform:scale(1.15)}
 
 /* Emoji pick */
-.emoji-row{display:flex;gap:10px;flex-wrap:wrap}
+.emoji-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.feel-btn{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 8px;border:1.5px solid var(--bd);border-radius:14px;background:var(--bg);cursor:pointer;transition:all .18s;min-width:72px;flex:1}
+.feel-btn:hover{border-color:var(--lav2);background:var(--lav-s)}
+.feel-btn.on{border-color:var(--lav2);background:var(--lav-s)}
+.feel-emoji{font-size:24px}
+.feel-label{font-size:11px;font-weight:600;color:var(--tx);text-align:center;line-height:1.3}
+.feel-btn.on .feel-label{color:var(--lav2)}
+.toggle-row-3{display:flex;gap:8px;margin-top:6px}
+.toggle-btn3{flex:1;height:44px;border:1.5px solid var(--bd);border-radius:12px;font-size:13px;font-weight:600;color:var(--tx2);background:var(--bg);transition:all .18s;cursor:pointer}
+.toggle-btn3:hover{border-color:var(--lav2);background:var(--lav-s)}
+.toggle-btn3.on{border-color:var(--lav2);background:var(--lav-s);color:var(--lav2);font-weight:700}
 .emoji-btn{font-size:28px;padding:8px;border-radius:14px;border:2px solid transparent;transition:border-color .15s,transform .15s var(--spring);background:none;cursor:pointer}
 .emoji-btn.on{border-color:var(--lav2);background:var(--lav-s);transform:scale(1.12)}
 
@@ -400,13 +410,29 @@ function renderForm(){
         <button class="toggle-btn ${formData.workout_done===false?'on':''}" onclick="setWorkout(false)">😅 못 했어요</button>
       </div>
       <div id="workout-detail" style="${formData.workout_done===false?'opacity:.4;pointer-events:none':''}">
-        <div class="form-q" style="margin-top:18px">어떤 운동을 했나요?</div>
-        <textarea class="form-ta" id="workout-type" rows="2" placeholder="예) 유튜브 영상 3번, 스쿼트 20개 3세트">${formData.workout_type||''}</textarea>
-        <div class="form-q" style="margin-top:18px">운동 후 기분은?</div>
-        <div class="emoji-row" id="emoji-row">
-          ${['😀','💪','😌','🥵','😴','😢'].map(e=>`<button class="emoji-btn ${formData.post_feeling===e?'on':''}" onclick="setEmoji('${e}')">${e}</button>`).join('')}
+        <div class="form-q" style="margin-top:20px">운동 전 솔직한 느낌은?</div>
+        <div class="form-sub">시작하기 전 어떤 마음이었나요?</div>
+        <div class="emoji-row" id="pre-feel-row">
+          ${[['😩','하기 싫었어요'],['😐','그냥 그랬어요'],['🙂','조금 기대됐어요'],['😁','하고 싶었어요']].map(([e,l])=>`
+            <button class="feel-btn ${formData.pre_feeling===l?'on':''}" onclick="setPreFeel('${l}',this)">
+              <span class="feel-emoji">${e}</span>
+              <span class="feel-label">${l}</span>
+            </button>`).join('')}
         </div>
-        <div class="form-q" style="margin-top:18px">운동을 하고 가장 먼저 든 생각은?</div>
+        <div class="form-q" style="margin-top:20px">운동 후 상태는?</div>
+        <div class="emoji-row" id="post-feel-row">
+          ${[['😌','개운해요'],['😊','뿌듯해요'],['💪','자신감이 생겼어요'],['😮‍💨','힘들었어요'],['🤔','생각보다 별거 아니었어요']].map(([e,l])=>`
+            <button class="feel-btn ${formData.post_feeling===l?'on':''}" onclick="setPostFeel('${l}',this)">
+              <span class="feel-emoji">${e}</span>
+              <span class="feel-label">${l}</span>
+            </button>`).join('')}
+        </div>
+        <div class="form-q" style="margin-top:20px">생각보다 어땠나요?</div>
+        <div class="toggle-row-3" id="compare-row">
+          ${[['쉬웠어요','생각보다 쉬웠어요'],['같았어요','생각한 만큼이었어요'],['힘들었어요','생각보다 힘들었어요']].map(([s,l])=>`
+            <button class="toggle-btn3 ${formData.post_comparison===l?'on':''}" onclick="setCompare('${l}',this)">${s}</button>`).join('')}
+        </div>
+        <div class="form-q" style="margin-top:20px">운동하고 가장 먼저 든 생각은?</div>
         <div class="form-sub">예) "생각보다 금방 끝났다." "하기 전이 더 힘들었다." "오늘도 하길 잘했다."</div>
         <textarea class="form-ta" id="post-note" rows="3" placeholder='"내가 또 해냈네."'>${formData.post_note||''}</textarea>
       </div>
@@ -455,9 +481,20 @@ function setWorkout(v){
   const detail = document.getElementById('workout-detail');
   if(detail) detail.style.opacity = v?'1':'.4';
 }
-function setEmoji(e){
-  formData.post_feeling=e;
-  document.querySelectorAll('.emoji-btn').forEach(b=>b.classList.toggle('on',b.textContent===e));
+function setPreFeel(v, el){
+  formData.pre_feeling = v;
+  document.querySelectorAll('#pre-feel-row .feel-btn').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+}
+function setPostFeel(v, el){
+  formData.post_feeling = v;
+  document.querySelectorAll('#post-feel-row .feel-btn').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+}
+function setCompare(v, el){
+  formData.post_comparison = v;
+  document.querySelectorAll('.toggle-btn3').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
 }
 
 function nextStep1(){
@@ -487,6 +524,8 @@ async function submitCheckin(){
     checkin_date: today(),
     day_number: dayNum,
     pre_motivation: formData.pre_motivation||null,
+    pre_feeling: formData.pre_feeling||null,
+    post_comparison: formData.post_comparison||null,
     pre_condition: formData.pre_condition||null,
     pre_goal: formData.pre_goal||null,
     workout_done: formData.workout_done||false,
