@@ -92,10 +92,10 @@ input,textarea{font-family:var(--font)}
 
 /* Stars */
 .stars{display:flex;gap:8px;margin-bottom:8px}
-.star-btn{font-size:28px;opacity:.3;transition:opacity .15s,transform .15s var(--spring);background:none;border:none;cursor:pointer}
-.star-btn.on{opacity:1}
-.star-btn:hover{transform:scale(1.15)}
-
+.star-box{position:relative;display:inline-block;width:44px;height:44px}
+.star-left,.star-right{position:absolute;top:0;height:100%;width:50%;border:none;background:transparent;cursor:pointer;z-index:2;padding:0}
+.star-left{left:0}.star-right{right:0}
+.star-glyph{font-size:34px;pointer-events:none;line-height:44px;display:block;text-align:center}
 /* Emoji pick */
 .emoji-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
 .feel-btn{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 8px;border:1.5px solid var(--bd);border-radius:14px;background:var(--bg);cursor:pointer;transition:all .18s;min-width:72px;flex:1}
@@ -527,7 +527,11 @@ function setMotiv(v, el){
 }
 function starsHtml(){
   var v=formData.pre_condition||0,s='';
-  for(var i=1;i<=5;i++) s+='<button class="star-btn'+(v>=i?' on':'')+'" onclick="setStar('+i+')">★</button>';
+  for(var i=1;i<=5;i++){
+    var full=v>=i,half=!full&&v>=i-0.5;
+    var st=full?'color:#9B7BFF':half?'background:linear-gradient(to right,#9B7BFF 50%,#D8D8D8 50%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:inline-block':'color:#D8D8D8';
+    s+='<span class="star-box"><button class="star-left" onclick="setStar('+(i-0.5)+')"></button><button class="star-right" onclick="setStar('+i+')"></button><span class="star-glyph" style="'+st+'">★</span></span>';
+  }
   return s;
 }
 function setStar(n){
