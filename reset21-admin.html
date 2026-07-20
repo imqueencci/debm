@@ -328,7 +328,15 @@ async function openDetail(memberId){
   currentMemberId = memberId;
   const m = allMembers.find(x=>x.id===memberId);
   $('modal-name').textContent = m.name;
-  $('modal-meta').innerHTML = `연락처: ${m.phone||'없음'} · 주 ${m.frequency}회 · 시작일: ${m.start_date}<br>접근 코드: <strong>${m.access_code}</strong>`;
+  const memberLink = `https://imqueencci.github.io/debm/reset21.html?code=${m.access_code}`;
+$('modal-meta').innerHTML = `
+  연락처: ${m.phone||'없음'} · 주 ${m.frequency}회 · 시작일: ${m.start_date}<br><br>
+  <strong style="color:var(--navy)">회원 링크</strong><br>
+  <div style="display:flex;gap:8px;align-items:center;margin-top:6px">
+    <code style="font-size:12px;background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:6px 10px;flex:1;word-break:break-all">${memberLink}</code>
+    <button onclick="copyLink('${memberLink}')" style="flex-shrink:0;padding:6px 14px;background:var(--lav2);color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer">복사</button>
+  </div>
+  <div style="font-size:12px;color:var(--tx2);margin-top:6px">접근 코드: <strong>${m.access_code}</strong></div>`;
   $('modal-notes').value = m.notes||'';
 
   const {data} = await db.from('checkins').select('*').eq('member_id',memberId).order('checkin_date',{ascending:false});
@@ -445,6 +453,13 @@ function calcStats(data) {
   return {total,done,pct,starStr,top3,feelings,last7,notes,moments};
 }
 
+function copyLink(url){
+  navigator.clipboard.writeText(url).then(()=>{
+    alert('링크가 복사됐어요! 회원에게 보내주세요 ✓');
+  }).catch(()=>{
+    prompt('아래 링크를 복사하세요:', url);
+  });
+}
 async function saveNotes(){
   const notes = $('modal-notes').value;
   await db.from('members').update({notes}).eq('id',currentMemberId);

@@ -545,8 +545,14 @@ async function submitCheckin(){
   showScreen('complete-screen');
 }
 
-// 자동 로그인
-autoLogin();
+// URL 파라미터 자동 로그인
+const urlCode = new URLSearchParams(location.search).get('code');
+if(urlCode){
+  $('code-input').value = urlCode.toUpperCase();
+  doLogin();
+} else {
+  autoLogin();
+}
 </script>
 </body>
 </html>
