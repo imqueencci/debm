@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>RESET21 | FIT-TI</title>
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
+<style>
+:root{--lav:#C8B6FF;--lav2:#9B7BFF;--lav3:#7358FF;--lav-s:#F0EBFF;--lav-m:#E0D4FF;--navy:#1E2B4F;--bg:#F8F6FF;--card:#FFF;--tx:#1F2430;--tx2:#6B7280;--font:"Pretendard",-apple-system,sans-serif}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--tx);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{text-decoration:none;color:inherit}ul{list-style:none}
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;transition:background .3s}
+.nav.sc{background:rgba(248,246,255,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--lav-m)}
+.logo{font-size:17px;font-weight:900;color:var(--navy);letter-spacing:-.04em}.logo em{font-style:normal;color:var(--lav2)}
+.nav-btn{font-size:13px;font-weight:700;color:#fff;background:var(--lav2);padding:9px 18px;border-radius:999px;display:inline-block}
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:100px 24px 80px;background:var(--navy);text-align:center;position:relative;overflow:hidden}
+.hero:before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(200,182,255,.2) 0%,transparent 65%);pointer-events:none}
+.hi{position:relative;max-width:560px;margin:0 auto}
+.h-tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(200,182,255,.7);border:1px solid rgba(200,182,255,.25);border-radius:999px;padding:6px 16px;margin-bottom:28px}
+.h-copy{font-size:clamp(22px,5.5vw,36px);font-weight:900;letter-spacing:-.04em;line-height:1.35;color:#fff;margin-bottom:14px}
+.h-copy em{font-style:normal;color:var(--lav)}
+.h-sub{font-size:17px;color:rgba(255,255,255,.5);margin-bottom:6px}
+.h-sig{font-size:14px;color:rgba(200,182,255,.4);font-weight:600;letter-spacing:.04em;margin-bottom:44px}
+.btn-h{display:inline-block;background:var(--lav);color:var(--navy);font-size:16px;font-weight:800;padding:16px 36px;border-radius:999px;box-shadow:0 12px 40px rgba(200,182,255,.3)}
+.h-bdg{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:22px}
+.h-bdg span{font-size:12px;font-weight:600;color:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:6px 14px}
+/* SECTIONS */
+.sec{padding:80px 24px}.sw{background:var(--card)}.sb{background:var(--bg)}.sd{background:var(--navy)}
+.si{max-width:600px;margin:0 auto}
+.eye{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--lav2);display:block;margin-bottom:12px;text-align:center}
+.eye-d{color:rgba(200,182,255,.6)}
+.stitle{font-size:clamp(24px,5.5vw,34px);font-weight:900;letter-spacing:-.04em;line-height:1.25;color:var(--navy);margin-bottom:14px;text-align:center}
+.stitle em{font-style:normal;color:var(--lav2)}.stitle-w{color:#fff}
+.sdesc{font-size:15px;color:var(--tx2);line-height:1.8;text-align:center}
+/* TARGET */
+.t-list{display:flex;flex-direction:column;gap:10px;margin-top:32px}
+.t-item{display:flex;align-items:center;gap:14px;background:var(--bg);border:1.5px solid var(--lav-m);border-radius:18px;padding:16px 18px}
+.t-icon{font-size:20px;flex-shrink:0}.t-text{font-size:15px;color:var(--tx);font-weight:500;line-height:1.5}
+/* HOW */
+.how{display:flex;flex-direction:column;gap:0;margin-top:32px;position:relative}
+.how:before{content:"";position:absolute;left:20px;top:20px;bottom:20px;width:2px;background:linear-gradient(to bottom,var(--lav2),var(--lav-m))}
+.how-i{display:flex;gap:16px;align-items:flex-start;padding-bottom:28px;position:relative}
+.how-dot{width:40px;height:40px;border-radius:50%;background:var(--lav2);color:#fff;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;z-index:1;position:relative}
+.how-lb{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--lav2);margin-bottom:4px}
+.how-t{font-size:17px;font-weight:800;color:var(--navy);margin-bottom:4px}
+.how-d{font-size:14px;color:var(--tx2);line-height:1.65}
+/* INCLUDES */
+.inc{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:32px}
+.ic{background:var(--bg);border:1.5px solid var(--lav-m);border-radius:20px;padding:18px}
+.ic-icon{font-size:24px;margin-bottom:8px}.ic-name{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:4px}.ic-desc{font-size:13px;color:var(--tx2);line-height:1.6}
+/* PAYBACK */
+.pb{background:linear-gradient(135deg,var(--lav2),var(--lav3));border-radius:28px;padding:32px 24px;margin-top:32px;text-align:center}
+.pb-amt{font-size:48px;font-weight:900;color:#fff;letter-spacing:-.04em;margin:8px 0}
+.pb-lb{font-size:13px;font-weight:600;color:rgba(255,255,255,.7);margin-bottom:14px}
+.pb-cond{font-size:14px;color:#fff;font-weight:600;background:rgba(255,255,255,.15);border-radius:12px;padding:10px 16px;display:inline-block}
+/* PRICE */
+.pm{background:var(--card);border:2px solid var(--lav2);border-radius:28px;padding:28px 22px;margin-bottom:12px;text-align:center;box-shadow:0 12px 40px rgba(155,123,255,.12)}
+.pm-tag{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--lav2);background:var(--lav-s);border-radius:999px;padding:5px 14px;display:inline-block;margin-bottom:14px}
+.pm-name{font-size:20px;font-weight:900;color:var(--navy);margin-bottom:6px}
+.pm-amt{font-size:38px;font-weight:900;color:var(--navy);letter-spacing:-.04em}
+.pm-pb{font-size:13px;color:var(--lav2);font-weight:600;margin-top:8px}
+.pm-list{display:flex;flex-direction:column;gap:8px;margin-top:18px;text-align:left}
+.pm-list li{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--tx)}.pm-list li:before{content:"✓";color:var(--lav2);font-weight:800;flex-shrink:0}
+.pn{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.pc{background:var(--bg);border:1.5px solid rgba(0,0,0,.07);border-radius:20px;padding:18px;text-align:center}
+.pc-tag{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--tx2);margin-bottom:8px}
+.pc-name{font-size:14px;font-weight:800;color:var(--navy);margin-bottom:4px}
+.pc-amt{font-size:18px;font-weight:900;color:var(--lav2)}.pc-sub{font-size:12px;color:var(--tx2);margin-top:4px;line-height:1.5}
+/* FAQ */
+.fq{display:flex;flex-direction:column;gap:10px;margin-top:32px}
+.fq-i{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:16px;overflow:hidden}
+.fq-q{width:100%;display:flex;justify-content:space-between;align-items:center;padding:16px 18px;font-size:15px;font-weight:600;color:#fff;text-align:left;cursor:pointer;gap:14px;border:none;background:none;font-family:var(--font)}
+.fq-ic{font-size:18px;color:var(--lav);transition:transform .3s;flex-shrink:0}.fq-i.open .fq-ic{transform:rotate(45deg)}
+.fq-a{max-height:0;overflow:hidden;transition:max-height .4s,padding .3s;font-size:14px;color:rgba(255,255,255,.6);line-height:1.8;padding:0 18px}.fq-i.open .fq-a{max-height:200px;padding:0 18px 16px}
+/* CTA */
+.cta{padding:80px 24px;text-align:center}.cta-in{max-width:520px;margin:0 auto}
+.btn-ap{display:block;width:100%;max-width:420px;margin:0 auto;padding:18px;text-align:center;background:linear-gradient(135deg,var(--lav2),var(--lav3));color:#fff;font-size:17px;font-weight:800;border-radius:999px;box-shadow:0 10px 36px rgba(115,88,255,.3)}
+.cta-note{font-size:13px;color:var(--tx2);margin-top:14px;line-height:1.7}
+footer{background:var(--navy);padding:28px 24px;text-align:center}
+.ft-logo{font-size:16px;font-weight:700;color:rgba(255,255,255,.5);margin-bottom:6px}.ft-logo em{font-style:normal;color:var(--lav)}
+.ft-copy{font-size:12px;color:rgba(255,255,255,.2)}
+[da]{opacity:0;transform:translateY(20px);transition:opacity .6s,transform .6s}[da].in{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+<nav class="nav" id="nav">
+  <a href="index.html" class="logo">FIT<em>-TI</em></a>
+  <a href="https://open.kakao.com/o/sIL9syDi" target="_blank" class="nav-btn">신청하기</a>
+</nav>
+
+<section class="hero">
+  <div class="hi">
+    <div class="h-tag" da>FIT-TI RESET21</div>
+    <h1 class="h-copy" da="1">
+      사람은 한 번의 결심으로<br>변하지 않습니다.<br>반복된 선택이 <em>나를 바꿉니다.</em>
+    </h1>
+    <p class="h-sub" da="2">21일, 나를 다시 설계하는 시간.</p>
+    <p class="h-sig" da="2">— RESET21</p>
+    <a href="https://open.kakao.com/o/sIL9syDi" target="_blank" class="btn-h" da="3">지금 신청하기</a>
+    <div class="h-bdg" da="3">
+      <span>21일 프로그램</span><span>매일 기록</span><span>줌 미팅 포함</span><span>5만원 페이백</span>
+    </div>
+  </div>
+</section>
+
+<section class="sec sw">
+  <div class="si">
+    <span class="eye" da>이런 분들을 위해</span>
+    <h2 class="stitle" da="1">혹시 이 생각<br><em>해본 적 있으신가요?</em></h2>
+    <div class="t-list">
+      <div class="t-item" da><span class="t-icon">🔥</span><span class="t-text">"이번 주 월요일부터 진짜 제대로 하려고 했는데..."</span></div>
+      <div class="t-item" da="1"><span class="t-icon">🌊</span><span class="t-text">"아 몰라, 언젠가 마음 먹으면 잘 할 거야."</span></div>
+      <div class="t-item" da="2"><span class="t-icon">🎂</span><span class="t-text">"이런 날은 먹어도 돼. 오늘만 보상할게."</span></div>
+      <div class="t-item" da="3"><span class="t-icon">📊</span><span class="t-text">"어제 덜 먹었는데 왜 쪘지??????"</span></div>
+      <div class="t-item" da="3"><span class="t-icon">🏃</span><span class="t-text">"하루 쉬면 다 망하는 거 아니야?"</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec sb">
+  <div class="si">
+    <span class="eye" da>RESET21 이란</span>
+    <h2 class="stitle" da="1">운동을 배우는 게 아니라<br><em>나를 이해하는 21일</em></h2>
+    <p class="sdesc" da="2">FIT-TI는 운동법을 가르치지 않아요.<br>왜 항상 같은 지점에서 멈추는지,<br>그 반복된 선택의 패턴을 함께 들여다봐요.</p>
+    <div class="how">
+      <div class="how-i" da><div class="how-dot">1</div><div><div class="how-lb">매일</div><div class="how-t">기록하기</div><div class="how-d">식사 감정, 운동 전후 상태, 흔들린 순간, 나에게 한마디. 21일 동안 나를 관찰해요.</div></div></div>
+      <div class="how-i" da="1"><div class="how-dot">2</div><div><div class="how-lb">매주</div><div class="how-t">줌 미팅 15분</div><div class="how-d">이번 주 내 패턴을 여왕쌤과 1:1로 확인해요. 혼자였으면 몰랐을 것들이 보여요.</div></div></div>
+      <div class="how-i" da="2"><div class="how-dot">3</div><div><div class="how-lb">21일 완료</div><div class="how-t">나의 패턴 리포트</div><div class="how-d">21일 데이터로 어떤 상황에서 흔들렸는지, 어떤 선택을 반복했는지 확인해요.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec sw">
+  <div class="si">
+    <span class="eye" da>포함 내용</span>
+    <h2 class="stitle" da="1">RESET21에<br><em>포함된 것들</em></h2>
+    <div class="inc" da="2">
+      <div class="ic"><div class="ic-icon">🎬</div><div class="ic-name">멤버 전용 운동 영상</div><div class="ic-desc">유튜브 비공개 영상. 내 페이스대로.</div></div>
+      <div class="ic"><div class="ic-icon">📝</div><div class="ic-name">매일 체크인</div><div class="ic-desc">식단·운동·멘탈 기록. 21일 데이터.</div></div>
+      <div class="ic"><div class="ic-icon">💻</div><div class="ic-name">개인 줌 미팅</div><div class="ic-desc">주 1회 15분. 여왕쌤과 1:1 패턴 확인.</div></div>
+      <div class="ic"><div class="ic-icon">🍽️</div><div class="ic-name">식단 관리</div><div class="ic-desc">먹는 것과 감정의 관계를 들여다봐요.</div></div>
+      <div class="ic"><div class="ic-icon">🧠</div><div class="ic-name">멘탈 케어</div><div class="ic-desc">흔들리는 순간의 패턴을 재설계해요.</div></div>
+      <div class="ic"><div class="ic-icon">📊</div><div class="ic-name">완료 리포트</div><div class="ic-desc">21일 행동 데이터 기반 개인 분석.</div></div>
+    </div>
+    <div class="pb" da>
+      <div class="eye" style="color:rgba(255,255,255,.6);margin-bottom:6px">전일 완료 혜택</div>
+      <div class="pb-amt">₩50,000</div>
+      <div class="pb-lb">페이백</div>
+      <div class="pb-cond">21일 전일 기록 완료 시 환급</div>
+    </div>
+  </div>
+</section>
+
+<section class="sec sb">
+  <div class="si">
+    <span class="eye" da>가격</span>
+    <h2 class="stitle" da="1">투명한 가격</h2>
+    <div da="2">
+      <div class="pm">
+        <span class="pm-tag">RESET21</span>
+        <div class="pm-name">21일 행동 리디자인</div>
+        <div class="pm-amt">₩189,000</div>
+        <div class="pm-pb">전일 완료 시 ₩50,000 페이백 → 실질 ₩139,000</div>
+        <ul class="pm-list">
+          <li>멤버 전용 유튜브 운동 영상</li>
+          <li>매일 체크인 기록 시스템</li>
+          <li>개인 줌 미팅 주 1회 (15분)</li>
+          <li>식단 + 멘탈 케어</li>
+          <li>21일 완료 행동 패턴 리포트</li>
+        </ul>
+      </div>
+      <div class="pn">
+        <div class="pc">
+          <div class="pc-tag">이수 후 선택 A</div>
+          <div class="pc-name">구독 멤버십</div>
+          <div class="pc-amt">₩49,900<small style="font-size:12px;color:var(--tx2)">/월</small></div>
+          <div class="pc-sub">심화 영상 · 월간 리포트<br>기수 커뮤니티</div>
+        </div>
+        <div class="pc">
+          <div class="pc-tag">이수 후 선택 B</div>
+          <div class="pc-name">1:1 프리미엄 PT</div>
+          <div class="pc-amt">₩2,160,000</div>
+          <div class="pc-sub">24회 한정<br>PT+식단+멘탈<br>이수자만 신청 가능</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec sd">
+  <div class="si">
+    <span class="eye eye-d" da>FAQ</span>
+    <h2 class="stitle stitle-w" da="1">자주 묻는 질문</h2>
+    <div class="fq" da="2">
+      <div class="fq-i"><button class="fq-q" onclick="fq(this)">운동을 거의 안 해봤는데 괜찮을까요?<span class="fq-ic">+</span></button><div class="fq-a">RESET21은 운동 실력과 관계없어요. 운동을 못 하는 게 아니라 내 패턴을 아직 모르는 것뿐이에요.</div></div>
+      <div class="fq-i"><button class="fq-q" onclick="fq(this)">21일 동안 매일 해야 하나요?<span class="fq-ic">+</span></button><div class="fq-a">네. 매일 기록이 핵심이에요. 페이백도 21일 전일 완료 시에만 드려요.</div></div>
+      <div class="fq-i"><button class="fq-q" onclick="fq(this)">줌 미팅은 어떻게 진행되나요?<span class="fq-ic">+</span></button><div class="fq-a">주 1회 15분, 여왕쌤과 1:1로 이번 주 기록 데이터를 함께 보면서 패턴을 확인해요.</div></div>
+      <div class="fq-i"><button class="fq-q" onclick="fq(this)">21일 이후에는 어떻게 되나요?<span class="fq-ic">+</span></button><div class="fq-a">구독 멤버십(월 49,900원)으로 이어가거나 1:1 PT로 넘어갈 수 있어요. 21일 후에 선택해요.</div></div>
+      <div class="fq-i"><button class="fq-q" onclick="fq(this)">신청은 어떻게 하나요?<span class="fq-ic">+</span></button><div class="fq-a">카카오 오픈채팅으로 신청받고 있어요. 아래 버튼을 눌러주시면 일정과 결제 안내를 드려요.</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="cta sb">
+  <div class="cta-in">
+    <span class="eye" da>지금 시작하기</span>
+    <h2 class="stitle" da="1" style="margin-bottom:32px">반복된 선택이<br><em>나를 바꿉니다.</em></h2>
+    <a href="https://open.kakao.com/o/sIL9syDi" target="_blank" class="btn-ap" da="2">RESET21 신청하기</a>
+    <p class="cta-note" da="2">카카오 오픈채팅으로 연결돼요.<br>신청 후 일정과 결제 안내를 드려요.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="ft-logo">FIT<em>-TI</em> RESET21</div>
+  <p class="ft-copy">2026 FIT-TI. All rights reserved.</p>
+</footer>
+
+<script>
+window.addEventListener("scroll",()=>{document.getElementById("nav").classList.toggle("sc",scrollY>30)},{passive:true});
+function fq(b){const i=b.closest(".fq-i"),o=i.classList.contains("open");document.querySelectorAll(".fq-i.open").forEach(e=>e.classList.remove("open"));if(!o)i.classList.add("open");}
+const io=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add("in")})},{threshold:.12});
+document.querySelectorAll("[da]").forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
