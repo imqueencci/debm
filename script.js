@@ -138,81 +138,93 @@ function showResult() {
 function renderResult(R) {
   const el = $('result-screen');
   el.innerHTML = `
+
+    <!-- 상단 플로팅 버튼 -->
+    <div class="r-float-wrap" id="r-float">
+      <a href="payment.html" class="r-float-btn">끝까지 분석하기 ✦</a>
+    </div>
+
     <nav class="r-nav">
       <span class="r-nav-logo">FIT<em>-TI</em></span>
-      <button class="r-nav-retry" onclick="location.reload()">다시 검사하기</button>
+      <button class="r-nav-retry" onclick="location.reload()">다시 검사</button>
     </nav>
 
     <!-- 히어로 -->
     <section class="r-hero">
       <div class="r-hero-inner">
-        <span class="r-tag">FIT-TI RESULT</span>
+        <div class="r-tag-row">
+          <span class="r-result-tag">FIT-TI RESULT</span>
+        </div>
         <div class="r-icon-big">${R.icon}</div>
         <h1 class="r-name">${R.name}</h1>
-        <div class="r-quote-box">
+        <div class="r-bubble">
+          <span class="r-bubble-arrow"></span>
           <p class="r-quote">${R.quote}</p>
         </div>
       </div>
     </section>
 
-    <!-- 내용 카드들 -->
+    <!-- 인식 카드 -->
     <section class="r-content">
       <div class="r-inner">
 
-        <div class="r-card r-card--lines">
-          <div class="r-card-tag">이런 모습, 익숙하지 않아요?</div>
-          ${R.lines.map(line => `
-            <div class="r-line-item">
-              <span class="r-dot">💜</span>
-              <span>${line.replace(/\n/g,'<br>').replace(/\\n/g,'<br>')}</span>
-            </div>
-          `).join('')}
+        <div class="r-section-label">이런 거, 익숙하지 않아요?</div>
+        <div class="r-lines-card">
+          ${R.lines.map((line,i) => `
+            <div class="r-line-item" style="animation-delay:${i*0.06}s">
+              <span class="r-check">💜</span>
+              <span class="r-line-text">${line.replace(/\n/g,'<br>').replace(/\\n/g,'<br>')}</span>
+            </div>`).join('')}
         </div>
 
-        <div class="r-card r-card--summary">
-          <div class="r-card-tag">한 줄 요약</div>
-          <p class="r-summary">${R.summary.replace(/\n/g,'<br>')}</p>
+        <div class="r-summary-card">
+          <div class="r-summary-eye">한 줄 요약</div>
+          <p class="r-summary-text">${R.summary.replace(/\n/g,'<br>').replace(/\\n/g,'<br>')}</p>
         </div>
 
-        <div class="r-card r-card--why">
-          <div class="r-card-tag">💌 FIT-TI가 드리는 말</div>
-          <p class="r-why-text">이건 의지의 문제가 아니에요.<br>
+        <div class="r-dark-card">
+          <div class="r-dark-eye">💌 FIT-TI가 드리는 말</div>
+          <p class="r-dark-body">이건 의지의 문제가 아니에요.<br>
           당신만의 반복되는 패턴이 있을 뿐이에요.<br><br>
           FIT-TI 심층 분석에서는<br>
           이 패턴이 왜 생겼는지,<br>
           어떻게 바꿀 수 있는지를<br>
           끝까지 들여다봅니다.</p>
-          <div class="r-why-blur"></div>
+          <div class="r-dark-fade"></div>
         </div>
 
       </div>
     </section>
 
     <!-- 업셀 -->
-    <section class="r-upsell">
+    <section class="r-sell">
       <div class="r-inner">
-        <p class="r-up-eye">여기까지가 무료 분석이에요.</p>
-        <h2 class="r-up-title">
+        <p class="r-sell-eye">여기까지가 무료 분석이에요.</p>
+        <h2 class="r-sell-title">
           왜 나는 항상<br>
-          <span class="r-up-hl">같은 선택을 반복할까요?</span>
+          <span class="r-sell-hl">같은 선택을 반복할까?</span>
         </h2>
-        <ul class="r-up-list">
+        <ul class="r-sell-list">
           <li>왜 항상 같은 상황에서 흔들리는가</li>
           <li>무엇이 운동보다 항상 우선되는가</li>
           <li>어떤 말로 나 자신을 설득하는가</li>
-          <li>왜 하루가 일주일이 되는가</li>
           <li>왜 시작은 쉬운데 유지가 어려운가</li>
           <li>어떤 방식으로 습관을 바꿔야 오래가는가</li>
         </ul>
-        <a href="payment.html" class="r-up-btn">내 행동패턴 끝까지 분석하기 →</a>
-        <a href="http://pf.kakao.com/_xdIpXX" target="_blank" class="r-kakao-btn">💬 카카오로 직접 연결하기</a>
+        <a href="payment.html" class="r-sell-btn">내 행동패턴 끝까지 분석하기 →</a>
+        <a href="http://pf.kakao.com/_xdIpXX" target="_blank" class="r-kakao-btn2">💬 카카오로 연결하기</a>
       </div>
     </section>`;
 
-  setTimeout(() => {
-    $$('.r-line-item, .r-card').forEach(el => el.classList.add('visible'));
-  }, 50);
+  // 스크롤 시 플로팅 버튼 표시
+  const floatEl = document.getElementById('r-float');
+  const onScroll = () => {
+    if(window.scrollY > 280) floatEl.classList.add('show');
+    else floatEl.classList.remove('show');
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
 }
+
 
 
 // ── KEYBOARD SUPPORT ──────────────────────────────────────
