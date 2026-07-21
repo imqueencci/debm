@@ -164,16 +164,14 @@ function renderResult(R) {
           ${R.lines.map(line => `
             <div class="r-line-item">
               <span class="r-dot">💜</span>
-              <span>${line.replace(/
-/g,'<br>')}</span>
+              <span>${line.replace(/\n/g,'<br>').replace(/\\n/g,'<br>')}</span>
             </div>
           `).join('')}
         </div>
 
         <div class="r-card r-card--summary">
           <div class="r-card-tag">한 줄 요약</div>
-          <p class="r-summary">${R.summary.replace(/
-/g,'<br>')}</p>
+          <p class="r-summary">${R.summary.replace(/\n/g,'<br>')}</p>
         </div>
 
         <div class="r-card r-card--why">
