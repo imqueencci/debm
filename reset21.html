@@ -98,6 +98,14 @@ input,textarea{font-family:var(--font)}
 .star-glyph{font-size:34px;pointer-events:none;line-height:44px;display:block;text-align:center}
 /* Emoji pick */
 .emoji-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.meal-row{display:flex;gap:8px;margin-top:6px;flex-wrap:nowrap}
+.meal-btn{display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 6px;border:1.5px solid var(--bd);border-radius:14px;background:var(--bg);cursor:pointer;transition:all .18s;flex:1;min-width:0}
+.meal-emoji{font-size:22px}
+.meal-label{font-size:10px;font-weight:600;color:var(--tx);text-align:center;line-height:1.3}
+.meal-btn.on{border-color:var(--lav2);background:var(--lav-s)}
+.meal-btn.on .meal-label{color:var(--lav2)}
+.form-save-btn{flex:1;height:52px;border:1.5px solid var(--lav-m);border-radius:999px;font-size:14px;font-weight:700;color:var(--lav2);background:var(--lav-s);cursor:pointer;transition:background .2s}
+.form-save-btn:hover{background:var(--lav-m)}
 .feel-btn{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 8px;border:1.5px solid var(--bd);border-radius:14px;background:var(--bg);cursor:pointer;transition:all .18s;min-width:72px;flex:1}
 .feel-btn:hover{border-color:var(--lav2);background:var(--lav-s)}
 .feel-btn.on{border-color:var(--lav2);background:var(--lav-s)}
@@ -373,7 +381,9 @@ function renderDash(){
   $('day-greeting').textContent = `${member.name}님, 오늘도 함께해요 💜`;
 
   // 오늘 체크인 여부
-  const todayDone = checkins.some(c=>c.checkin_date===today());
+  const todayCheckin=checkins.find(c=>c.checkin_date===today());
+  const todayDone=todayCheckin?.checkin_complete===true;
+  const todayPartial=todayCheckin&&!todayDone;
   const card = $('today-status-card');
   const btn = $('status-btn');
   if(todayDone){
@@ -382,6 +392,12 @@ function renderDash(){
     $('status-title').textContent='오늘 기록 완료';
     $('status-sub').textContent='오늘의 체크인을 마쳤어요';
     btn.textContent='수정'; btn.style.background='#aaa';
+  } else if(todayPartial){
+    card.style.borderColor='#FFC857';
+    $('status-icon').textContent='📝';
+    $('status-title').textContent='오늘 기록 진행 중';
+    $('status-sub').textContent='운동 끝나고 이어서 기록해요';
+    btn.textContent='이어서 기록하기'; btn.style.background='';
   } else {
     card.classList.remove('done');
     $('status-icon').textContent='📝';
@@ -423,17 +439,27 @@ function renderForm(){
   $('step-label').textContent = labels[formStep-1];
 
   const c = $('form-content');
-  const motivations = [
-    '오늘은 약속한 날이라서',
-    '조금이라도 하면 된다고 생각해서',
-    '어제 많이 먹어서',
-    '몸이 찌뿌둥해서',
-    '그냥 해보기로 했어요',
-    '기타'
-  ];
+  const motivations = ['오늘은 약속한 날이라서','조금이라도 하면 된다고 생각해서','어제 많이 먹어서','몸이 찌뿌둥해서','그냥 해보기로 했어요','기타'];
+  const skipReasons = ['몸이 안 좋아서','너무 피곤해서','시간이 없어서','하기 싫어서','계획된 쉬는 날이에요','기타'];
+  const mealFeelings = [['🥰','행복'],['😌','만족'],['😐','그냥'],['😅','조금만
+먹을걸'],['😩','먹지
+말걸']];
+
   if(formStep===1) c.innerHTML=`
     <div class="form-section">
-      <div class="form-section-title"><span>🌅</span>${titles[0]}</div>
+      <div class="form-section-title"><span>🍽️</span>식사 기록</div>
+      <div class="form-q">오늘 식사 후 느낌은?</div>
+      <div class="meal-row" id="meal-row">
+        ${mealFeelings.map(([e,l])=>`
+          <button class="meal-btn ${formData.meal_feeling===l?'on':''}" onclick="setMeal('${l}',this)">
+            <span class="meal-emoji">${e}</span>
+            <span class="meal-label">${l.replace('\n','<br>')}</span>
+          </button>`).join('')}
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-title"><span>🌅</span>운동 전 체크</div>
 
       <div class="form-q">오늘 운동을 시작할 수 있게 한 생각은?</div>
       <div class="form-sub">가장 가까운 것을 선택해주세요.</div>
@@ -445,9 +471,7 @@ function renderForm(){
       </div>
 
       <div class="form-q" style="margin-top:20px">오늘 컨디션은 어때요?</div>
-      <div class="stars" id="stars">
-        ${starsHtml()}
-      </div>
+      <div class="stars" id="stars">${starsHtml()}</div>
 
       <div class="form-q" style="margin-top:18px">오늘 목표 한 가지</div>
       <div class="form-sub">작아도 괜찮아요. 구체적일수록 좋아요.</div>
@@ -455,11 +479,25 @@ function renderForm(){
 
       <div class="form-q" style="margin-top:18px">오늘 운동할 건가요?</div>
       <div class="toggle-row">
-        <button class="toggle-btn ${formData.workout_plan==='yes'?'on':''}" onclick="setToggle('yes')">✅ 할 거예요</button>
-        <button class="toggle-btn ${formData.workout_plan==='rest'?'on':''}" onclick="setToggle('rest')">💤 오늘은 쉬는 날</button>
+        <button class="toggle-btn ${formData.workout_plan==='yes'?'on':''}" onclick="setWorkoutPlan('yes')">✅ 할 거예요</button>
+        <button class="toggle-btn ${formData.workout_plan==='skip'?'on':''}" onclick="setWorkoutPlan('skip')">❌ 안 할 거예요</button>
+      </div>
+
+      <div id="skip-box" style="display:${formData.workout_plan==='skip'?'block':'none'};margin-top:16px">
+        <div class="form-q">오늘 안 하는 이유는?</div>
+        <div class="radio-list" id="skip-list">
+          ${skipReasons.map(r=>`<button class="radio-btn ${formData.skip_reason===r?'on':''}" onclick="setSkip('${r}',this)">${r}</button>`).join('')}
+        </div>
+        <div id="skip-kita-box" style="display:${formData.skip_reason==='기타'?'block':'none'};margin-top:8px">
+          <input class="kita-input" id="skip-kita-input" type="text" placeholder="직접 입력해주세요" value="${formData.skip_kita||''}">
+        </div>
       </div>
     </div>
-    <button class="form-next" onclick="nextStep1()">다음 →</button>`;
+
+    <div style="display:flex;gap:10px;margin-top:8px">
+      <button class="form-save-btn" onclick="saveAndExit()">💾 저장하고 나중에</button>
+      <button class="form-next" style="flex:2" onclick="nextStep1()">다음 →</button>
+    </div>`;
 
   else if(formStep===2) c.innerHTML=`
     <div class="form-section">
@@ -492,6 +530,10 @@ function renderForm(){
           ${[['쉬웠어요','생각보다 쉬웠어요'],['같았어요','생각한 만큼이었어요'],['힘들었어요','생각보다 힘들었어요']].map(([s,l])=>`
             <button class="toggle-btn3 ${formData.post_comparison===l?'on':''}" onclick="setCompare('${l}',this)">${s}</button>`).join('')}
         </div>
+        <div class="form-q" style="margin-top:20px">오늘 식사가 운동에 영향을 줬나요?</div>
+        <div class="radio-list" id="meal-impact-list">
+          ${[['많이 먹어서 더 하고 싶었어요'],['먹은 게 없어서 힘이 없었어요'],['딱 적당했어요'],['관계없었어요']].map(([txt])=>`<button class="radio-btn ${formData.meal_impact===txt?'on':''}" onclick="setMealImpact('${txt}',this)">${txt}</button>`).join('')}
+        </div>
         <div class="form-q" style="margin-top:20px">운동하고 가장 먼저 든 생각은?</div>
         <div class="form-sub">예) "생각보다 금방 끝났다." "하기 전이 더 힘들었다." "오늘도 하길 잘했다."</div>
         <textarea class="form-ta" id="post-note" rows="3" placeholder='"내가 또 해냈네."'>${formData.post_note||''}</textarea>
@@ -518,6 +560,43 @@ function renderForm(){
     <button class="form-next" onclick="submitCheckin()">기록 완료 ✓</button>`;
 }
 
+function setMeal(v, el){
+  formData.meal_feeling=v;
+  document.querySelectorAll('.meal-btn').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+}
+function setWorkoutPlan(v){
+  formData.workout_plan=v;
+  document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('on'));
+  event.target.classList.add('on');
+  const sb=document.getElementById('skip-box');
+  if(sb) sb.style.display=v==='skip'?'block':'none';
+}
+function setSkip(v, el){
+  formData.skip_reason=v;
+  document.querySelectorAll('#skip-list .radio-btn').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+  const kb=document.getElementById('skip-kita-box');
+  if(kb) kb.style.display=v==='기타'?'block':'none';
+}
+function setMealImpact(v, el){
+  formData.meal_impact=v;
+  document.querySelectorAll('#meal-impact-list .radio-btn').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+}
+async function saveAndExit(){
+  const dayNum=Math.min(daysBetween(member.start_date,today())+1,21);
+  formData.pre_goal=$('pre-goal')?.value||'';
+  if(formData.pre_motivation==='기타'){const kv=$('kita-input')?.value?.trim();if(kv)formData.pre_motivation='기타: '+kv;}
+  if(formData.skip_reason==='기타'){const sv=$('skip-kita-input')?.value?.trim();if(sv)formData.skip_reason='기타: '+sv;}
+  const payload={member_id:member.id,checkin_date:today(),day_number:dayNum,
+    meal_feeling:formData.meal_feeling||null,pre_motivation:formData.pre_motivation||null,
+    pre_condition:formData.pre_condition||null,pre_goal:formData.pre_goal||null,
+    workout_plan:formData.workout_plan||null,skip_reason:formData.skip_reason||null,
+    checkin_complete:false};
+  try{await dbUpsert('checkins',payload,'member_id,checkin_date');alert('저장됐어요! 나중에 이어서 기록할 수 있어요 💜');goDash();}
+  catch(e){alert('저장 오류: '+e.message);}
+}
 function setMotiv(v, el){
   formData.pre_motivation = v;
   document.querySelectorAll('.radio-btn').forEach(b=>b.classList.remove('on'));
@@ -568,13 +647,13 @@ function setCompare(v, el){
 }
 
 function nextStep1(){
-  formData.pre_goal = $('pre-goal')?.value||'';
-  if(formData.pre_motivation==='기타'){
-    const kv = $('kita-input')?.value?.trim();
-    if(kv) formData.pre_motivation = '기타: '+kv;
-  }
-  if(!formData.pre_condition){ alert('컨디션을 선택해주세요 ⭐'); return; }
-  formStep=2; renderForm();
+  formData.pre_goal=$('pre-goal')?.value||'';
+  if(formData.pre_motivation==='기타'){const kv=$('kita-input')?.value?.trim();if(kv)formData.pre_motivation='기타: '+kv;}
+  if(formData.skip_reason==='기타'){const sv=$('skip-kita-input')?.value?.trim();if(sv)formData.skip_reason='기타: '+sv;}
+  if(!formData.pre_condition){alert('컨디션을 선택해주세요 ⭐');return;}
+  formData.workout_done=formData.workout_plan==='yes';
+  formStep=formData.workout_plan==='skip'?3:2;
+  renderForm();
 }
 function nextStep2(){
   formData.workout_type = $('workout-type')?.value||'';
@@ -596,7 +675,10 @@ async function submitCheckin(){
     member_id: member.id,
     checkin_date: today(),
     day_number: dayNum,
+    meal_feeling: formData.meal_feeling||null,
     pre_motivation: formData.pre_motivation||null,
+    skip_reason: formData.skip_reason||null,
+    meal_impact: formData.meal_impact||null,
     pre_feeling: formData.pre_feeling||null,
     post_comparison: formData.post_comparison||null,
     pre_condition: formData.pre_condition||null,
@@ -608,7 +690,8 @@ async function submitCheckin(){
     redesign_moment: formData.redesign_moment||null,
     redesign_choice: formData.redesign_choice||null,
     redesign_tomorrow: formData.redesign_tomorrow||null,
-    message_to_self: formData.message_to_self||null
+    message_to_self: formData.message_to_self||null,
+    checkin_complete: true
   };
 
   const submitBtn = document.querySelector('.form-next');
