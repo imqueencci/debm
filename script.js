@@ -137,98 +137,85 @@ function showResult() {
 
 function renderResult(R) {
   const el = $('result-screen');
-
   el.innerHTML = `
     <nav class="r-nav">
-      <span class="r-nav-logo">FIT-TI</span>
+      <span class="r-nav-logo">FIT<em>-TI</em></span>
       <button class="r-nav-retry" onclick="location.reload()">다시 검사하기</button>
     </nav>
 
+    <!-- 히어로 -->
     <section class="r-hero">
-      <div class="r-hero-bg"></div>
       <div class="r-hero-inner">
-        <span class="r-badge">FIT-TI RESULT</span>
-        <div class="r-icon">${R.icon}</div>
+        <span class="r-tag">FIT-TI RESULT</span>
+        <div class="r-icon-big">${R.icon}</div>
         <h1 class="r-name">${R.name}</h1>
-        <p class="r-subtitle">${R.subtitle}</p>
-        <p class="r-desc">${R.description}</p>
+        <div class="r-quote-box">
+          <p class="r-quote">${R.quote}</p>
+        </div>
       </div>
     </section>
 
-    <section class="r-section">
+    <!-- 내용 카드들 -->
+    <section class="r-content">
       <div class="r-inner">
-        <h2 class="r-sec-title">"이런 모습이 익숙하지 않으신가요?"</h2>
-        <div class="r-recs">
-          ${R.recs.map((r,i) => `
-            <div class="r-rec" style="--i:${i}">
-              <span class="r-rec-check">✔</span>
-              <span>${r}</span>
+
+        <div class="r-card r-card--lines">
+          <div class="r-card-tag">이런 모습, 익숙하지 않아요?</div>
+          ${R.lines.map(line => `
+            <div class="r-line-item">
+              <span class="r-dot">💜</span>
+              <span>${line.replace(/
+/g,'<br>')}</span>
             </div>
           `).join('')}
         </div>
-      </div>
-    </section>
 
-    <section class="r-section r-section--dark">
-      <div class="r-inner">
-        <p class="r-loop-label">당신의 결정 루프</p>
-        <div class="r-loop">
-          ${R.loop.map((s,i) => `
-            <div class="r-loop-item" style="--i:${i}">
-              <div class="r-loop-dot"></div>
-              <span class="r-loop-text">${s}</span>
-            </div>
-            ${i < R.loop.length-1 ? '<div class="r-loop-arrow">↓</div>' : ''}
-          `).join('')}
+        <div class="r-card r-card--summary">
+          <div class="r-card-tag">한 줄 요약</div>
+          <p class="r-summary">${R.summary.replace(/
+/g,'<br>')}</p>
         </div>
-      </div>
-    </section>
 
-    <section class="r-section">
-      <div class="r-inner">
-        <div class="r-pat-card">
-          <p class="r-pat-eye">이 패턴의 가장 큰 특징</p>
-          <h3 class="r-pat-title">${R.patTitle}</h3>
-          <p class="r-pat-body">${R.patBody}</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="r-section r-section--dark">
-      <div class="r-inner">
-        <div class="r-why">
-          <p class="r-why-eye">이 패턴이 반복되는 진짜 이유</p>
-          <p class="r-why-text">${R.why}</p>
+        <div class="r-card r-card--why">
+          <div class="r-card-tag">💌 FIT-TI가 드리는 말</div>
+          <p class="r-why-text">이건 의지의 문제가 아니에요.<br>
+          당신만의 반복되는 패턴이 있을 뿐이에요.<br><br>
+          FIT-TI 심층 분석에서는<br>
+          이 패턴이 왜 생겼는지,<br>
+          어떻게 바꿀 수 있는지를<br>
+          끝까지 들여다봅니다.</p>
           <div class="r-why-blur"></div>
         </div>
+
       </div>
     </section>
 
-    <section class="r-section r-upsell">
+    <!-- 업셀 -->
+    <section class="r-upsell">
       <div class="r-inner">
-        <p class="r-up-eye">여기까지가 무료 분석입니다.</p>
-        <h2 class="r-up-title">하지만<br>가장 중요한 질문은<br>아직 남아 있습니다.</h2>
-        <p class="r-up-q">왜 나는 항상<br>같은 선택을 반복할까?</p>
+        <p class="r-up-eye">여기까지가 무료 분석이에요.</p>
+        <h2 class="r-up-title">
+          왜 나는 항상<br>
+          <span class="r-up-hl">같은 선택을 반복할까요?</span>
+        </h2>
         <ul class="r-up-list">
           <li>왜 항상 같은 상황에서 흔들리는가</li>
-          <li>무엇이 운동보다 우선되는가</li>
-          <li>어떤 말로 나를 설득하는가</li>
+          <li>무엇이 운동보다 항상 우선되는가</li>
+          <li>어떤 말로 나 자신을 설득하는가</li>
           <li>왜 하루가 일주일이 되는가</li>
           <li>왜 시작은 쉬운데 유지가 어려운가</li>
           <li>어떤 방식으로 습관을 바꿔야 오래가는가</li>
         </ul>
         <a href="payment.html" class="r-up-btn">내 행동패턴 끝까지 분석하기 →</a>
-        <a href="http://pf.kakao.com/_xdIpXX" target="_blank" class="r-kakao-btn">
-          💬 카카오로 직접 연결하기
-        </a>
+        <a href="http://pf.kakao.com/_xdIpXX" target="_blank" class="r-kakao-btn">💬 카카오로 직접 연결하기</a>
       </div>
     </section>`;
 
-  // 모든 요소 바로 표시 (fixed 컨테이너 IntersectionObserver 호환성 문제 해결)
   setTimeout(() => {
-    $$('.r-rec, .r-loop-item, .r-pat-card, .r-why, .r-upsell').forEach(el => el.classList.add('visible'));
+    $$('.r-line-item, .r-card').forEach(el => el.classList.add('visible'));
   }, 50);
 }
+
 
 // ── KEYBOARD SUPPORT ──────────────────────────────────────
 document.addEventListener('keydown', e => {
