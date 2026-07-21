@@ -371,12 +371,14 @@ body{font-family:var(--font);background:var(--bg);color:var(--tx);-webkit-font-s
 
   <div class="cta-wrap">
     <div class="cta-card au">
-      <span class="cta-eyebrow">1:1 심층 상담</span>
-      <h2 class="cta-title">이 결과지로 왜 안 됐는지를<br>알았다면, 상담으로<br>어떻게 해야 되는지를 알 수 있어요.</h2>
-      <p class="cta-sub">의지보다 패턴을 바로 잡을 때 비로소 달라집니다.</p>
-      <p class="cta-tagline">원하는 내 모습을 내 것으로.</p>
-      <button class="btn-kakao" onclick="goKakao()"><span class="btn-k-main">진짜 원하는 내가 되고 싶다면</span><span class="btn-k-sub">💬 카카오로 1:1 상담 시작하기</span></button>
-      <p class="cta-caption">결과지를 가지고 오세요.<br>패턴을 파악했으니 이제 설계할 차례예요.</p>
+      <span class="cta-eyebrow">다음 단계</span>
+      <h2 class="cta-title">패턴을 알았다면<br>이제 바꿀 차례예요.</h2>
+      <p class="cta-sub">사람은 한 번의 결심으로 변하지 않습니다.<br>반복된 선택이 나를 바꿉니다.</p>
+      <p class="cta-tagline">21일, 나를 다시 설계하는 시간.</p>
+      <button class="btn-kakao" onclick="goReset()"><span class="btn-k-main">RESET21 시작하기</span><span class="btn-k-sub">21일 행동 리디자인 프로그램 →</span></button>
+      <p style="margin:12px 0;color:rgba(255,255,255,.3);font-size:13px">또는</p>
+      <button class="btn-kakao" onclick="goKakao()" style="background:rgba(255,255,255,.1);color:#fff;"><span class="btn-k-main">💬 여왕쌤과 1:1 상담</span><span class="btn-k-sub">카카오 채널로 바로 연결</span></button>
+      <p class="cta-caption">이 결과지를 가지고 오세요.<br>패턴을 파악했으니 이제 함께 설계할 차례예요.</p>
     </div>
   </div>
 
@@ -602,6 +604,7 @@ function showResult(){
 }
 
 function goKakao(){window.open('http://pf.kakao.com/_xdIpXX','_blank');}
+function goReset(){window.location.href='reset21-landing.html';}
 </script>
 </body>
 </html>
