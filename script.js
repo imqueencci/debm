@@ -172,18 +172,18 @@ function renderResult(R) {
         <div class="r-lines-card">
           ${R.lines.map((line,i) => `
             <div class="r-line-item" style="animation-delay:${i*0.06}s">
-              <span class="r-check">💜</span>
+              <span class="r-line-num">${i+1}</span>
               <span class="r-line-text">${line.replace(/\n/g,'<br>').replace(/\\n/g,'<br>')}</span>
             </div>`).join('')}
         </div>
 
         <div class="r-summary-card">
           <div class="r-summary-eye">한 줄 요약</div>
-          <p class="r-summary-text">${R.summary.replace(/\n/g,'<br>').replace(/\\n/g,'<br>')}</p>
+          <p class="r-summary-text">${R.summary.replace(/\n/g,'<br>')}</p>
         </div>
 
         <div class="r-dark-card">
-          <div class="r-dark-eye">💌 FIT-TI가 드리는 말</div>
+          <div class="r-dark-eye">👑 여왕쌤의 한마디</div>
           <p class="r-dark-body">이건 의지의 문제가 아니에요.<br>
           당신만의 반복되는 패턴이 있을 뿐이에요.<br><br>
           FIT-TI 심층 분석에서는<br>

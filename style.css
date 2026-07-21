@@ -780,15 +780,21 @@ ul, ol { list-style: none; }
   box-shadow:0 4px 20px rgba(30,43,79,.05);
 }
 .r-line-item {
-  display:flex; gap:12px; align-items:flex-start;
-  padding:13px 18px;
+  display:flex; gap:14px; align-items:flex-start;
+  padding:15px 18px;
   border-bottom:1px solid #F5F0FF;
   animation:fadeSlide .5s ease both;
 }
 .r-line-item:last-child { border-bottom:none; }
 @keyframes fadeSlide { from{opacity:0;transform:translateX(-8px)} to{opacity:1;transform:translateX(0)} }
-.r-check { font-size:13px; flex-shrink:0; margin-top:1px; }
-.r-line-text { font-size:14px; color:#1F2430; line-height:1.7; font-weight:400; }
+.r-line-num {
+  width:22px; height:22px; border-radius:50%;
+  background:#9B7BFF; color:#fff;
+  font-size:11px; font-weight:800;
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0; margin-top:2px;
+}
+.r-line-text { font-size:15px; color:#1F2430; line-height:1.75; font-weight:400; }
 
 .r-summary-card {
   background:linear-gradient(135deg,#9B7BFF 0%,#7358FF 100%);
@@ -822,7 +828,7 @@ ul, ol { list-style: none; }
 }
 
 /* 업셀 */
-.r-sell { padding:32px 20px 72px; }
+.r-sell { padding:32px 20px 100px; }
 .r-sell-eye {
   display:inline-block;
   font-size:11px; font-weight:700; letter-spacing:.08em;
