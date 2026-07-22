@@ -233,15 +233,15 @@ body{font-family:var(--font);background:var(--bg);color:var(--tx);-webkit-font-s
   <!-- ══ 결제 게이트 ══ -->
   <script>
     (function(){
-      try {
-        const p = new URLSearchParams(location.search).get('admin');
-        if (p === 'queen2026') {
-          localStorage.setItem('fitti_paid', 'true');
-        }
-        if (!localStorage.getItem('fitti_paid')) {
-          window.location.replace('payment.html');
-        }
-      } catch(e) {}
+      var search = window.location.search || '';
+      var isAdmin = search.indexOf('admin=queen2026') !== -1;
+      if (isAdmin) {
+        try { localStorage.setItem('fitti_paid','true'); } catch(e){}
+        return;
+      }
+      var paid = false;
+      try { paid = !!localStorage.getItem('fitti_paid'); } catch(e){}
+      if (!paid) { window.location.replace('payment.html'); }
     })();
   </script>
 <svg style="position:absolute;width:0;height:0"><defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#70658B"/><stop offset="100%" stop-color="#665B8B"/></linearGradient></defs></svg>
