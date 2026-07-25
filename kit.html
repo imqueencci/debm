@@ -200,6 +200,36 @@ body{font-family:var(--font);background:var(--bg);color:var(--tx);-webkit-font-s
 .warn-t{font-size:19px!important}
 .cta-title{font-size:22px!important;line-height:1.35!important}
 
+/* 섹션 헤더 */
+.sec-header{background:linear-gradient(135deg,#2C2042,#43335E);border-radius:20px;padding:28px 24px;text-align:center;margin-bottom:16px}
+.sec-header-tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.1em;color:rgba(200,182,255,.6);text-transform:uppercase;margin-bottom:12px}
+.sec-header-title{font-size:22px;font-weight:900;color:#fff;letter-spacing:-.03em;line-height:1.35}
+
+/* Life Impact */
+.life-sec{background:linear-gradient(135deg,#1a0a2e,#2C2042);border-radius:24px;padding:28px 22px}
+.life-impact-header{text-align:center;margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid rgba(255,255,255,.1)}
+.life-impact-tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.1em;color:#FFD700;background:rgba(255,215,0,.15);border-radius:999px;padding:5px 14px;margin-bottom:14px}
+.life-impact-title{font-size:24px;font-weight:900;color:#fff;line-height:1.3;margin-bottom:10px;letter-spacing:-.03em}
+.life-impact-sub{font-size:14px;color:rgba(255,255,255,.5);line-height:1.7}
+.life-examples{display:flex;flex-direction:column;gap:14px;margin-bottom:20px}
+.life-ex-item{display:flex;gap:14px;align-items:flex-start;background:rgba(255,255,255,.06);border-radius:16px;padding:16px}
+.life-ex-icon{font-size:22px;flex-shrink:0;margin-top:2px}
+.life-ex-label{display:block;font-size:11px;font-weight:700;color:rgba(200,182,255,.6);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+.life-ex-text{font-size:14px;color:rgba(255,255,255,.8);line-height:1.65}
+
+/* 차트 축별 컬러 */
+.chart-bar-emotion{background:linear-gradient(90deg,#FF6B8A,#FF8FA3)}
+.chart-bar-selftalk{background:linear-gradient(90deg,#9B7BFF,#C8B6FF)}
+.chart-bar-thinking{background:linear-gradient(90deg,#4ECDC4,#7ED8D3)}
+.chart-bar-environment{background:linear-gradient(90deg,#FFD93D,#FFE566)}
+.chart-bar-motivation{background:linear-gradient(90deg,#FF9A3C,#FFB366)}
+.chart-bar-behavior{background:linear-gradient(90deg,#6BCB77,#95DA9E)}
+.chart-bar-recovery{background:linear-gradient(90deg,#4D96FF,#80B3FF)}
+.chart-bar-relationship{background:linear-gradient(90deg,#FF6FD8,#FF9EE6)}
+
+/* 루프 화살표 중앙 */
+.loop-arrow-row{display:flex;justify-content:center;padding:4px 0;font-size:20px;color:var(--gold);font-weight:900}
+
 /* Science Card */
 .science-card{background:#F0EBF8;border-radius:22px;padding:26px;border-left:4px solid #7C6FE0}
 .sci-eye{color:#7C6FE0!important}
@@ -300,18 +330,32 @@ body{font-family:var(--font);background:var(--bg);color:var(--tx);-webkit-font-s
   </div>
 
   <div class="rsec">
-    <span class="rsec-eyebrow au">이런 모습이 익숙하지 않으신가요?</span>
-    <div class="rec-list" id="recs"></div>
+    <div class="science-card au">
+      <span class="rsec-eyebrow sci-eye">🧠 왜 이 패턴이 반복될까요?</span>
+      <p class="science-text" id="scienceText"></p>
+    </div>
   </div>
 
-  <div class="rsec">
-    <span class="rsec-eyebrow au">이 패턴, 운동에서만 이런 게 아니에요.</span>
-    <div class="life-qs au" id="lifeQs"></div>
+
+
+  <div class="rsec life-sec au">
+    <div class="life-impact-header">
+      <span class="life-impact-tag">⚡ 중요</span>
+      <p class="life-impact-title">이 패턴,<br>운동에서만 이런 게 아니에요.</p>
+      <p class="life-impact-sub">삶의 거의 모든 영역에서<br>똑같이 작동하고 있어요.</p>
+    </div>
+    <div class="life-examples" id="lifeExamples">
+      <div class="life-ex-item"><span class="life-ex-icon">💼</span><div><span class="life-ex-label">일/업무</span><p class="life-ex-text" id="lifeEx1"></p></div></div>
+      <div class="life-ex-item"><span class="life-ex-icon">🍽️</span><div><span class="life-ex-label">식단/음식</span><p class="life-ex-text" id="lifeEx2"></p></div></div>
+      <div class="life-ex-item"><span class="life-ex-icon">🤝</span><div><span class="life-ex-label">관계/연락</span><p class="life-ex-text" id="lifeEx3"></p></div></div>
+    </div>
     <div class="life-insight au" id="lifeInsight"></div>
   </div>
 
   <div class="rsec">
-    <span class="rsec-eyebrow au">당신은 어떤 기질의 사람인가요?</span>
+    <div class="sec-header au">
+      <p class="sec-header-title">당신은 어떤 기질의<br>사람인가요?</p>
+    </div>
     <div class="temp-card au">
       <p class="temp-name" id="tempTitle"></p>
       <div class="temp-block">
@@ -326,7 +370,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--tx);-webkit-font-s
   </div>
 
   <div class="rsec">
-    <span class="rsec-eyebrow au">두 패턴이 어떻게 함께 작동하는가</span>
+    <div class="sec-header au">
+      <p class="sec-header-title">두 패턴이 어떻게<br>함께 작동하는가</p>
+    </div>
     <div class="compound-card au">
       <div class="compound-patterns">
         <div class="compound-p"><span class="compound-p-label" id="cp1l"></span><p id="cp1d"></p></div>
@@ -345,8 +391,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--tx);-webkit-font-s
   </div>
 
   <div class="rsec">
-    <span class="rsec-eyebrow au">맞춤 전략</span>
-    <p class="rsec-title au">지금 당장 바꿀 수 있는 3가지</p>
+    <div class="sec-header au">
+      <span class="sec-header-tag">💜 여왕쌤의 솔루션</span>
+      <p class="sec-header-title">지금 당장<br>바꿀 수 있는 것들</p>
+    </div>
     <div class="strat-list" id="strats"></div>
   </div>
 
@@ -357,12 +405,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--tx);-webkit-font-s
     </div>
   </div>
 
-  <div class="rsec">
-    <div class="science-card au">
-      <span class="rsec-eyebrow sci-eye">🧠 왜 이 패턴이 반복될까요?</span>
-      <p class="science-text" id="scienceText"></p>
-    </div>
-  </div>
+
 
   <div class="rsec">
     <div class="reset21-card au">
@@ -524,12 +567,14 @@ function drawScoreChart(){
         +'<text x="60" y="74" text-anchor="middle" font-size="10" fill="#6F6A79" font-family="Pretendard,sans-serif">'+info.label+'</text>'
         +'</svg></div>';
     }).join('')+'</div>';
+  const axColors={'emotion':'#FF6B8A','selftalk':'#9B7BFF','thinking':'#4ECDC4','environment':'#FFD93D','motivation':'#FF9A3C','behavior':'#6BCB77','recovery':'#4D96FF','relationship':'#FF6FD8'};
   const bars=ord.slice(2).map((p,i)=>{
     const pct=Math.min(Math.round((sc[p]/mx)*100),100),info=PATTERN_INFO[p],is3=i===0;
-    return '<div class="sbar-row'+(is3?' sbar-3rd':'')+'">'
-      +'<div class="sbar-label'+(is3?' sbar-l3':'')+'">'+info.label+'</div>'
-      +'<div class="sbar-track"><div class="sbar-fill'+(is3?' sbar-f3':'')+'" data-p="'+pct+'"></div></div>'
-      +'<div class="sbar-pct'+(is3?' sbar-p3':'')+'">'+pct+'%</div>'
+    const col=axColors[p]||'#9B7BFF';
+    return '<div class="sbar-row"+'+(is3?' sbar-3rd':'')+'">'
+      +'<div class="sbar-label"+'+(is3?' sbar-l3':'')+'">'+ info.label+'</div>'
+      +'<div class="sbar-track"><div class="sbar-fill"+'+(is3?' sbar-f3':'')+'" data-p="'+pct+'" style="background:'+col+'"></div></div>'
+      +'<div class="sbar-pct"+'+(is3?' sbar-p3':'')+'">'+ pct+'%</div>'
       +'</div>';
   }).join('');
   el.innerHTML=circles+bars;
