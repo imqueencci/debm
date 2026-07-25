@@ -272,13 +272,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--tx);-webkit-font-s
       var paid = false;
       try { paid = !!localStorage.getItem('fitti_paid'); } catch(e){}
       if (!paid) { window.location.replace('payment.html'); }
-      // 미리보기면 SW 화면 숨기기
-      if(window.__previewKey){
-        document.addEventListener('DOMContentLoaded',function(){
-          var sw=document.getElementById('sw');
-          if(sw) sw.style.display='none';
-        });
-      }
+
     })();
   </script>
 <svg style="position:absolute;width:0;height:0"><defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#70658B"/><stop offset="100%" stop-color="#665B8B"/></linearGradient></defs></svg>
@@ -712,12 +706,19 @@ function showResult(){
 
 function goKakao(){window.open('http://pf.kakao.com/_xdIpXX','_blank');}
 function goReset(){window.location.href='reset21-landing.html';}
-// 미리보기 모드
-window.addEventListener('load', function(){
-  if(window.__previewKey && R[window.__previewKey]){
-    showResult(window.__previewKey);
-  }
-});
+
+// 미리보기 모드: ?preview=유형키
+(function(){
+  var m=(window.location.search||'').match(/preview=([a-z_]+)/);
+  if(!m)return;
+  var key=m[1];
+  if(!R[key])return;
+  // 짧은 지연으로 DOM 완료 후 실행
+  setTimeout(function(){
+    showResult(key);
+  }, 50);
+})();
+
 </script>
 </body>
 </html>
