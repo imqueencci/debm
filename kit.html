@@ -11,7 +11,7 @@
 html{overflow-y:scroll}
 body{font-family:var(--font);background:var(--bg);color:var(--tx);-webkit-font-smoothing:antialiased;line-height:1.6}
 .screen{display:none;min-height:100vh;flex-direction:column}
-.screen.on{display:flex;animation:fu .4s ease both}
+.screen.on{display:flex;animation:fu .4s ease forwards}
 @keyframes fu{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 /* WELCOME */
 #sw{align-items:center;justify-content:center;padding:56px 24px;text-align:center}
@@ -605,7 +605,12 @@ function drawScoreInterp(){
   }).join('');
 }
 
-function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));document.getElementById(id).classList.add('on');}
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>{s.classList.remove('on');s.style.display='none';});
+  var el=document.getElementById(id);
+  el.classList.add('on');
+  el.style.display='flex';
+}
 
 function startKit(){cur=0;chosen=null;PATTERNS.forEach(k=>sc[k]=0);show('sq');renderQ();}
 
