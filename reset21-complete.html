@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>신청 완료 | RESET21</title>
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
+<style>
+:root{
+  --lav:#C8B6FF;--lav2:#9B7BFF;--lav3:#7358FF;
+  --lav-s:#F0EBFF;--lav-m:#E0D4FF;
+  --navy:#1E2B4F;--bg:#F8F6FF;--white:#fff;
+  --tx:#1F2430;--tx2:#6B7280;
+  --font:"Pretendard",-apple-system,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--tx);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+/* HERO */
+.hero{background:var(--navy);padding:72px 24px 52px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(200,182,255,.2) 0%,transparent 70%);pointer-events:none}
+.hero-inner{max-width:520px;margin:0 auto;position:relative}
+.hero-emoji{font-size:52px;margin-bottom:20px;display:block}
+.hero-title{font-size:clamp(24px,6vw,34px);font-weight:900;color:#fff;letter-spacing:-.04em;line-height:1.25;margin-bottom:12px}
+.hero-title em{font-style:normal;color:var(--lav)}
+.hero-sub{font-size:15px;color:rgba(255,255,255,.5);line-height:1.8}
+
+.si{max-width:560px;margin:0 auto;padding:0 24px}
+
+/* 기수 배지 */
+.kisu-wrap{padding:28px 24px 0}
+.kisu-box{max-width:560px;margin:0 auto;background:linear-gradient(135deg,var(--lav2),var(--lav3));border-radius:20px;padding:20px 22px;display:flex;align-items:center;gap:14px}
+.kisu-icon{font-size:28px;flex-shrink:0}
+.kisu-text{color:#fff}
+.kisu-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:4px}
+.kisu-name{font-size:18px;font-weight:900;letter-spacing:-.03em}
+.kisu-desc{font-size:13px;color:rgba(255,255,255,.65);margin-top:2px}
+
+/* 섹션 공통 */
+.sec{padding:36px 24px 0}
+.sec-inner{max-width:560px;margin:0 auto}
+.sec-eye{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--lav2);display:block;margin-bottom:14px}
+.sec-title{font-size:22px;font-weight:900;color:var(--navy);letter-spacing:-.04em;line-height:1.3;margin-bottom:20px}
+
+/* 스텝 */
+.steps{display:flex;flex-direction:column;gap:0;position:relative}
+.steps::before{content:'';position:absolute;left:20px;top:24px;bottom:24px;width:2px;background:linear-gradient(to bottom,var(--lav2),var(--lav-m))}
+.step{display:flex;gap:16px;align-items:flex-start;padding-bottom:24px;position:relative}
+.step-dot{width:40px;height:40px;border-radius:50%;background:var(--lav2);color:#fff;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;z-index:1;position:relative}
+.step-body{padding-top:8px}
+.step-label{font-size:11px;font-weight:700;color:var(--lav2);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px}
+.step-title{font-size:16px;font-weight:800;color:var(--navy);margin-bottom:4px}
+.step-desc{font-size:14px;color:var(--tx2);line-height:1.65}
+
+/* 준비물 */
+.prep-list{display:flex;flex-direction:column;gap:10px}
+.prep-item{display:flex;align-items:center;gap:14px;background:var(--white);border:1.5px solid var(--lav-m);border-radius:18px;padding:14px 18px}
+.prep-icon{font-size:22px;flex-shrink:0}
+.prep-text{font-size:14px;font-weight:600;color:var(--tx)}
+.prep-sub{font-size:12px;color:var(--tx2);margin-top:2px}
+
+/* 페이백 카드 */
+.payback-card{background:linear-gradient(135deg,var(--lav2),var(--lav3));border-radius:24px;padding:28px 22px;text-align:center}
+.payback-card .eye{color:rgba(255,255,255,.6);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:10px}
+.payback-amount{font-size:44px;font-weight:900;color:#fff;letter-spacing:-.04em;margin:6px 0}
+.payback-label{font-size:14px;color:rgba(255,255,255,.7);margin-bottom:14px}
+.payback-cond{font-size:14px;font-weight:700;color:#fff;background:rgba(255,255,255,.15);border-radius:12px;padding:10px 18px;display:inline-block;line-height:1.6}
+
+/* 체크인 미리보기 */
+.checkin-preview{background:var(--white);border:1.5px solid var(--lav-m);border-radius:24px;padding:22px;box-shadow:0 4px 20px rgba(30,43,79,.05)}
+.checkin-title{font-size:13px;font-weight:700;color:var(--tx2);margin-bottom:14px;text-align:center}
+.checkin-items{display:flex;flex-direction:column;gap:10px}
+.checkin-item{display:flex;align-items:center;gap:12px;background:var(--bg);border-radius:14px;padding:12px 14px}
+.checkin-num{width:24px;height:24px;border-radius:50%;background:var(--lav2);color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.checkin-q{font-size:14px;color:var(--tx);font-weight:500}
+
+/* 여왕쌤 한마디 */
+.queen-card{background:var(--navy);border-radius:24px;padding:28px 22px}
+.queen-eye{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(200,182,255,.5);display:block;margin-bottom:14px}
+.queen-text{font-size:17px;font-weight:700;color:#fff;line-height:1.75;letter-spacing:-.01em}
+.queen-sig{font-size:13px;color:rgba(200,182,255,.5);margin-top:14px;font-weight:600}
+
+/* FAQ */
+.faq-list{display:flex;flex-direction:column;gap:10px}
+.faq-item{background:var(--white);border:1.5px solid var(--lav-m);border-radius:18px;overflow:hidden}
+.faq-q{width:100%;display:flex;justify-content:space-between;align-items:center;padding:16px 18px;font-size:15px;font-weight:700;color:var(--navy);text-align:left;cursor:pointer;gap:14px;border:none;background:none;font-family:var(--font)}
+.faq-ic{font-size:18px;color:var(--lav2);transition:transform .3s;flex-shrink:0}
+.faq-item.open .faq-ic{transform:rotate(45deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s,padding .3s;font-size:14px;color:var(--tx2);line-height:1.8;padding:0 18px}
+.faq-item.open .faq-a{max-height:200px;padding:0 18px 16px}
+
+/* 환불 */
+.refund-box{background:var(--white);border:1.5px solid var(--lav-m);border-radius:20px;padding:20px 22px}
+.refund-title{font-size:14px;font-weight:800;color:var(--navy);margin-bottom:12px}
+.refund-list{display:flex;flex-direction:column;gap:8px}
+.refund-list li{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--tx2);line-height:1.6}
+.refund-list li::before{content:'·';color:var(--lav2);font-weight:900;flex-shrink:0}
+
+/* 공유 */
+.share-card{background:var(--lav-s);border:1.5px solid var(--lav-m);border-radius:24px;padding:24px;text-align:center}
+.share-title{font-size:17px;font-weight:800;color:var(--navy);margin-bottom:6px}
+.share-desc{font-size:14px;color:var(--tx2);line-height:1.65;margin-bottom:18px}
+.share-btn{display:inline-flex;align-items:center;gap:8px;background:var(--white);border:1.5px solid var(--lav-m);border-radius:999px;padding:10px 20px;font-size:14px;font-weight:700;color:var(--lav2);cursor:pointer;font-family:var(--font)}
+
+/* CTA */
+.cta-sec{padding:40px 24px 80px}
+.cta-inner{max-width:560px;margin:0 auto;text-align:center}
+.cta-desc{font-size:14px;color:var(--tx2);margin-top:12px;line-height:1.7}
+.btn{display:block;width:100%;padding:18px;text-align:center;border-radius:999px;font-size:16px;font-weight:800;cursor:pointer;border:none;font-family:var(--font);text-decoration:none}
+.btn--primary{background:linear-gradient(135deg,var(--lav2),var(--lav3));color:#fff;box-shadow:0 8px 28px rgba(115,88,255,.28)}
+.btn--kakao{background:#FEE500;color:#191919;margin-top:10px}
+
+[da]{opacity:0;transform:translateY(14px);transition:opacity .5s,transform .5s}
+[da].in{opacity:1;transform:translateY(0)}
+[da="1"]{transition-delay:.08s}[da="2"]{transition-delay:.14s}[da="3"]{transition-delay:.2s}[da="4"]{transition-delay:.26s}[da="5"]{transition-delay:.32s}[da="6"]{transition-delay:.38s}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <span class="hero-emoji" da>🎉</span>
+    <h1 class="hero-title" da="1">신청해주셨어요!<br><em>이제 시작이에요.</em></h1>
+    <p class="hero-sub" da="2">24시간 내로 카카오톡으로 연락드릴게요.<br>아래 안내를 미리 확인해주세요.</p>
+  </div>
+</section>
+
+<!-- 기수 -->
+<div class="kisu-wrap" da>
+  <div class="kisu-box">
+    <div class="kisu-icon">🏷️</div>
+    <div class="kisu-text">
+      <div class="kisu-label">소속 기수</div>
+      <div class="kisu-name">RESET21 진행 기수로 합류해요</div>
+      <div class="kisu-desc">같은 시기에 시작하는 멤버들과 함께해요</div>
+    </div>
+  </div>
+</div>
+
+<!-- 다음 단계 -->
+<section class="sec">
+  <div class="sec-inner" da="1">
+    <span class="sec-eye">다음 단계</span>
+    <div class="steps">
+      <div class="step">
+        <div class="step-dot">1</div>
+        <div class="step-body">
+          <div class="step-label">24시간 내</div>
+          <div class="step-title">카카오톡으로 연락드려요</div>
+          <div class="step-desc">일정 확인 및 결제 안내를 드려요.<br>카카오 오픈채팅을 확인해주세요.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-dot">2</div>
+        <div class="step-body">
+          <div class="step-label">결제</div>
+          <div class="step-title">₩189,000 결제 완료</div>
+          <div class="step-desc">카카오페이로 안내드려요.<br>결제 완료 후 정식 멤버가 돼요.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-dot">3</div>
+        <div class="step-body">
+          <div class="step-label">시작 전</div>
+          <div class="step-title">체크인 링크 + 줌 일정 전달</div>
+          <div class="step-desc">매일 기록하는 체크인 링크와<br>첫 번째 줌 미팅 일정을 드려요.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-dot">🔥</div>
+        <div class="step-body">
+          <div class="step-label">D-day</div>
+          <div class="step-title">RESET21 시작</div>
+          <div class="step-desc">21일 동안 나를 다시 설계해요.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 준비할 것 -->
+<section class="sec">
+  <div class="sec-inner" da="2">
+    <span class="sec-eye">미리 준비해주세요</span>
+    <div class="prep-list">
+      <div class="prep-item">
+        <div class="prep-icon">⏱️</div>
+        <div>
+          <div class="prep-text">매일 5분</div>
+          <div class="prep-sub">하루 체크인 기록 시간</div>
+        </div>
+      </div>
+      <div class="prep-item">
+        <div class="prep-icon">💻</div>
+        <div>
+          <div class="prep-text">줌(Zoom) 설치</div>
+          <div class="prep-sub">주 1회 15분 개인 미팅에 사용해요</div>
+        </div>
+      </div>
+      <div class="prep-item">
+        <div class="prep-icon">📱</div>
+        <div>
+          <div class="prep-text">유튜브 앱</div>
+          <div class="prep-sub">멤버 전용 운동 영상을 볼 수 있어요</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 페이백 -->
+<section class="sec">
+  <div class="sec-inner" da="3">
+    <span class="sec-eye">잊지 마세요</span>
+    <div class="payback-card">
+      <span class="eye">전일 완료 혜택</span>
+      <div class="payback-amount">₩50,000</div>
+      <div class="payback-label">페이백</div>
+      <div class="payback-cond">21일 전일 기록 완료 시 환급<br>하루도 빠짐없이 기록하면 돼요</div>
+    </div>
+  </div>
+</section>
+
+<!-- 체크인 미리보기 -->
+<section class="sec">
+  <div class="sec-inner" da="4">
+    <span class="sec-eye">매일 이런 걸 기록해요</span>
+    <div class="checkin-preview">
+      <div class="checkin-title">하루 체크인 항목</div>
+      <div class="checkin-items">
+        <div class="checkin-item">
+          <div class="checkin-num">1</div>
+          <div class="checkin-q">오늘 식사 후 기분이 어땠나요?</div>
+        </div>
+        <div class="checkin-item">
+          <div class="checkin-num">2</div>
+          <div class="checkin-q">오늘 운동 동기는 무엇이었나요?</div>
+        </div>
+        <div class="checkin-item">
+          <div class="checkin-num">3</div>
+          <div class="checkin-q">오늘 흔들렸던 순간이 있었나요?</div>
+        </div>
+        <div class="checkin-item">
+          <div class="checkin-num">4</div>
+          <div class="checkin-q">오늘의 나에게 한마디 💌</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 여왕쌤 한마디 -->
+<section class="sec">
+  <div class="sec-inner" da="5">
+    <div class="queen-card">
+      <span class="queen-eye">👑 여왕쌤의 한마디</span>
+      <p class="queen-text">
+        완벽하게 할 필요 없어요.<br><br>
+        오늘 기록하는 것만으로 충분해요.<br>
+        못 한 날도 기록하는 게 RESET21이에요.<br><br>
+        21일 동안 같이 해봐요.
+      </p>
+      <div class="queen-sig">— 여왕쌤</div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="sec">
+  <div class="sec-inner" da>
+    <span class="sec-eye">자주 묻는 질문</span>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-q" onclick="faq(this)">언제 시작하나요?<span class="faq-ic">+</span></button>
+        <div class="faq-a">카카오톡으로 연락드린 후 일정을 함께 확인하고 시작일을 확정해요. 보통 결제 완료 후 다음 주 월요일에 시작해요.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="faq(this)">못 하는 날이 생기면 어떻게 하나요?<span class="faq-ic">+</span></button>
+        <div class="faq-a">사정이 생길 수 있어요. 다만 페이백은 21일 전일 완료 시에만 드려요. 못 한 날도 기록으로 남겨두는 게 좋아요. 여왕쌤이 확인하고 연락드릴게요.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="faq(this)">줌 미팅은 언제 하나요?<span class="faq-ic">+</span></button>
+        <div class="faq-a">주 1회 15분, 여왕쌤과 1:1로 진행해요. 시작 전에 편한 시간대를 함께 조율해요.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="faq(this)">운동을 전혀 안 해봤는데 괜찮나요?<span class="faq-ic">+</span></button>
+        <div class="faq-a">RESET21은 운동 실력과 무관해요. 운동을 못 하는 게 아니라 내 패턴을 아직 모르는 것뿐이에요. 처음부터 함께 찾아가요.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 환불 정책 -->
+<section class="sec">
+  <div class="sec-inner" da>
+    <span class="sec-eye">환불 · 취소 정책</span>
+    <div class="refund-box">
+      <div class="refund-title">📋 환불 안내</div>
+      <ul class="refund-list">
+        <li>시작일 3일 전까지 — 전액 환불</li>
+        <li>시작일 당일 ~ 7일 이내 — 50% 환불</li>
+        <li>시작 후 8일 이후 — 환불 불가</li>
+        <li>문의는 카카오 오픈채팅으로 해주세요</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 공유 -->
+<section class="sec">
+  <div class="sec-inner" da>
+    <div class="share-card">
+      <div class="share-title">같이 하면 더 잘 돼요 💜</div>
+      <div class="share-desc">함께 시작하고 싶은 친구가 있다면<br>RESET21을 알려줘요.</div>
+      <button class="share-btn" onclick="share()">🔗 링크 공유하기</button>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-sec">
+  <div class="cta-inner">
+    <a href="https://open.kakao.com/o/sIL9syDi" target="_blank" class="btn btn--primary">💬 카카오로 연결하기</a>
+    <a href="reset21-landing.html" class="btn btn--kakao">RESET21 다시 보기</a>
+    <p class="cta-desc">궁금한 점은 카카오 오픈채팅으로 연락주세요.<br>24시간 내로 답변드려요.</p>
+  </div>
+</section>
+
+<script>
+function faq(b){const i=b.closest('.faq-item'),o=i.classList.contains('open');document.querySelectorAll('.faq-item.open').forEach(e=>e.classList.remove('open'));if(!o)i.classList.add('open');}
+
+function share(){
+  const url='https://imqueencci.github.io/debm/reset21-landing.html';
+  if(navigator.share){
+    navigator.share({title:'RESET21 | FIT-TI',text:'21일, 나를 다시 설계하는 시간.',url});
+  } else {
+    navigator.clipboard.writeText(url).then(()=>alert('링크가 복사됐어요!'));
+  }
+}
+
+const io=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('in')})},{threshold:.1});
+document.querySelectorAll('[da]').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
