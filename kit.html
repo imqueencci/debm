@@ -723,6 +723,7 @@ function goReset(){window.location.href='reset21-landing.html';}
   if(!m)return;
   var key=m[1];
   if(!R[key])return;
+  PATTERNS.forEach(function(k){sc[k]=0;});
   var pair=PAIRS.find(function(p){return p[0]+'_'+p[1]===key;});
   if(pair){sc[pair[0]]=15;sc[pair[1]]=12;}
   showResult();
