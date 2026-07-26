@@ -111,12 +111,40 @@ body{font-family:var(--font);background:var(--bg);color:var(--tx);-webkit-font-s
 .btn--primary{background:linear-gradient(135deg,var(--lav2),var(--lav3));color:#fff;box-shadow:0 8px 28px rgba(115,88,255,.28)}
 .btn--kakao{background:#FEE500;color:#191919;margin-top:10px}
 
+/* 게이트 */
+.gate{position:fixed;inset:0;background:var(--bg);z-index:999;display:flex;align-items:center;justify-content:center;padding:24px}
+.gate-box{background:var(--white);border-radius:28px;padding:36px 28px;max-width:380px;width:100%;text-align:center;border:1.5px solid var(--lav-m);box-shadow:0 12px 40px rgba(30,43,79,.08)}
+.gate-icon{font-size:44px;margin-bottom:16px}
+.gate-title{font-size:22px;font-weight:900;color:var(--navy);letter-spacing:-.04em;margin-bottom:8px}
+.gate-desc{font-size:14px;color:var(--tx2);line-height:1.7;margin-bottom:24px}
+.gate-input{width:100%;padding:16px 18px;border:2px solid var(--lav-m);border-radius:16px;font-size:16px;font-family:var(--font);font-weight:700;text-align:center;letter-spacing:.1em;color:var(--navy);background:var(--bg);outline:none;margin-bottom:10px;transition:border-color .2s}
+.gate-input:focus{border-color:var(--lav2)}
+.gate-input.err{border-color:#FF6B8A;animation:shake .3s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.gate-btn{width:100%;padding:16px;background:linear-gradient(135deg,var(--lav2),var(--lav3));color:#fff;font-size:16px;font-weight:800;border-radius:999px;border:none;font-family:var(--font);cursor:pointer;box-shadow:0 8px 24px rgba(115,88,255,.25)}
+.gate-err{font-size:13px;color:#FF6B8A;margin-top:8px;font-weight:600;min-height:18px}
+.gate-kakao{font-size:13px;color:var(--tx2);margin-top:16px}
+.gate-kakao a{color:var(--lav2);font-weight:700}
+
 [da]{opacity:0;transform:translateY(14px);transition:opacity .5s,transform .5s}
 [da].in{opacity:1;transform:translateY(0)}
 [da="1"]{transition-delay:.08s}[da="2"]{transition-delay:.14s}[da="3"]{transition-delay:.2s}[da="4"]{transition-delay:.26s}[da="5"]{transition-delay:.32s}[da="6"]{transition-delay:.38s}
 </style>
 </head>
 <body>
+
+<!-- 게이트 -->
+<div class="gate" id="gate">
+  <div class="gate-box">
+    <div class="gate-icon">🔐</div>
+    <div class="gate-title">코드를 입력해주세요</div>
+    <div class="gate-desc">RESET21 결제 완료 후<br>여왕쌤에게 받은 코드를 입력해주세요.</div>
+    <input class="gate-input" id="codeInput" type="text" placeholder="코드 입력" maxlength="12" autocomplete="off" autocapitalize="characters">
+    <div class="gate-err" id="gateErr"></div>
+    <button class="gate-btn" onclick="checkCode()">확인</button>
+    <div class="gate-kakao">코드가 없으신가요? <a href="https://open.kakao.com/o/sIL9syDi" target="_blank">카카오로 문의하기</a></div>
+  </div>
+</div>
 
 <!-- HERO -->
 <section class="hero">
@@ -329,6 +357,30 @@ body{font-family:var(--font);background:var(--bg);color:var(--tx);-webkit-font-s
 </section>
 
 <script>
+// 게이트 코드 목록 (기수별로 추가 가능)
+const CODES=['RESET21','R21START','R21VIP'];
+
+function checkCode(){
+  const val=document.getElementById('codeInput').value.trim().toUpperCase();
+  const err=document.getElementById('gateErr');
+  if(CODES.includes(val)){
+    try{localStorage.setItem('r21_access','true');}catch(e){}
+    document.getElementById('gate').style.display='none';
+    err.textContent='';
+  } else {
+    err.textContent='코드가 올바르지 않아요.';
+    const input=document.getElementById('codeInput');
+    input.classList.add('err');
+    setTimeout(()=>input.classList.remove('err'),400);
+  }
+}
+
+// 이미 코드 입력한 사람은 바로 접근
+(function(){
+  try{if(localStorage.getItem('r21_access')==='true')document.getElementById('gate').style.display='none';}catch(e){}
+  document.getElementById('codeInput').addEventListener('keydown',function(e){if(e.key==='Enter')checkCode();});
+})();
+
 function faq(b){const i=b.closest('.faq-item'),o=i.classList.contains('open');document.querySelectorAll('.faq-item.open').forEach(e=>e.classList.remove('open'));if(!o)i.classList.add('open');}
 
 function share(){
