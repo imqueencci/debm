@@ -264,15 +264,14 @@ body{font-family:var(--font);background:var(--bg);color:var(--tx);-webkit-font-s
   <script>
     (function(){
       var search = window.location.search || '';
-      var isAdmin = search.indexOf('admin=queen2026') !== -1;
-      if (isAdmin) {
-        try { localStorage.setItem('fitti_paid','true'); } catch(e){}
-        return;
+      // 관리자 또는 미리보기 → 결제 통과
+      if(search.indexOf('admin=queen2026')!==-1 || search.indexOf('preview=')!==-1){
+        try{localStorage.setItem('fitti_paid','true');}catch(e){}
+      } else {
+        var paid=false;
+        try{paid=!!localStorage.getItem('fitti_paid');}catch(e){}
+        if(!paid){window.location.replace('payment.html');}
       }
-      var paid = false;
-      try { paid = !!localStorage.getItem('fitti_paid'); } catch(e){}
-      if (!paid) { window.location.replace('payment.html'); }
-
     })();
   </script>
 <svg style="position:absolute;width:0;height:0"><defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#70658B"/><stop offset="100%" stop-color="#665B8B"/></linearGradient></defs></svg>
@@ -710,13 +709,8 @@ function goReset(){window.location.href='reset21-landing.html';}
 // 미리보기 모드: ?preview=유형키
 (function(){
   var m=(window.location.search||'').match(/preview=([a-z_]+)/);
-  if(!m)return;
-  var key=m[1];
-  if(!R[key])return;
-  // 짧은 지연으로 DOM 완료 후 실행
-  setTimeout(function(){
-    showResult(key);
-  }, 50);
+  if(!m||!R[m[1]])return;
+  showResult(m[1]);
 })();
 
 </script>
