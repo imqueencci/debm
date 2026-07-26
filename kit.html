@@ -571,12 +571,12 @@ function drawScoreChart(){
   const bars=ord.slice(2).map((p,i)=>{
     const pct=Math.min(Math.round((sc[p]/mx)*100),100),info=PATTERN_INFO[p],is3=i===0;
     const col=axColors[p]||'#9B7BFF';
-    return '<div class="sbar-row"+'+(is3?' sbar-3rd':'')+'">'
-      +'<div class="sbar-label"+'+(is3?' sbar-l3':'')+'">'+ info.label+'</div>'
-      +'<div class="sbar-track"><div class="sbar-fill"+'+(is3?' sbar-f3':'')+'" data-p="'+pct+'" style="background:'+col+'"></div></div>'
-      +'<div class="sbar-pct"+'+(is3?' sbar-p3':'')+'">'+ pct+'%</div>'
+    return '<div class="sbar-row'+(is3?' sbar-3rd':'')+'">'
+      +'<div class="sbar-label'+(is3?' sbar-l3':'')+'">'+ info.label+'</div>'
+      +'<div class="sbar-track"><div class="sbar-fill'+(is3?' sbar-f3':'')+'" data-p="'+pct+'" style="background:'+col+'"></div></div>'
+      +'<div class="sbar-pct'+(is3?' sbar-p3':'')+'">'+ pct+'%</div>'
       +'</div>';
-  }).join('');
+  }).join('');;
   el.innerHTML=circles+bars;
   setTimeout(()=>{
     el.querySelectorAll('.sbar-fill').forEach(b=>{b.style.width=b.dataset.p+'%';});
@@ -709,8 +709,13 @@ function goReset(){window.location.href='reset21-landing.html';}
 // 미리보기 모드: ?preview=유형키
 (function(){
   var m=(window.location.search||'').match(/preview=([a-z_]+)/);
-  if(!m||!R[m[1]])return;
-  showResult(m[1]);
+  if(!m)return;
+  var key=m[1];
+  if(!R[key])return;
+  try{
+    showResult(key);
+    show('sr');
+  }catch(e){console.error('preview error:',e);}
 })();
 
 </script>
