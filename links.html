@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>여왕쌤 | FIT-TI</title>
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
+<style>
+:root{
+  --lav:#C8B6FF;--lav2:#9B7BFF;--lav3:#7358FF;
+  --lav-s:#F0EBFF;--lav-m:#E0D4FF;
+  --navy:#1E2B4F;--bg:#F8F6FF;--white:#fff;
+  --tx:#1F2430;--tx2:#6B7280;
+  --font:"Pretendard",-apple-system,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);background:var(--bg);color:var(--tx);-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:0 0 60px}
+
+/* 배경 */
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 40% at 50% 0%,rgba(200,182,255,.25) 0%,transparent 70%);pointer-events:none;z-index:0}
+
+.wrap{width:100%;max-width:440px;padding:0 20px;position:relative;z-index:1}
+
+/* 프로필 */
+.profile{text-align:center;padding:48px 0 32px}
+.profile-avatar{width:88px;height:88px;border-radius:50%;background:linear-gradient(135deg,var(--lav),var(--lav3));margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:36px;box-shadow:0 8px 32px rgba(155,123,255,.3)}
+.profile-name{font-size:22px;font-weight:900;color:var(--navy);letter-spacing:-.04em;margin-bottom:6px}
+.profile-handle{font-size:14px;color:var(--lav2);font-weight:600;margin-bottom:12px}
+.profile-bio{font-size:14px;color:var(--tx2);line-height:1.7;max-width:280px;margin:0 auto}
+.profile-bio strong{color:var(--navy);font-weight:700}
+
+/* 태그 */
+.tags{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:14px}
+.tag{font-size:12px;font-weight:600;color:var(--lav2);background:var(--lav-s);border-radius:999px;padding:5px 12px}
+
+/* 섹션 라벨 */
+.sec-label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--tx2);margin:28px 0 12px;text-align:center}
+
+/* 링크 버튼 */
+.links{display:flex;flex-direction:column;gap:10px}
+
+.link-btn{display:flex;align-items:center;gap:14px;background:var(--white);border:1.5px solid var(--lav-m);border-radius:20px;padding:16px 18px;text-decoration:none;color:var(--tx);cursor:pointer;transition:transform .18s,box-shadow .18s;-webkit-tap-highlight-color:transparent}
+.link-btn:hover,.link-btn:active{transform:translateY(-2px);box-shadow:0 8px 24px rgba(155,123,255,.12)}
+
+.link-btn--primary{background:linear-gradient(135deg,var(--lav2),var(--lav3));border-color:transparent;color:#fff;box-shadow:0 8px 28px rgba(115,88,255,.28)}
+.link-btn--primary:hover{box-shadow:0 12px 36px rgba(115,88,255,.38)}
+
+.link-btn--dark{background:var(--navy);border-color:var(--navy);color:#fff}
+.link-btn--kakao{background:#FEE500;border-color:#FEE500;color:#191919}
+.link-btn--reset{background:var(--lav-s);border-color:var(--lav-m)}
+
+.link-icon{font-size:24px;flex-shrink:0;width:36px;text-align:center}
+.link-content{flex:1}
+.link-title{font-size:15px;font-weight:800;margin-bottom:2px}
+.link-desc{font-size:12px;opacity:.6;line-height:1.4}
+.link-badge{flex-shrink:0;font-size:11px;font-weight:700;background:rgba(255,255,255,.2);border-radius:999px;padding:3px 10px;white-space:nowrap}
+.link-badge--lav{background:var(--lav-s);color:var(--lav2)}
+.link-badge--free{background:rgba(200,182,255,.15);color:var(--lav)}
+
+/* 구분선 */
+.sep{display:flex;align-items:center;gap:10px;margin:8px 0}
+.sep::before,.sep::after{content:'';flex:1;height:1px;background:var(--lav-m)}
+.sep-text{font-size:11px;color:var(--tx2);white-space:nowrap}
+
+/* 하단 */
+.footer{text-align:center;margin-top:40px}
+.footer-logo{font-size:15px;font-weight:900;color:var(--tx2);letter-spacing:-.03em}
+.footer-logo em{font-style:normal;color:var(--lav2)}
+.footer-copy{font-size:11px;color:var(--tx2);opacity:.4;margin-top:4px}
+
+/* 애니 */
+[da]{opacity:0;transform:translateY(14px);transition:opacity .5s,transform .5s}
+[da].in{opacity:1;transform:translateY(0)}
+[da="1"]{transition-delay:.06s}[da="2"]{transition-delay:.12s}[da="3"]{transition-delay:.18s}[da="4"]{transition-delay:.24s}[da="5"]{transition-delay:.3s}[da="6"]{transition-delay:.36s}[da="7"]{transition-delay:.42s}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- 프로필 -->
+  <div class="profile" da>
+    <div class="profile-avatar">👑</div>
+    <div class="profile-name">여왕쌤</div>
+    <div class="profile-handle">@different_tae</div>
+    <div class="profile-bio">
+      <strong>운동보다 나를 먼저 분석합니다.</strong><br>
+      행동패턴 분석가 · FIT-TI 개발자<br>
+      금주 · 다이어트 · 멘탈 관리
+    </div>
+    <div class="tags">
+      <span class="tag">#운동심리</span>
+      <span class="tag">#행동패턴분석</span>
+      <span class="tag">#여왕쌤</span>
+    </div>
+  </div>
+
+  <!-- 메인 CTA -->
+  <div class="links">
+    <a href="index.html" class="link-btn link-btn--primary" da="1">
+      <div class="link-icon">🔍</div>
+      <div class="link-content">
+        <div class="link-title">나의 행동 패턴 검사하기</div>
+        <div class="link-desc">왜 항상 같은 지점에서 포기할까?</div>
+      </div>
+      <div class="link-badge link-badge--free">무료</div>
+    </a>
+  </div>
+
+  <div class="sep" da="2"><span class="sep-text">프로그램</span></div>
+
+  <div class="links">
+    <a href="reset21-landing.html" class="link-btn link-btn--reset" da="2">
+      <div class="link-icon">🔄</div>
+      <div class="link-content">
+        <div class="link-title">RESET21 소개</div>
+        <div class="link-desc">21일, 나를 다시 설계하는 시간</div>
+      </div>
+      <div class="link-badge link-badge--lav">₩189,000</div>
+    </a>
+
+    <a href="pricing.html" class="link-btn" da="3">
+      <div class="link-icon">📋</div>
+      <div class="link-content">
+        <div class="link-title">전체 상품 안내</div>
+        <div class="link-desc">무료 검사부터 1:1 PT까지</div>
+      </div>
+    </a>
+  </div>
+
+  <div class="sep" da="4"><span class="sep-text">연결하기</span></div>
+
+  <div class="links">
+    <a href="https://open.kakao.com/o/sIL9syDi" target="_blank" class="link-btn link-btn--kakao" da="4">
+      <div class="link-icon">💬</div>
+      <div class="link-content">
+        <div class="link-title">카카오 오픈채팅</div>
+        <div class="link-desc">RESET21 신청 · 상담 · 문의</div>
+      </div>
+    </a>
+
+    <a href="http://pf.kakao.com/_xdIpXX" target="_blank" class="link-btn" da="5">
+      <div class="link-icon">📣</div>
+      <div class="link-content">
+        <div class="link-title">카카오 채널</div>
+        <div class="link-desc">여왕쌤 소식 · 업데이트</div>
+      </div>
+    </a>
+
+    <a href="https://www.instagram.com/different_tae" target="_blank" class="link-btn link-btn--dark" da="6">
+      <div class="link-icon">📸</div>
+      <div class="link-content">
+        <div class="link-title">인스타그램</div>
+        <div class="link-desc">@different_tae</div>
+      </div>
+    </a>
+  </div>
+
+  <div class="footer" da="7">
+    <div class="footer-logo">FIT<em>-TI</em></div>
+    <div class="footer-copy">나의 패턴을 알자 · 디프런트태</div>
+  </div>
+
+</div>
+
+<script>
+const io=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('in')})},{threshold:.1});
+document.querySelectorAll('[da]').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
