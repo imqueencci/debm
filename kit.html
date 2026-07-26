@@ -667,9 +667,14 @@ function showResult(){
   document.getElementById('rpat').textContent=D.name;
   document.getElementById('rt').innerHTML=D.title;
   document.getElementById('rs').textContent=D.sub;
-  document.getElementById('recs').innerHTML=D.recs.map(r=>'<div class="rec-card au"><span class="rec-check">✔</span>'+r+'</div>').join('');
+
   document.getElementById('lifeQs').innerHTML=D.lifeQ.map(q=>'<div class="life-q"><div class="life-q-mark">Q.</div><p>'+q+'</p></div>').join('');
-  document.getElementById('lifeInsight').textContent=D.lifeInsight;
+  document.getElementById('lifeInsight').textContent=D.lifeInsight||'';
+  // 생활 영역 예시
+  const _exMap={emotion_selftalk:{e1:'감정이 힘든 날엔 중요한 업무도 미루게 돼요.',e2:'스트레스 받으면 먹는 걸로 풀고 나중에 후회해요.',e3:'기분 안 좋은 날 연락이 뚝 끊기고 나중에 자책해요.'},emotion_recovery:{e1:'번아웃이 오면 복귀하는 데 몇 주가 걸려요.',e2:'식단이 무너지면 오래 방치하다 다시 시작해요.',e3:'갈등 후 관계 회복이 더디고 혼자 삭이는 편이에요.'},selftalk_behavior:{e1:'업무 실수 후 역시 난 안 돼가 반복돼요.',e2:'먹고 싶은 걸 참다 폭식하고 자책하는 패턴이에요.',e3:'실수했을 때 먼저 연락하기가 어려워요.'},selftalk_recovery:{e1:'실수 후 완벽한 준비가 될 때까지 복귀를 미뤄요.',e2:'식단 망치면 이번 주는 망했다고 포기해버려요.',e3:'잘못한 게 있으면 오래 자책하고 못 돌아와요.'},thinking_behavior:{e1:'더 좋은 방법을 찾다가 결국 마감이 밀려요.',e2:'완벽한 식단 계획 짜다가 실행을 못 해요.',e3:'연락 타이밍을 재다가 결국 못 하게 돼요.'},thinking_recovery:{e1:'여유 생기면 시작하자가 몇 달째 반복돼요.',e2:'월요일부터 다음 달부터 딱 맞는 때를 기다려요.',e3:'관계 정리도 좋은 타이밍을 기다리다 미뤄요.'},environment_relationship:{e1:'재택이 시작되면 업무 루틴이 완전히 무너져요.',e2:'냉장고에 뭐가 있냐에 따라 식단이 달라져요.',e3:'만나는 사람이 바뀌면 생활 패턴 전체가 바뀌어요.'},motivation_relationship:{e1:'팀워크가 좋을 때 결과물도 훨씬 좋아요.',e2:'같이 다이어트할 사람 없으면 흐지부지돼요.',e3:'함께하는 사람이 있어야 나도 더 잘 지내게 돼요.'},motivation_behavior:{e1:'프로젝트 초반엔 열정적인데 중반에 흥미를 잃어요.',e2:'새 식단법 시작하면 처음 며칠만 열심히 해요.',e3:'새 친구 사귈 때 초반엔 엄청 신경 쓰다가 관심이 줄어요.'},environment_behavior:{e1:'자리나 환경이 바뀌면 업무 집중이 안 돼요.',e2:'주방이 정돈돼 있어야 식사를 챙겨 먹게 돼요.',e3:'약속 장소나 분위기에 따라 대화가 달라져요.'},relationship_selftalk:{e1:'혼자 일할 때 집중이 안 되고 자책이 와요.',e2:'혼자 밥 먹으면 잘 못 챙겨 먹고 자책해요.',e3:'혼자 있는 시간이 길어지면 부정적인 생각이 많아져요.'},emotion_motivation:{e1:'기분 좋은 날은 업무 효율이 두 배예요.',e2:'기분이 좋아야 건강한 음식이 당겨요.',e3:'기분 좋을 때만 먼저 연락하고 싶어져요.'}};
+  const _rk=getKey(p1,p2);
+  const _ex=_exMap[_rk]||{e1:'',e2:'',e3:''};
+  ['lifeEx1','lifeEx2','lifeEx3'].forEach(function(id,i){var el=document.getElementById(id);if(el)el.textContent=[_ex.e1,_ex.e2,_ex.e3][i];});
   document.getElementById('tempTitle').textContent=D.tempTitle;
   document.getElementById('tempS').textContent=D.strengths;
   document.getElementById('tempSh').textContent=D.shadow;
@@ -706,16 +711,15 @@ function showResult(){
 function goKakao(){window.open('http://pf.kakao.com/_xdIpXX','_blank');}
 function goReset(){window.location.href='reset21-landing.html';}
 
-// 미리보기 모드: ?preview=유형키
+// 미리보기: ?preview=유형키
 (function(){
   var m=(window.location.search||'').match(/preview=([a-z_]+)/);
   if(!m)return;
   var key=m[1];
   if(!R[key])return;
-  try{
-    showResult(key);
-    show('sr');
-  }catch(e){console.error('preview error:',e);}
+  var pair=PAIRS.find(function(p){return p[0]+'_'+p[1]===key;});
+  if(pair){sc[pair[0]]=15;sc[pair[1]]=12;}
+  showResult();
 })();
 
 </script>
