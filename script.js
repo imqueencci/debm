@@ -204,15 +204,19 @@ function renderResult(R) {
           왜 나는 항상<br>
           <span class="r-sell-hl">같은 선택을 반복할까?</span>
         </h2>
-        <ul class="r-sell-list">
-          <li>왜 항상 같은 상황에서 흔들리는가</li>
-          <li>무엇이 운동보다 항상 우선되는가</li>
-          <li>어떤 말로 나 자신을 설득하는가</li>
-          <li>왜 시작은 쉬운데 유지가 어려운가</li>
-          <li>어떤 방식으로 습관을 바꿔야 오래가는가</li>
-        </ul>
-        <a href="payment.html" class="r-sell-btn">내 행동패턴 끝까지 분석하기 →</a>
-        <a href="http://pf.kakao.com/_xdIpXX" target="_blank" class="r-kakao-btn2">💬 카카오로 연결하기</a>
+        <div class="r-sell-card">
+          <div class="r-sell-card-eye">✦ 심층 분석에서 확인할 수 있어요</div>
+          <div class="r-sell-card-title">더 깊이 들여다볼게요</div>
+          <ul class="r-sell-list">
+            <li>왜 항상 같은 상황에서 흔들리는가</li>
+            <li>무엇이 운동보다 항상 우선되는가</li>
+            <li>어떤 말로 나 자신을 설득하는가</li>
+            <li>왜 시작은 쉬운데 유지가 어려운가</li>
+            <li>어떤 방식으로 습관을 바꿔야 오래가는가</li>
+          </ul>
+          <a href="payment.html" class="r-sell-btn">내 행동패턴 끝까지 분석하기 →</a>
+          <a href="http://pf.kakao.com/_xdIpXX" target="_blank" class="r-kakao-btn2">💬 카카오로 연결하기</a>
+        </div>
       </div>
     </section>`;
 
