@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>구독 멤버십 | FIT-TI</title>
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
+<style>
+:root{--lav:#C8B6FF;--lav2:#9B7BFF;--lav3:#7358FF;--lav-s:#F0EBFF;--lav-m:#E0D4FF;--navy:#1E2B4F;--bg:#F8F6FF;--white:#fff;--tx:#1F2430;--tx2:#6B7280;--font:"Pretendard",-apple-system,sans-serif}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--tx);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;background:rgba(248,246,255,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--lav-m)}
+.nav-logo{font-size:17px;font-weight:900;color:var(--navy);letter-spacing:-.04em}
+.nav-logo em{font-style:normal;color:var(--lav2)}
+.nav-back{font-size:13px;font-weight:700;color:var(--lav2);background:var(--lav-s);padding:8px 16px;border-radius:999px}
+
+.hero{background:var(--navy);padding:88px 24px 52px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(200,182,255,.2) 0%,transparent 70%);pointer-events:none}
+.hi{max-width:520px;margin:0 auto;position:relative}
+.h-tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(200,182,255,.6);border:1px solid rgba(200,182,255,.2);border-radius:999px;padding:6px 16px;margin-bottom:24px}
+.h-icon{font-size:48px;display:block;margin-bottom:16px}
+.h-title{font-size:clamp(24px,6vw,36px);font-weight:900;color:#fff;letter-spacing:-.04em;line-height:1.25;margin-bottom:12px}
+.h-title em{font-style:normal;color:var(--lav)}
+.h-sub{font-size:15px;color:rgba(255,255,255,.5);line-height:1.8;margin-bottom:28px}
+.h-cond{display:inline-block;font-size:13px;font-weight:700;color:rgba(200,182,255,.7);background:rgba(200,182,255,.1);border-radius:999px;padding:7px 18px;border:1px solid rgba(200,182,255,.2)}
+
+.sec{padding:40px 24px 0}
+.si{max-width:560px;margin:0 auto}
+.eye{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--lav2);display:block;margin-bottom:12px}
+.stitle{font-size:22px;font-weight:900;color:var(--navy);letter-spacing:-.04em;line-height:1.3;margin-bottom:20px}
+.stitle em{font-style:normal;color:var(--lav2)}
+
+/* 혜택 카드 */
+.benefits{display:flex;flex-direction:column;gap:12px}
+.ben{display:flex;gap:14px;align-items:flex-start;background:var(--white);border:1.5px solid var(--lav-m);border-radius:20px;padding:18px}
+.ben-icon{font-size:26px;flex-shrink:0}
+.ben-name{font-size:16px;font-weight:800;color:var(--navy);margin-bottom:4px}
+.ben-desc{font-size:13px;color:var(--tx2);line-height:1.6}
+
+/* vs 기존 */
+.vs-card{background:var(--white);border:1.5px solid var(--lav-m);border-radius:24px;overflow:hidden;margin-top:4px}
+.vs-head{display:grid;grid-template-columns:1fr 1fr;text-align:center}
+.vs-col{padding:14px;font-size:13px;font-weight:800}
+.vs-col:first-child{background:var(--bg);color:var(--tx2)}
+.vs-col:last-child{background:var(--lav2);color:#fff}
+.vs-row{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--lav-m)}
+.vs-cell{padding:14px 16px;font-size:13px;color:var(--tx2);line-height:1.5;text-align:center}
+.vs-cell:last-child{color:var(--navy);font-weight:600;border-left:1px solid var(--lav-m);background:var(--lav-s)}
+
+/* 가격 */
+.price-box{background:linear-gradient(135deg,var(--lav2),var(--lav3));border-radius:28px;padding:30px 24px;text-align:center;box-shadow:0 12px 40px rgba(115,88,255,.25)}
+.price-eye{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6);display:block;margin-bottom:12px}
+.price-amt{font-size:44px;font-weight:900;color:#fff;letter-spacing:-.04em}
+.price-unit{font-size:16px;color:rgba(255,255,255,.6);font-weight:500}
+.price-cond{font-size:13px;color:rgba(255,255,255,.65);margin-top:10px;line-height:1.6}
+
+/* FAQ */
+.fq{display:flex;flex-direction:column;gap:10px}
+.fq-i{background:var(--white);border:1.5px solid var(--lav-m);border-radius:18px;overflow:hidden}
+.fq-q{width:100%;display:flex;justify-content:space-between;align-items:center;padding:16px 18px;font-size:15px;font-weight:700;color:var(--navy);text-align:left;cursor:pointer;gap:14px;border:none;background:none;font-family:var(--font)}
+.fq-ic{font-size:18px;color:var(--lav2);transition:transform .3s;flex-shrink:0}
+.fq-i.open .fq-ic{transform:rotate(45deg)}
+.fq-a{max-height:0;overflow:hidden;transition:max-height .4s,padding .3s;font-size:14px;color:var(--tx2);line-height:1.8;padding:0 18px}
+.fq-i.open .fq-a{max-height:200px;padding:0 18px 16px}
+
+.cta{padding:40px 24px 80px;text-align:center}
+.ci{max-width:480px;margin:0 auto}
+.btn{display:block;width:100%;padding:18px;border-radius:999px;font-size:16px;font-weight:800;text-align:center;cursor:pointer;border:none;font-family:var(--font);text-decoration:none;margin-bottom:10px}
+.btn--p{background:linear-gradient(135deg,var(--lav2),var(--lav3));color:#fff;box-shadow:0 8px 28px rgba(115,88,255,.28)}
+.btn--o{background:transparent;color:var(--lav2);border:2px solid var(--lav2)}
+.cta-note{font-size:13px;color:var(--tx2);margin-top:14px;line-height:1.7}
+
+[da]{opacity:0;transform:translateY(14px);transition:opacity .5s,transform .5s}
+[da].in{opacity:1;transform:translateY(0)}
+[da="1"]{transition-delay:.08s}[da="2"]{transition-delay:.16s}[da="3"]{transition-delay:.24s}[da="4"]{transition-delay:.32s}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="index.html" class="nav-logo">FIT<em>-TI</em></a>
+  <a href="pricing.html" class="nav-back">← 상품 안내</a>
+</nav>
+
+<section class="hero">
+  <div class="hi">
+    <div class="h-tag" da>STEP 4 · 구독 멤버십</div>
+    <span class="h-icon" da="1">📅</span>
+    <h1 class="h-title" da="1">변화를 <em>유지하는</em><br>월간 멤버십</h1>
+    <p class="h-sub" da="2">21일로 패턴을 바꿨다면<br>이제 계속 쌓아가는 시간이에요.</p>
+    <span class="h-cond" da="2">RESET21 이수자 전용</span>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="si" da>
+    <span class="eye">멤버십 혜택</span>
+    <div class="stitle">매달 이런 걸<br><em>받을 수 있어요</em></div>
+    <div class="benefits">
+      <div class="ben"><div class="ben-icon">🎬</div><div><div class="ben-name">심화 운동 영상 추가 제공</div><div class="ben-desc">RESET21 기본 영상 외 심화 버전이 추가돼요. 레벨업하고 싶을 때 딱이에요.</div></div></div>
+      <div class="ben"><div class="ben-icon">📊</div><div><div class="ben-name">월간 행동 패턴 리포트</div><div class="ben-desc">이번 달 내 기록을 분석한 리포트를 드려요. 어떤 패턴이 강해지고 있는지 보여요.</div></div></div>
+      <div class="ben"><div class="ben-icon">👥</div><div><div class="ben-name">기수 커뮤니티 유지</div><div class="ben-desc">같은 기수 멤버들과 계속 연결돼요. 혼자가 아니라는 느낌이 지속돼요.</div></div></div>
+      <div class="ben"><div class="ben-icon">🎟️</div><div><div class="ben-name">오프라인 행사 우선 신청권</div><div class="ben-desc">여왕쌤이 진행하는 오프라인 행사에 멤버십 회원이 먼저 신청할 수 있어요.</div></div></div>
+      <div class="ben"><div class="ben-icon">📝</div><div><div class="ben-name">체크인 기록 유지</div><div class="ben-desc">RESET21 이후에도 매일 기록을 이어갈 수 있어요. 데이터가 계속 쌓여요.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="si" da="1">
+    <span class="eye">구독 vs 혼자 하기</span>
+    <div class="stitle">차이가 <em>이렇게 달라요</em></div>
+    <div class="vs-card">
+      <div class="vs-head">
+        <div class="vs-col">혼자 하기</div>
+        <div class="vs-col">멤버십 유지</div>
+      </div>
+      <div class="vs-row"><div class="vs-cell">동기 유지 어려움</div><div class="vs-cell">월간 리포트로 패턴 확인</div></div>
+      <div class="vs-row"><div class="vs-cell">같은 영상만 반복</div><div class="vs-cell">심화 영상 계속 추가</div></div>
+      <div class="vs-row"><div class="vs-cell">혼자 기록해야 함</div><div class="vs-cell">체크인 시스템 유지</div></div>
+      <div class="vs-row"><div class="vs-cell">커뮤니티 연결 끊김</div><div class="vs-cell">기수 멤버들과 연결 유지</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="si" da="2">
+    <span class="eye">가격</span>
+    <div class="price-box">
+      <span class="price-eye">월간 멤버십</span>
+      <div><span class="price-amt">₩49,900</span><span class="price-unit"> / 월</span></div>
+      <p class="price-cond">RESET21 이수자만 신청 가능<br>언제든지 해지 가능</p>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="si" da="3">
+    <span class="eye">FAQ</span>
+    <div class="fq">
+      <div class="fq-i"><button class="fq-q" onclick="fq(this)">RESET21 안 했으면 신청 못 하나요?<span class="fq-ic">+</span></button><div class="fq-a">네. 구독 멤버십은 RESET21 이수자만 신청 가능해요. RESET21에서 21일 데이터가 쌓여야 리포트가 의미있어요.</div></div>
+      <div class="fq-i"><button class="fq-q" onclick="fq(this)">언제든 해지 가능한가요?<span class="fq-ic">+</span></button><div class="fq-a">네. 원하실 때 언제든 해지 가능해요. 카카오로 말씀해주시면 돼요.</div></div>
+      <div class="fq-i"><button class="fq-q" onclick="fq(this)">결제는 어떻게 하나요?<span class="fq-ic">+</span></button><div class="fq-a">카카오 오픈채팅으로 신청하시면 매달 결제 링크를 전달드려요.</div></div>
+      <div class="fq-i"><button class="fq-q" onclick="fq(this)">1:1 PT로 업그레이드 가능한가요?<span class="fq-ic">+</span></button><div class="fq-a">네. 멤버십 유지 중에 1:1 PT로 전환 가능해요. 카카오로 문의해주세요.</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="ci" da="4">
+    <a href="https://open.kakao.com/o/sIL9syDi" target="_blank" class="btn btn--p">💬 멤버십 신청하기</a>
+    <a href="pricing.html" class="btn btn--o">전체 상품 보기</a>
+    <p class="cta-note">카카오 오픈채팅으로 연결돼요.<br>RESET21 이수 확인 후 신청 안내드려요.</p>
+  </div>
+</section>
+
+<footer style="background:var(--navy);padding:28px 24px;text-align:center">
+  <div style="font-size:15px;font-weight:900;color:rgba(255,255,255,.4)">FIT<span style="color:var(--lav)">-TI</span></div>
+  <div style="font-size:12px;color:rgba(255,255,255,.2);margin-top:4px">2026 FIT-TI. All rights reserved.</div>
+</footer>
+
+<script>
+function fq(b){const i=b.closest('.fq-i'),o=i.classList.contains('open');document.querySelectorAll('.fq-i.open').forEach(e=>e.classList.remove('open'));if(!o)i.classList.add('open');}
+const io=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('in')})},{threshold:.12});
+document.querySelectorAll('[da]').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
