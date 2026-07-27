@@ -646,8 +646,10 @@ function getThirdComment(){
   const p=ord[2];
   const pct=Math.min(Math.round((sc[p]/15)*100),100);
   const info=PATTERN_INFO[p];
-  const desc=info.high.endsWith('.')?info.high.slice(0,-1):info.high;
-  return '세 번째로 높은 패턴은 <strong>'+info.label+' '+pct+'%</strong>예요. '+desc+' — 1:1 상담에서 이 부분도 함께 들여다보면 좋아요.';
+  const raw=pct>=60?info.high:pct>=30?info.mid:info.low;
+  const desc=raw.endsWith('.')?raw.slice(0,-1):raw;
+  if(pct===0) return '';
+  return '세 번째로 높은 패턴은 <strong>'+info.label+' '+pct+'%</strong>예요. '+desc;
 }
 
 function drawScoreInterp(){
