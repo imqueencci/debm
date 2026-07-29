@@ -90,6 +90,8 @@ input,textarea,select{font-family:var(--font)}
 .modal-notes-label{font-size:12px;font-weight:700;color:var(--tx2);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
 .modal-notes{width:100%;height:70px;border:1.5px solid var(--bd);border-radius:12px;padding:10px 14px;font-size:14px;background:var(--bg);outline:none;resize:none;transition:border-color .2s;margin-bottom:14px}
 .modal-notes:focus{border-color:var(--lav2)}
+.delete-member-btn{background:#fff;border:1.5px solid #FFB3B3;color:#E53E3E;font-size:14px;font-weight:700;padding:12px 20px;border-radius:12px;cursor:pointer;font-family:inherit}
+.delete-member-btn:hover{background:#FFF5F5}
 .save-notes-btn{font-size:13px;font-weight:700;color:var(--lav2);background:var(--lav-s);padding:8px 18px;border-radius:999px;margin-bottom:24px;transition:background .2s}
 .save-notes-btn:hover{background:var(--lav-m)}
 .checkin-list{display:flex;flex-direction:column;gap:10px}
@@ -190,6 +192,7 @@ input,textarea,select{font-family:var(--font)}
     <div class="modal-notes-label">여왕쌤 메모</div>
     <textarea class="modal-notes" id="modal-notes" placeholder="회원 관련 메모 (비공개)"></textarea>
     <button class="save-notes-btn" onclick="saveNotes()">메모 저장</button>
+    <button class="delete-member-btn" onclick="deleteMember()">🗑 회원 삭제</button>
     <div class="checkin-list" id="modal-checkins"></div>
   </div>
 </div>
@@ -230,6 +233,10 @@ async function rGet(t,w={}){
 async function rPost(t,d,prefer='return=minimal'){
   const r=await fetch(RURL+'/'+t,{method:'POST',headers:{...RH,'Prefer':prefer},body:JSON.stringify(d)});
   if(!r.ok){const e=await r.json();throw new Error(e.message||r.status);}
+}
+async function rDelete(t,w){
+  const qs=Object.entries(w).map(([k,v])=>`${k}=eq.${v}`).join('&');
+  await fetch(`${BASE}/${t}?${qs}`,{method:'DELETE',headers:H});
 }
 async function rPatch(t,w,d){
   let q=Object.entries(w).map(([k,v])=>k+'=eq.'+encodeURIComponent(v)).join('&');
@@ -470,6 +477,16 @@ function copyLink(url){
   }).catch(()=>{
     prompt('아래 링크를 복사하세요:', url);
   });
+}
+async function deleteMember(){
+  const m = allMembers.find(x=>x.id===currentMemberId);
+  if(!m) return;
+  if(!confirm(`[${m.name}] 회원을 삭제할까요?\n체크인 기록도 모두 삭제돼요.`)) return;
+  await rDelete('checkins', {member_id: currentMemberId});
+  await rDelete('members', {id: currentMemberId});
+  alert('삭제 완료됐어요.');
+  document.getElementById('detail-modal').style.display='none';
+  await loadDashboard();
 }
 async function saveNotes(){
   const notes = $('modal-notes').value;
