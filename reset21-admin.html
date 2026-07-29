@@ -236,9 +236,9 @@ async function rPost(t,d,prefer='return=minimal'){
 }
 async function rDelete(t,w){
   const qs=Object.entries(w).map(([k,v])=>`${k}=eq.${encodeURIComponent(v)}`).join('&');
-  const res=await fetch(`${BASE}/${t}?${qs}`,{
+  const res=await fetch(`${RURL}/${t}?${qs}`,{
     method:'DELETE',
-    headers:{...H,'Prefer':'return=representation'}
+    headers:{...RH,'Prefer':'return=representation'}
   });
   if(!res.ok){const err=await res.text();throw new Error(err);}
   return res;
