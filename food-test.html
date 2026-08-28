@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>식이 패턴 검사 | FIT-TI</title>
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
+<style>
+:root{--lav:#C8B6FF;--lav2:#9B7BFF;--lav3:#7358FF;--lav-s:#F0EBFF;--lav-m:#E0D4FF;--navy:#1E2B4F;--bg:#F8F6FF;--white:#fff;--tx:#1F2430;--tx2:#6B7280;--font:"Pretendard",-apple-system,sans-serif}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);background:var(--bg);color:var(--tx);-webkit-font-smoothing:antialiased;min-height:100vh}
+.screen{display:none;min-height:100vh;flex-direction:column}
+.screen.on{display:flex;animation:fu .4s ease forwards}
+@keyframes fu{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+#sw{background:var(--navy);align-items:center;justify-content:center;text-align:center;padding:40px 24px;position:relative;overflow:hidden}
+#sw::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 10%,rgba(200,182,255,.18),transparent 70%);pointer-events:none}
+.sw-inner{position:relative;max-width:400px;width:100%}
+.sw-tag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(200,182,255,.6);border:1px solid rgba(200,182,255,.2);border-radius:999px;padding:6px 16px;margin-bottom:24px}
+.sw-icon{font-size:52px;margin-bottom:20px;display:block}
+.sw-title{font-size:clamp(24px,6vw,34px);font-weight:900;color:#fff;letter-spacing:-.04em;line-height:1.25;margin-bottom:14px}
+.sw-title em{font-style:normal;color:var(--lav)}
+.sw-sub{font-size:15px;color:rgba(255,255,255,.5);line-height:1.8;margin-bottom:32px}
+.sw-meta{display:flex;justify-content:center;gap:20px;margin-bottom:32px}
+.sw-meta-item{text-align:center}
+.sw-meta-num{display:block;font-size:22px;font-weight:900;color:#fff}
+.sw-meta-lbl{display:block;font-size:11px;color:rgba(255,255,255,.4);margin-top:2px}
+.btn-start{background:linear-gradient(135deg,var(--lav2),var(--lav3));color:#fff;font-size:16px;font-weight:800;padding:18px 40px;border-radius:999px;border:none;cursor:pointer;font-family:var(--font);box-shadow:0 8px 28px rgba(115,88,255,.35);width:100%}
+#sq{background:var(--bg)}
+.q-head{background:var(--white);padding:20px 24px 16px;border-bottom:1px solid var(--lav-m);position:sticky;top:0;z-index:10}
+.q-progress{height:4px;background:var(--lav-m);border-radius:999px;margin-bottom:12px;overflow:hidden}
+.q-bar{height:100%;background:linear-gradient(90deg,var(--lav2),var(--lav3));border-radius:999px;transition:width .4s ease;width:0%}
+.q-meta{display:flex;justify-content:space-between;align-items:center}
+.q-tag{font-size:11px;font-weight:700;color:var(--lav2);letter-spacing:.06em;text-transform:uppercase}
+.q-count{font-size:13px;color:var(--tx2)}
+.q-body{padding:28px 24px;flex:1}
+.q-text{font-size:18px;font-weight:800;color:var(--navy);line-height:1.5;margin-bottom:24px;letter-spacing:-.02em;white-space:pre-line}
+.q-opts{display:flex;flex-direction:column;gap:10px}
+.q-opt{background:var(--white);border:1.5px solid var(--lav-m);border-radius:18px;padding:16px 18px;font-size:15px;font-weight:500;color:var(--tx);cursor:pointer;text-align:left;font-family:var(--font);transition:all .2s;line-height:1.5}
+.q-opt.picked{background:var(--lav2);border-color:var(--lav2);color:#fff;font-weight:700}
+#sl{background:var(--navy);align-items:center;justify-content:center;text-align:center;padding:40px}
+.l-icon{font-size:52px;margin-bottom:20px;animation:spin 1.5s linear infinite}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.l-text{font-size:18px;font-weight:700;color:#fff;margin-bottom:8px}
+.l-sub{font-size:14px;color:rgba(255,255,255,.4)}
+#sr{background:var(--bg);padding-bottom:80px}
+.r-nav{position:sticky;top:0;z-index:100;background:rgba(252,251,255,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--lav-m);padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+.r-nav-logo{font-size:17px;font-weight:900;color:var(--navy)}
+.r-nav-logo em{font-style:normal;color:var(--lav2)}
+.r-nav-retry{font-size:12px;font-weight:700;color:var(--lav2);background:var(--lav-s);border-radius:999px;padding:6px 14px;border:none;cursor:pointer;font-family:var(--font)}
+.r-hero{background:linear-gradient(160deg,var(--navy),#2D1B5E);padding:36px 24px 32px;text-align:center}
+.r-hero-inner{max-width:480px;margin:0 auto}
+.r-tag{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:rgba(200,182,255,.6);border:1px solid rgba(200,182,255,.2);border-radius:999px;padding:5px 14px;margin-bottom:16px}
+.r-icon{font-size:52px;margin-bottom:14px;display:block}
+.r-name{font-size:clamp(18px,5vw,24px);font-weight:900;color:#fff;margin-bottom:18px;line-height:1.3;letter-spacing:-.03em}
+.r-bubble{background:rgba(255,255,255,.06);border:1px solid rgba(200,182,255,.2);border-radius:20px;padding:18px 20px}
+.r-quote{font-size:14px;color:rgba(255,255,255,.75);line-height:1.75;white-space:pre-line}
+.r-content{padding:20px;max-width:480px;margin:0 auto;width:100%;display:flex;flex-direction:column;gap:12px}
+.card{background:var(--white);border-radius:24px;padding:22px;border:1.5px solid var(--lav-m)}
+.card-eye{font-size:11px;font-weight:700;color:var(--lav2);letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:10px}
+.card-text{font-size:14px;color:var(--tx);line-height:1.8;white-space:pre-line}
+.rec-item{display:flex;align-items:flex-start;gap:10px;padding:11px 0;border-bottom:1px solid var(--lav-s);font-size:14px;color:var(--tx);line-height:1.6}
+.rec-item:last-child{border-bottom:none;padding-bottom:0}
+.rec-check{color:var(--lav2);font-weight:800;flex-shrink:0}
+.ap-block{border-radius:16px;padding:16px 18px;margin-bottom:10px}
+.ap-block:last-child{margin-bottom:0}
+.ap-block.pink{background:#FFF0F5;border:1.5px solid #FFB3CC}
+.ap-block.lavender{background:var(--lav-s);border:1.5px solid var(--lav-m)}
+.ap-block.dark{background:var(--navy)}
+.ap-block.dark .card-eye{color:rgba(200,182,255,.5)}
+.ap-block.dark .card-text{color:rgba(255,255,255,.8)}
+.ap-block.grad{background:linear-gradient(135deg,var(--lav2),var(--lav3))}
+.ap-block.grad .card-eye{color:rgba(255,255,255,.6)}
+.ap-block.grad .card-text{color:#fff;font-size:15px;font-weight:500}
+.chart-top3{display:flex;justify-content:center;align-items:flex-end;gap:10px;margin-bottom:14px}
+.c-item{display:flex;flex-direction:column;align-items:center;gap:5px}
+.c-lg{flex:0 0 100px}.c-md{flex:0 0 82px}.c-sm{flex:0 0 68px}
+.c-svg{width:100%;height:auto;overflow:visible}
+.sci{transition:stroke-dashoffset 1s ease;stroke-dashoffset:999}
+.c-rank{font-size:10px;font-weight:800;border-radius:999px;padding:3px 10px}
+.rk0{background:#FFD93D;color:#1E2B4F}.rk1{background:var(--lav-m);color:var(--lav3)}.rk2{background:#F5F0FF;color:var(--lav2)}
+.c-label{font-size:11px;font-weight:700;color:var(--navy);text-align:center}
+.c-mid{display:flex;flex-direction:column;gap:7px;background:var(--bg);border-radius:14px;padding:12px 14px}
+.c-mid-row{display:flex;flex-direction:column;gap:4px}
+.c-mid-head{display:flex;align-items:center;gap:6px}
+.c-mid-em{font-size:13px}.c-mid-lb{font-size:12px;font-weight:600;color:var(--navy);flex:1}.c-mid-pct{font-size:11px;font-weight:700;color:var(--lav2)}
+.c-track{height:5px;background:var(--lav-m);border-radius:999px;overflow:hidden}
+.c-fill{height:100%;border-radius:999px;width:0;transition:width 1s ease}
+.btn-main{display:block;width:100%;padding:17px;background:linear-gradient(135deg,var(--lav2),var(--lav3));color:#fff;font-size:15px;font-weight:800;border-radius:999px;border:none;cursor:pointer;font-family:var(--font);text-decoration:none;text-align:center;margin-bottom:10px;box-shadow:0 8px 28px rgba(115,88,255,.25)}
+.btn-kakao{display:block;width:100%;padding:15px;background:#FEE500;color:#191919;font-size:15px;font-weight:800;border-radius:999px;border:none;cursor:pointer;font-family:var(--font);text-decoration:none;text-align:center}
+</style>
+</head>
+<body>
+<div id="sw" class="screen on">
+  <div class="sw-inner">
+    <div class="sw-tag">FIT-TI 식이 패턴 검사</div>
+    <span class="sw-icon">🍽️</span>
+    <h1 class="sw-title">왜 나는 항상<br><em>같은 선택을 반복할까?</em></h1>
+    <p class="sw-sub">식사 패턴이 무너질 때<br>의지가 아니라 패턴이 있어요.<br>12문항으로 내 패턴을 확인해보세요.</p>
+    <div class="sw-meta">
+      <div class="sw-meta-item"><span class="sw-meta-num">12</span><span class="sw-meta-lbl">문항</span></div>
+      <div class="sw-meta-item"><span class="sw-meta-num">5분</span><span class="sw-meta-lbl">소요</span></div>
+      <div class="sw-meta-item"><span class="sw-meta-num">6가지</span><span class="sw-meta-lbl">패턴 분석</span></div>
+    </div>
+    <button class="btn-start" onclick="startTest()">검사 시작하기 →</button>
+  </div>
+</div>
+
+<div id="sq" class="screen">
+  <div class="q-head">
+    <div class="q-progress"><div class="q-bar" id="qbar"></div></div>
+    <div class="q-meta">
+      <span class="q-tag" id="qtag"></span>
+      <span class="q-count"><b id="qnum">1</b> / 12</span>
+    </div>
+  </div>
+  <div class="q-body">
+    <div class="q-text" id="qtext"></div>
+    <div class="q-opts" id="qopts"></div>
+  </div>
+</div>
+
+<div id="sl" class="screen">
+  <div class="l-icon">🔍</div>
+  <div class="l-text">패턴 분석 중이에요</div>
+  <div class="l-sub">잠깐만요...</div>
+</div>
+
+<div id="sr" class="screen">
+  <nav class="r-nav">
+    <span class="r-nav-logo">FIT<em>-TI</em></span>
+    <button class="r-nav-retry" onclick="restart()">다시 검사</button>
+  </nav>
+  <div class="r-hero">
+    <div class="r-hero-inner">
+      <span class="r-tag">나의 식이 패턴</span>
+      <span class="r-icon" id="ri"></span>
+      <div class="r-name" id="rname"></div>
+      <div class="r-bubble"><p class="r-quote" id="rquote"></p></div>
+    </div>
+  </div>
+  <div class="r-content">
+    <div class="card">
+      <span class="card-eye">📊 나의 6가지 패턴 점수</span>
+      <div id="scoreChart"></div>
+    </div>
+    <div class="card">
+      <span class="card-eye">이런 순간이 익숙하지 않으세요?</span>
+      <div id="recList"></div>
+    </div>
+    <div class="card">
+      <span class="card-eye">🧠 왜 이 패턴이 반복될까요?</span>
+      <p class="card-text" id="rscience"></p>
+    </div>
+    <div class="card">
+      <span class="card-eye">💡 이 패턴, 어떻게 바꿀까요?</span>
+      <div class="ap-block pink"><span class="card-eye">🔁 반복해온 선택</span><p class="card-text" id="apRepeat"></p></div>
+      <div class="ap-block lavender"><span class="card-eye">✂️ 끊어야 하는 것</span><p class="card-text" id="apCut"></p></div>
+      <div class="ap-block lavender"><span class="card-eye">🌱 새로 심어야 하는 것</span><p class="card-text" id="apInject"></p></div>
+      <div class="ap-block dark"><span class="card-eye">💊 이 방식이 당신에게 작동해요</span><p class="card-text" id="apHow"></p></div>
+    </div>
+    <div class="card">
+      <span class="card-eye">⚡ 이 패턴, 식사에서만 이런 게 아니에요</span>
+      <p class="card-text" id="rlife"></p>
+    </div>
+    <div class="ap-block grad" style="border-radius:24px;padding:24px">
+      <span class="card-eye">당신이 이미 알고 있었어요</span>
+      <p class="card-text" id="rInvest"></p>
+    </div>
+    <div class="card" style="background:linear-gradient(135deg,var(--lav2),var(--lav3));border:none;text-align:center;padding:28px">
+      <span class="card-eye" style="color:rgba(255,255,255,.6)">다음 단계</span>
+      <div style="font-size:20px;font-weight:900;color:#fff;margin-bottom:8px">운동 패턴도 확인해보세요</div>
+      <div style="font-size:13px;color:rgba(255,255,255,.65);margin-bottom:20px;line-height:1.7">식이 패턴과 운동 패턴은 연결돼 있어요.</div>
+      <a href="index.html" class="btn-main" style="background:#fff;color:var(--lav3)">무료 운동 패턴 검사하기</a>
+      <a href="https://open.kakao.com/o/sIL9syDi" target="_blank" class="btn-kakao">💬 여왕쌤과 상담하기</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const AI={
+  emotion:{label:'감정-식사 패턴',emoji:'💫',color:'#FF6B8A'},
+  reward: {label:'보상 패턴',     emoji:'🎁',color:'#FFD93D'},
+  stress: {label:'스트레스-식사', emoji:'⚡',color:'#9B7BFF'},
+  env:    {label:'환경-식사 패턴',emoji:'🏠',color:'#4ECDC4'},
+  routine:{label:'루틴-식사 패턴',emoji:'📅',color:'#6BCB77'},
+  social: {label:'관계-식사 패턴',emoji:'👥',color:'#FF9A3C'},
+};
+const AXES=['emotion','reward','stress','env','routine','social'];
+
+const Q=[
+  {tag:'감정-식사 패턴',q:'기분이 좋은 날과 기분이 나쁜 날,\n식사 선택에 차이가 있나요?',o:[
+    {t:'기분과 무관하게 비슷하게 먹어요',s:{}},
+    {t:'기분 좋은 날 더 잘 챙겨 먹어요',s:{emotion:1}},
+    {t:'기분 나쁜 날 먹는 것이 달라져요',s:{emotion:3}},
+    {t:'감정에 따라 먹는 종류가 크게 달라져요',s:{emotion:2}},
+  ]},
+  {tag:'감정-식사 패턴',q:'힘든 일이 있었던 날\n음식으로 위로받은 적이 있나요?',o:[
+    {t:'거의 없어요',s:{}},
+    {t:'가끔 있어요',s:{emotion:1}},
+    {t:'자주 있어요',s:{emotion:2}},
+    {t:'힘든 날은 항상 음식으로 달래요',s:{emotion:3}},
+  ]},
+  {tag:'보상 패턴',q:'운동하거나 열심히 한 날,\n음식에 대한 생각이 달라지나요?',o:[
+    {t:'별 차이 없어요',s:{}},
+    {t:'조금 더 먹어도 될 것 같아요',s:{reward:2}},
+    {t:'열심히 했으니 먹고 싶은 걸 먹어요',s:{reward:3}},
+    {t:'건강하게 잘 먹고 싶다는 생각이 나요',s:{reward:1}},
+  ]},
+  {tag:'보상 패턴',q:'"오늘 힘들었으니까" 또는\n"오늘 잘 했으니까" 먹은 적 있나요?',o:[
+    {t:'없어요',s:{}},
+    {t:'가끔 있어요',s:{reward:1}},
+    {t:'자주 있어요',s:{reward:2}},
+    {t:'항상 그런 식으로 허락하게 돼요',s:{reward:3}},
+  ]},
+  {tag:'스트레스-식사 패턴',q:'스트레스를 받을 때\n가장 먼저 생각나는 게 뭐예요?',o:[
+    {t:'운동이나 산책',s:{}},
+    {t:'음식',s:{stress:3}},
+    {t:'잠 또는 유튜브',s:{stress:1}},
+    {t:'사람과의 대화',s:{stress:1}},
+  ]},
+  {tag:'스트레스-식사 패턴',q:'힘든 상황에서 먹고 나면\n어떤 기분이 드나요?',o:[
+    {t:'스트레스를 음식으로 잘 안 풀어요',s:{}},
+    {t:'잠깐은 나아지는데 후회가 와요',s:{stress:3}},
+    {t:'별 변화 없어요',s:{stress:1}},
+    {t:'오히려 더 기분이 나빠져요',s:{stress:2}},
+  ]},
+  {tag:'환경-식사 패턴',q:'음식이 눈에 보이면\n배고프지 않아도 손이 가나요?',o:[
+    {t:'거의 그렇지 않아요',s:{}},
+    {t:'가끔 손이 가요',s:{env:1}},
+    {t:'자주 있어요',s:{env:2}},
+    {t:'눈에 보이면 먹게 돼요',s:{env:3}},
+  ]},
+  {tag:'환경-식사 패턴',q:'야근, 여행, 외식 등\n환경이 다를 때 식사 패턴은?',o:[
+    {t:'비슷하게 유지해요',s:{}},
+    {t:'조금 달라지지만 금방 돌아와요',s:{env:1}},
+    {t:'환경이 바뀌면 식사도 같이 바뀌어요',s:{env:3}},
+    {t:'어떤 환경이든 식사는 크게 신경 안 써요',s:{}},
+  ]},
+  {tag:'루틴-식사 패턴',q:'하루 식사 시간이\n대체로 일정한 편인가요?',o:[
+    {t:'매일 거의 같은 시간에 먹어요',s:{}},
+    {t:'그날그날 다 달라요',s:{routine:3}},
+    {t:'평일은 비슷하고 주말은 달라요',s:{routine:2}},
+    {t:'배고플 때 먹어요',s:{routine:1}},
+  ]},
+  {tag:'루틴-식사 패턴',q:'식사 루틴이 흔들리면\n어떻게 되나요?',o:[
+    {t:'금방 다시 원래대로 돌아와요',s:{}},
+    {t:'며칠은 흔들려요',s:{routine:2}},
+    {t:'한 번 흔들리면 한참 가요',s:{routine:3}},
+    {t:'원래 루틴이 없어서 차이가 없어요',s:{routine:1}},
+  ]},
+  {tag:'관계-식사 패턴',q:'혼자 먹을 때와 함께 먹을 때\n선택이 달라지나요?',o:[
+    {t:'거의 차이 없어요',s:{}},
+    {t:'함께하면 더 많이 먹게 돼요',s:{social:2}},
+    {t:'혼자면 잘 안 챙겨 먹어요',s:{social:3}},
+    {t:'혼자일 때 오히려 더 잘 먹어요',s:{social:1}},
+  ]},
+  {tag:'관계-식사 패턴',q:'함께하는 사람에 따라\n먹는 선택이 달라지나요?',o:[
+    {t:'별로 영향 안 받아요',s:{}},
+    {t:'분위기에 따라 조금 달라져요',s:{social:1}},
+    {t:'함께하는 사람에 따라 많이 달라져요',s:{social:2}},
+    {t:'먹는 자리 자체가 관계와 연결돼 있어요',s:{social:3}},
+  ]},
+];
+
+const RD={
+  emotion:{icon:'💫',name:'기분이 선택을 만드는 감정-식사형',quote:'기분 나쁜 날 음식이 가장 먼저 떠올라요.\n그게 나쁜 게 아니에요. 패턴이에요.',recs:['기분 좋은 날 잘 먹고 기분 나쁜 날 선택이 달라진다','힘든 일이 있으면 음식으로 먼저 달래게 된다','감정과 식사가 연결되어 있다는 걸 느낀다'],science:'감정이 불편할 때 뇌는 빠르게 기분을 회복할 방법을 찾아요.\n\n음식은 즉각적으로 도파민을 올려줘요. 그래서 뇌가 힘든 순간 음식을 먼저 떠올리도록 학습해요.\n\n이게 반복되면 감정 → 음식이 자동 연결로 굳어져요. 판단력이 흐려진 상태에서 이 연결고리를 의지로 끊기는 어려워요.',repeat:'기분이 나쁘면 음식부터 찾게 돼요.\n먹고 나면 잠깐 나아지는데 후회가 와요.\n그 자책이 또 다른 스트레스가 돼요.',cut:'"감정을 음식으로 해결한다"는 자동 연결이에요.\n감정이 불편할 때 음식이 유일한 출구가 된 거예요.',inject:'음식이 아닌 방식으로 감정을 표현하는 경험이에요.\n다른 것으로도 기분을 전환할 수 있다는 것.',how:'감정이 올라오는 순간 10분만 다른 것을 먼저 해보세요.\n산책, 음악, 글쓰기 뭐든요.\n10분 후에도 먹고 싶으면 먹어요.\n그 10분이 자동 연결을 끊는 연습이에요.',life:'운동도 기분 좋은 날만 되고 나쁜 날은 사라져요.\n일도 감정 상태에 따라 집중도가 크게 달라져요.',invest:'당신은 이미 알고 있었어요.\n기분 나쁜 날 왜 그 선택을 하는지.\n\n근데 그때마다 또 의지 문제라고 자책했죠.\n\n그게 패턴이라는 걸 알면 달라져요.\n자책이 사라지고 그 순간을 설계할 수 있게 돼요.'},
+  reward:{icon:'🎁',name:'잘 했으니까 괜찮은 보상-식사형',quote:'"오늘 열심히 했으니까."\n그 말 한마디가 선택을 바꿔요.',recs:['운동하고 나면 더 먹어도 될 것 같다','힘들었던 날 뭔가 보상받고 싶어진다','잘 했을 때와 못 했을 때 선택 기준이 달라진다'],science:'뇌는 노력에 대한 보상을 원해요.\n\n문제는 그 보상이 항상 음식으로 연결될 때예요. 노력 → 보상 → 음식의 회로가 강해지면 어떤 상황에서도 음식이 보상 1순위가 돼요.\n\n판단력이 흐려진 순간 이 패턴이 가장 먼저 작동해요.',repeat:'"오늘 열심히 했으니까" 허락하게 돼요.\n그 허락이 반복될수록 기준이 조금씩 낮아져요.',cut:'보상이 항상 음식으로 연결되는 구조예요.\n노력의 보상이 음식일 필요는 없어요.',inject:'음식 외 보상 방식을 경험하는 거예요.\n다른 것으로도 충분히 자신을 보상할 수 있다는 것.',how:'"오늘 열심히 했다"는 느낌이 들 때\n음식 외 보상을 하나 정해두세요.\n좋아하는 영상, 산책, 카페 한 잔 뭐든요.\n대체 보상이 생기면 자동 연결이 약해져요.',life:'운동도 보상이 있을 때 더 열심히 해요.\n일도 결과가 있어야 동기가 생기는 편이에요.',invest:'보상으로 선택하는 게 잘못된 게 아니에요.\n그게 유일한 보상이 되는 게 패턴이에요.\n\n패턴을 알면 보상 방식을 넓힐 수 있어요.'},
+  stress:{icon:'⚡',name:'스트레스가 선택을 바꾸는 스트레스-식사형',quote:'힘든 날 가장 먼저 생각나는 게 음식이에요.\n그게 의지 문제가 아니에요.',recs:['스트레스 받으면 음식이 가장 먼저 떠오른다','먹고 나면 잠깐 나아지는데 후회가 온다','힘든 날과 평소 선택 패턴이 다르다'],science:'스트레스를 받으면 코르티솔이 분비돼요.\n코르티솔이 올라가면 판단력이 흐려지고 뇌는 빠르게 기분을 올릴 방법을 찾아요.\n\n음식은 그 방법 중 가장 접근하기 쉬워요.\n이게 반복되면 스트레스 → 음식이 자동 패턴이 돼요.',repeat:'힘든 날 음식으로 먼저 가요.\n먹고 후회하고 자책하고\n그 자책이 또 스트레스가 되는 사이클.',cut:'스트레스 → 음식의 자동 연결이에요.\n이 연결이 강할수록 스트레스가 올 때마다 음식이 먼저 떠올라요.',inject:'스트레스가 올라오는 순간을 알아채는 경험이에요.\n그 순간 다른 선택을 한 번이라도 해보는 것.',how:'스트레스 순간 딱 하나만 먼저 해보세요.\n자리에서 일어나기. 그것만.\n뇌가 다른 행동으로 넘어가면 자동 패턴이 약해져요.',life:'운동도 스트레스 받으면 가장 먼저 없어져요.\n일도 힘든 날 집중이 안 되고 판단이 흐려져요.',invest:'스트레스 받고 그 선택을 하는 게 약한 게 아니에요.\n뇌가 그렇게 학습된 거예요.\n\n패턴을 알면 그 순간을 미리 설계할 수 있어요.'},
+  env:{icon:'🏠',name:'환경이 선택을 만드는 환경-식사형',quote:'눈에 보이면 선택이 달라져요.\n환경이 패턴을 만들고 있어요.',recs:['음식이 보이면 배고프지 않아도 손이 간다','환경이 바뀌면 식사 패턴도 같이 바뀐다','집에 있는 것들이 선택을 결정한다'],science:'뇌는 환경과 행동을 세트로 기억해요.\n음식이 보이면 뇌가 자동으로 먹는 행동을 준비해요.\n\n이건 의지 문제가 아니에요. 뇌의 맥락 기억이에요.\n환경이 바뀌면 패턴도 같이 바뀌는 이유예요.',repeat:'보이는 것, 있는 것이 선택을 결정해요.\n환경이 선택보다 먼저 작동해요.',cut:'음식이 눈에 보이면 자동으로 가는 연결이에요.\n환경이 선택을 만들고 있는 거예요.',inject:'환경을 먼저 설계하는 경험이에요.\n선택이 쉽게 되도록 주변을 바꾸는 것.',how:'사려는 것을 먼저 바꿔보세요.\n집에 없으면 선택할 수 없어요.\n선택은 마트에서 이미 결정되는 경우가 많아요.',life:'운동도 환경이 세팅되어 있을 때 더 잘 돼요.\n일도 환경에 따라 집중도가 크게 달라져요.',invest:'환경에 영향받는 게 약점이 아니에요.\n오히려 환경을 잘 설계하면 가장 강한 패턴이 돼요.\n\n의지로 버티는 게 아니라 환경으로 쉽게 만드는 거예요.'},
+  routine:{icon:'📅',name:'루틴이 흔들리면 따라 흔들리는 루틴-식사형',quote:'평소엔 잘 되는데\n루틴이 깨지면 같이 무너져요.',recs:['야근이나 약속으로 루틴이 깨지면 식사도 같이 흔들린다','한 번 흔들리면 돌아오는 데 시간이 걸린다','정해진 것이 없으면 선택이 어려워진다'],science:'뇌는 반복된 행동을 자동화해요.\n루틴이 생기면 적은 에너지로 좋은 선택을 할 수 있어요.\n\n그런데 루틴이 깨지면 뇌가 새로운 결정을 내려야 해요.\n판단력이 흐려진 상태에서 새 결정은 쉽지 않아요.',repeat:'루틴이 있을 때는 잘 돼요.\n한 번 깨지면 며칠이 흔들려요.',cut:'루틴에만 의존하는 패턴이에요.\n루틴이 없는 날을 위한 설계가 없어요.',inject:'루틴이 깨진 날을 위한 최소 기준을 만드는 경험이에요.\n완벽하지 않아도 작동하는 하나.',how:'루틴이 깨진 날 최소 하나만 정해두세요.\n"이것만은 유지한다"는 닻 하나.\n그게 루틴 의존을 줄이는 시작이에요.',life:'운동도 루틴이 깨지면 한 번에 멈춰요.\n일도 정해진 구조가 없으면 효율이 떨어져요.',invest:'루틴을 만드는 능력이 있어요.\n그게 이미 강점이에요.\n\n루틴이 없는 날에도 작동하는 하나를 추가하면\n무너지는 순간이 줄어들어요.'},
+  social:{icon:'👥',name:'함께하는 사람이 선택을 만드는 관계-식사형',quote:'혼자면 잘 안 챙기게 되거나\n함께하면 선택이 달라져요.',recs:['혼자 먹으면 대충 때우게 된다','함께하는 자리에서 선택이 달라진다','누구와 먹느냐에 따라 패턴이 달라진다'],science:'함께하는 자리에서 옥시토신이 분비돼요.\n이 물질은 편안함과 연결감을 주는데, 이때 선택에도 영향을 줘요.\n\n혼자일 때는 반대로 식사에 에너지를 쓰기 어려워져요.\n관계가 식사 패턴을 만들고 있어요.',repeat:'혼자면 잘 못 챙겨요.\n함께하면 선택이 달라져요.\n관계가 패턴을 결정하고 있어요.',cut:'식사가 관계에만 연결된 구조예요.\n혼자인 날을 위한 기준이 없어요.',inject:'혼자인 날도 나를 위해 챙기는 경험이에요.\n관계와 무관하게 작동하는 선택 하나.',how:'혼자 먹는 날 딱 하나만 차려보세요.\n그릇에 담기만 해도 달라져요.\n혼자서도 챙기는 경험이 쌓이면 패턴이 바뀌어요.',life:'운동도 같이 하는 사람이 있어야 더 잘 돼요.\n혼자 남겨지면 동기가 사라지는 패턴이 있어요.',invest:'관계에서 에너지를 얻는 사람이에요.\n그게 약점이 아니에요.\n\n혼자인 날을 위한 구조 하나가 생기면\n어떤 상황에서도 작동할 수 있어요.'},
+};
+
+let sc={},cur=0,chosen=null;
+
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>{s.classList.remove('on');s.style.display='none';});
+  const el=document.getElementById(id);
+  el.classList.add('on');el.style.display='flex';
+}
+
+function startTest(){AXES.forEach(k=>sc[k]=0);cur=0;chosen=null;show('sq');renderQ();}
+
+function renderQ(){
+  const q=Q[cur];
+  document.getElementById('qtag').textContent=q.tag;
+  document.getElementById('qnum').textContent=cur+1;
+  document.getElementById('qbar').style.width=((cur/Q.length)*100)+'%';
+  document.getElementById('qtext').textContent=q.q;
+  const opts=document.getElementById('qopts');
+  opts.innerHTML='';
+  q.o.forEach((o,i)=>{
+    const btn=document.createElement('button');
+    btn.className='q-opt';btn.textContent=o.t;
+    btn.onclick=()=>pick(i);
+    opts.appendChild(btn);
+  });
+  chosen=null;window.scrollTo(0,0);
+}
+
+function pick(i){
+  document.querySelectorAll('.q-opt').forEach((b,j)=>b.classList.toggle('picked',j===i));
+  chosen=i;
+  setTimeout(()=>{
+    const s=Q[cur].o[i].s||{};
+    Object.entries(s).forEach(([k,v])=>{if(sc[k]!==undefined)sc[k]+=v;});
+    cur++;
+    if(cur>=Q.length)startLoad();else renderQ();
+  },320);
+}
+
+function startLoad(){show('sl');setTimeout(showResult,1800);}
+
+function showResult(){
+  const ord=[...AXES].sort((a,b)=>sc[b]-sc[a]);
+  const D=RD[ord[0]];
+  document.getElementById('ri').textContent=D.icon;
+  document.getElementById('rname').textContent=D.name;
+  document.getElementById('rquote').textContent=D.quote;
+  document.getElementById('rscience').textContent=D.science;
+  document.getElementById('rlife').textContent=D.life;
+  document.getElementById('apRepeat').textContent=D.repeat;
+  document.getElementById('apCut').textContent=D.cut;
+  document.getElementById('apInject').textContent=D.inject;
+  document.getElementById('apHow').textContent=D.how;
+  document.getElementById('rInvest').textContent=D.invest;
+  document.getElementById('recList').innerHTML=D.recs.map(r=>`<div class="rec-item"><span class="rec-check">✔</span>${r}</div>`).join('');
+  drawChart(ord);
+  show('sr');window.scrollTo(0,0);
+}
+
+function drawChart(ord){
+  const mx=Math.max(...AXES.map(k=>sc[k]))||1;
+  let html='<div class="chart-top3">';
+  [0,1,2].forEach(i=>{
+    const p=ord[i],pct=Math.min(Math.round((sc[p]/mx)*100),100);
+    const info=AI[p],R=36,C=+(2*Math.PI*R).toFixed(2);
+    const off=+(C*(1-pct/100)).toFixed(2);
+    const sz=['c-lg','c-md','c-sm'][i],rk=['rk0','rk1','rk2'][i];
+    html+=`<div class="c-item ${sz}"><div class="c-rank ${rk}">${['1위','2위','3위'][i]}</div>
+    <svg viewBox="0 0 100 100" class="c-svg">
+      <circle cx="50" cy="50" r="${R}" fill="none" stroke="#E0D4FF" stroke-width="8"/>
+      <circle cx="50" cy="50" r="${R}" fill="none" stroke="${info.color}" stroke-width="8"
+        stroke-dasharray="${C}" stroke-dashoffset="${off}" stroke-linecap="round"
+        transform="rotate(-90 50 50)" class="sci" data-off="${off}"/>
+      <text x="50" y="46" text-anchor="middle" font-size="16" font-weight="900" fill="#1E2B4F">${pct}%</text>
+      <text x="50" y="62" text-anchor="middle" font-size="11" fill="#6B7280">${info.emoji}</text>
+    </svg><div class="c-label">${info.label}</div></div>`;
+  });
+  html+='</div><div class="c-mid">';
+  [3,4].forEach(i=>{
+    if(i>=ord.length)return;
+    const p=ord[i],pct=Math.min(Math.round((sc[p]/mx)*100),100),info=AI[p];
+    html+=`<div class="c-mid-row"><div class="c-mid-head"><span class="c-mid-em">${info.emoji}</span><span class="c-mid-lb">${info.label}</span><span class="c-mid-pct">${pct}%</span></div><div class="c-track"><div class="c-fill" data-p="${pct}" style="background:${info.color}"></div></div></div>`;
+  });
+  html+='</div>';
+  document.getElementById('scoreChart').innerHTML=html;
+  setTimeout(()=>{
+    document.querySelectorAll('.sci').forEach(c=>{c.style.strokeDashoffset=c.dataset.off;});
+    document.querySelectorAll('.c-fill').forEach(b=>{b.style.width=b.dataset.p+'%';});
+  },80);
+}
+
+function restart(){AXES.forEach(k=>sc[k]=0);cur=0;chosen=null;show('sw');}
+</script>
+</body>
+</html>
