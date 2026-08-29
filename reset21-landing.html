@@ -83,6 +83,12 @@ footer{background:var(--navy);padding:28px 24px;text-align:center}
 .ft-logo{font-size:16px;font-weight:700;color:rgba(255,255,255,.5);margin-bottom:6px}.ft-logo em{font-style:normal;color:var(--lav)}
 .ft-copy{font-size:12px;color:rgba(255,255,255,.2)}
 [da]{opacity:0;transform:translateY(20px);transition:opacity .6s,transform .6s}[da].in{opacity:1;transform:translateY(0)}
+.kisu-card{background:linear-gradient(135deg,#1E2B4F,#2D1B5E);border-radius:24px;padding:24px;margin-bottom:4px}
+.kisu-head{font-size:17px;font-weight:900;color:#fff;margin-bottom:12px}
+.kisu-desc{font-size:14px;color:rgba(255,255,255,.65);line-height:1.75;margin-bottom:16px}
+.kisu-desc b{color:#C8B6FF;font-weight:700}
+.kisu-items{display:flex;flex-direction:column;gap:8px}
+.kisu-item{display:flex;align-items:center;gap:10px;font-size:13px;color:rgba(200,182,255,.8)}
 </style>
 </head>
 <body>
@@ -123,7 +129,7 @@ footer{background:var(--navy);padding:28px 24px;text-align:center}
     <p class="sdesc" da="2">FIT-TI는 운동법을 가르치지 않아요.<br>왜 항상 같은 지점에서 멈추는지,<br>그 반복된 선택의 패턴을 함께 들여다봐요.</p>
     <div class="how">
       <div class="how-i" da><div class="how-dot">1</div><div><div class="how-lb">매일</div><div class="how-t">기록하기</div><div class="how-d">식사 감정, 운동 전후 상태, 흔들린 순간, 나에게 한마디. 21일 동안 나를 관찰해요.</div></div></div>
-      <div class="how-i" da="1"><div class="how-dot">2</div><div><div class="how-lb">매주</div><div class="how-t">줌 미팅 15분</div><div class="how-d">이번 주 내 패턴을 여왕쌤과 1:1로 확인해요. 혼자였으면 몰랐을 것들이 보여요.</div></div></div>
+      <div class="how-i" da="1"><div class="how-dot">2</div><div><div class="how-lb">매주</div><div class="how-t">그룹 줌 미팅 30~60분</div><div class="how-d">같은 기수와 함께 이번 주 이야기를 나눠요. 나만 그런 게 아니구나 하는 힘이 생겨요.</div></div></div>
       <div class="how-i" da="2"><div class="how-dot">3</div><div><div class="how-lb">21일 완료</div><div class="how-t">나의 패턴 리포트</div><div class="how-d">21일 데이터로 어떤 상황에서 흔들렸는지, 어떤 선택을 반복했는지 확인해요.</div></div></div>
     </div>
   </div>
@@ -131,12 +137,22 @@ footer{background:var(--navy);padding:28px 24px;text-align:center}
 
 <section class="sec sw">
   <div class="si">
+    <div class="kisu-card" da>
+      <div class="kisu-head">🔄 RESET21은 기수제로 운영돼요</div>
+      <div class="kisu-desc">같은 기수가 함께 시작해서 21일을 완주하는 방식이에요.<br>같은 지점에서 흔들리는 사람들과 함께라<br><b>"나만 그런 게 아니구나"</b> 하는 힘이 생겨요 🙂</div>
+      <div class="kisu-items">
+        <div class="kisu-item"><span>📅</span><span>다음 기수 시작일은 신청 후 안내드려요</span></div>
+        <div class="kisu-item"><span>👥</span><span>소수 정예 한정 모집</span></div>
+        <div class="kisu-item"><span>💬</span><span>신청하시면 대기 명단에 올려드려요</span></div>
+      </div>
+    </div>
+
     <span class="eye" da>포함 내용</span>
     <h2 class="stitle" da="1">RESET21에<br><em>포함된 것들</em></h2>
     <div class="inc" da="2">
       <div class="ic"><div class="ic-icon">🎬</div><div class="ic-name">멤버 전용 운동 영상</div><div class="ic-desc">유튜브 비공개 영상. 내 페이스대로.</div></div>
       <div class="ic"><div class="ic-icon">📝</div><div class="ic-name">매일 체크인</div><div class="ic-desc">식단·운동·멘탈 기록. 21일 데이터.</div></div>
-      <div class="ic"><div class="ic-icon">💻</div><div class="ic-name">개인 줌 미팅</div><div class="ic-desc">주 1회 15분. 여왕쌤과 1:1 패턴 확인.</div></div>
+      <div class="ic"><div class="ic-icon">💻</div><div class="ic-name">주 1회 그룹 줌 미팅</div><div class="ic-desc">주 1회 30~60분. 같은 기수와 함께 이야기해요.</div></div>
       <div class="ic"><div class="ic-icon">🍽️</div><div class="ic-name">식단 관리</div><div class="ic-desc">먹는 것과 감정의 관계를 들여다봐요.</div></div>
       <div class="ic"><div class="ic-icon">🧠</div><div class="ic-name">멘탈 케어</div><div class="ic-desc">흔들리는 순간의 패턴을 재설계해요.</div></div>
       <div class="ic"><div class="ic-icon">📊</div><div class="ic-name">완료 리포트</div><div class="ic-desc">21일 행동 데이터 기반 개인 분석.</div></div>
@@ -163,7 +179,7 @@ footer{background:var(--navy);padding:28px 24px;text-align:center}
         <ul class="pm-list">
           <li>멤버 전용 유튜브 운동 영상</li>
           <li>매일 체크인 기록 시스템</li>
-          <li>개인 줌 미팅 주 1회 (15분)</li>
+          <li>주 1회 그룹 줌 미팅 주 1회 (15분)</li>
           <li>식단 + 멘탈 케어</li>
           <li>21일 완료 행동 패턴 리포트</li>
         </ul>
@@ -193,7 +209,7 @@ footer{background:var(--navy);padding:28px 24px;text-align:center}
     <div class="fq" da="2">
       <div class="fq-i"><button class="fq-q" onclick="fq(this)">운동을 거의 안 해봤는데 괜찮을까요?<span class="fq-ic">+</span></button><div class="fq-a">RESET21은 운동 실력과 관계없어요. 운동을 못 하는 게 아니라 내 패턴을 아직 모르는 것뿐이에요.</div></div>
       <div class="fq-i"><button class="fq-q" onclick="fq(this)">21일 동안 매일 해야 하나요?<span class="fq-ic">+</span></button><div class="fq-a">네. 매일 기록이 핵심이에요. 페이백도 21일 전일 완료 시에만 드려요.</div></div>
-      <div class="fq-i"><button class="fq-q" onclick="fq(this)">줌 미팅은 어떻게 진행되나요?<span class="fq-ic">+</span></button><div class="fq-a">주 1회 15분, 여왕쌤과 1:1로 이번 주 기록 데이터를 함께 보면서 패턴을 확인해요.</div></div>
+      <div class="fq-i"><button class="fq-q" onclick="fq(this)">그룹 줌 미팅은 어떻게 진행되나요?<span class="fq-ic">+</span></button><div class="fq-a">주 1회 30~60분, 같은 기수 멤버들과 함께 진행해요. 이번 주 주제로 어떻게 이겨냈는지 무너진 게 뭐였는지 나누고, 여왕쌤이 함께 봐드려요.</div></div>
       <div class="fq-i"><button class="fq-q" onclick="fq(this)">21일 이후에는 어떻게 되나요?<span class="fq-ic">+</span></button><div class="fq-a">구독 멤버십(월 49,900원)으로 이어가거나 1:1 PT로 넘어갈 수 있어요. 21일 후에 선택해요.</div></div>
       <div class="fq-i"><button class="fq-q" onclick="fq(this)">신청은 어떻게 하나요?<span class="fq-ic">+</span></button><div class="fq-a">카카오 오픈채팅으로 신청받고 있어요. 아래 버튼을 눌러주시면 일정과 결제 안내를 드려요.</div></div>
     </div>
