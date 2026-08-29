@@ -31,16 +31,19 @@ body{font-family:var(--font);background:var(--bg);color:var(--tx);-webkit-font-s
 .btn-start{background:linear-gradient(135deg,var(--lav2),var(--lav3));color:#fff;font-size:16px;font-weight:800;padding:18px 40px;border-radius:999px;border:none;cursor:pointer;font-family:var(--font);box-shadow:0 8px 28px rgba(115,88,255,.35);width:100%}
 
 /* QUIZ */
-#sq{background:var(--bg)}
-.q-head{background:var(--white);padding:20px 24px 16px;border-bottom:1px solid var(--lav-m);position:sticky;top:0;z-index:10}
-.q-progress{height:4px;background:var(--lav-m);border-radius:999px;margin-bottom:10px;overflow:hidden}
+#sq{background:var(--bg);min-height:100vh}
+.q-head{background:var(--white);padding:14px 24px 12px;border-bottom:1px solid var(--lav-m);position:sticky;top:0;z-index:10}
+.q-head-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.q-logo{font-size:16px;font-weight:900;color:var(--navy);letter-spacing:-.04em}
+.q-logo em{font-style:normal;color:var(--lav2)}
+.q-count{font-size:12px;color:var(--tx2)}
+.q-progress{height:4px;background:var(--lav-m);border-radius:999px;overflow:hidden}
 .q-bar{height:100%;background:linear-gradient(90deg,var(--lav2),var(--lav3));border-radius:999px;transition:width .4s ease;width:0%}
-.q-count{font-size:12px;color:var(--tx2);text-align:right}
-.q-body{padding:32px 24px;flex:1;display:flex;flex-direction:column;justify-content:center}
-.q-notice{font-size:12px;color:var(--tx2);background:var(--lav-s);border-radius:10px;padding:10px 14px;margin-bottom:24px;line-height:1.5}
-.q-text{font-size:20px;font-weight:800;color:var(--navy);line-height:1.5;margin-bottom:32px;letter-spacing:-.02em}
+.q-body{padding:20px 24px 24px;display:flex;flex-direction:column;justify-content:flex-start}
+.q-notice{font-size:12px;color:var(--tx2);background:var(--lav-s);border-radius:10px;padding:10px 14px;margin-bottom:20px;line-height:1.5}
+.q-text{font-size:20px;font-weight:800;color:var(--navy);line-height:1.55;margin-bottom:28px;letter-spacing:-.02em}
 .q-yesno{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.q-yn-btn{padding:20px 10px;border-radius:20px;font-size:17px;font-weight:800;cursor:pointer;font-family:var(--font);transition:all .2s;border:2px solid var(--lav-m);background:var(--white);color:var(--tx)}
+.q-yn-btn{padding:16px 10px;border-radius:20px;font-size:17px;font-weight:800;cursor:pointer;font-family:var(--font);transition:all .2s;border:2px solid var(--lav-m);background:var(--white);color:var(--tx)}
 .q-yn-btn.yes{border-color:var(--lav2);background:var(--lav-s);color:var(--lav3)}
 .q-yn-btn.yes.picked{background:var(--lav2);color:#fff;border-color:var(--lav2)}
 .q-yn-btn.no{border-color:#E5E7EB;background:#F9FAFB;color:#6B7280}
@@ -130,8 +133,11 @@ body{font-family:var(--font);background:var(--bg);color:var(--tx);-webkit-font-s
 
 <div id="sq" class="screen">
   <div class="q-head">
+    <div class="q-head-top">
+      <span class="q-logo">FIT<em>-TI</em> 🔥</span>
+      <span class="q-count"><b id="qnum">1</b> / 18</span>
+    </div>
     <div class="q-progress"><div class="q-bar" id="qbar"></div></div>
-    <div class="q-count"><b id="qnum">1</b> / 18</div>
   </div>
   <div class="q-body">
     <div class="q-notice">생각하지 말고 평소의 나와 가장 가까운 답을 선택하는 것이 정확합니다.</div>
