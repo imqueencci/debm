@@ -621,34 +621,32 @@ function showResult(){
   const D=R[key]||R[p1+'_'+p2]||R[p2+'_'+p1]||R[p1+'_'+p1];
   if(!D){show('sw');return;}
 
+  // 먼저 화면 표시
+  show('sr');
+  window.scrollTo(0,0);
+
   // 히어로
+  ['ri','rpat','rt','rs'].forEach(id=>{const el=document.getElementById(id);if(!el)return;});
   document.getElementById('ri').textContent=D.icon||'🔍';
   document.getElementById('rpat').textContent=D.subTitle||'';
-  document.getElementById('rt').textContent=D.title||D.name||'';
+  document.getElementById('rt').innerHTML=(D.title||D.name||'').replace(/\n/g,'<br>');
   document.getElementById('rs').textContent=D.sub||'';
 
   // 차트
-  drawScoreChart();
+  try{drawScoreChart();}catch(e){console.warn('chart:',e);}
 
   // 파트별 삶의 영역
   const parts=D.lifeParts||[];
-  document.getElementById('lifeParts').innerHTML=parts.map(p=>`
-    <div class="life-part-item">
-      <div class="life-part-head">
-        <span class="life-part-icon">${p.icon}</span>
-        <span class="life-part-label">${p.label}</span>
-      </div>
-      <div class="life-part-body">${p.text}</div>
-    </div>
-  `).join('');
+  const lp=document.getElementById('lifeParts');
+  if(lp) lp.innerHTML=parts.map(p=>`<div class="life-part-item"><div class="life-part-head"><span class="life-part-icon">${p.icon}</span><span class="life-part-label">${p.label}</span></div><div class="life-part-body">${(p.text||'').replace(/\n/g,'<br>')}</div></div>`).join('');
 
   // 스트레스 + 변화
-  document.getElementById('stressText').textContent=D.stressText||'';
-  document.getElementById('changeText').textContent=D.changeText||'';
-
-  show('sr');
-  window.scrollTo(0,0);
+  const st=document.getElementById('stressText');
+  const ct=document.getElementById('changeText');
+  if(st) st.innerHTML=(D.stressText||'').replace(/\n/g,'<br>');
+  if(ct) ct.innerHTML=(D.changeText||'').replace(/\n/g,'<br>');
 }
+
 
 function goKakao(){window.open('http://pf.kakao.com/_xdIpXX','_blank');}
 function goOpen(){window.open('https://open.kakao.com/o/sIL9syDi','_blank');}
