@@ -124,12 +124,12 @@ body{font-family:var(--font);background:var(--bg);color:var(--tx);-webkit-font-s
   <div class="sw-inner">
     <div class="sw-tag">FITTI 🔥 운동 심리 유형 테스트</div>
     <span class="sw-icon">🔥</span>
-    <h1 class="sw-title">나는 왜<br><em>운동을 포기할까?</em></h1>
-    <p class="sw-sub">운동계 MBTI로 알아보는<br>6가지 운동 심리 유형</p>
+    <h1 class="sw-title">나는 스트레스를<br><em>어떻게 풀고 있을까?</em></h1>
+    <p class="sw-sub">선택 패턴으로 알아보는<br>6가지 행동 심리 유형</p>
     <div class="sw-desc">
-      <span>✔ 나도 몰랐던 나의 실패 원인!</span>
-      <span>✔ 나에게 맞는 운동 방식이 따로 있습니다.</span>
-      <span>✔ 지금 당신의 FITTI 유형을 확인해보세요.</span>
+      <span>✔ 스트레스 · 행복 · 화 · 선택의 패턴</span>
+      <span>✔ 나도 몰랐던 나의 반복 패턴</span>
+      <span>✔ "어? 이거 완전 내 얘기인데?"</span>
     </div>
     <div class="sw-meta">
       <div class="sw-meta-item"><span class="sw-meta-num">18</span><span class="sw-meta-lbl">문항</span></div>
@@ -149,7 +149,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--tx);-webkit-font-s
     <div class="q-progress"><div class="q-bar" id="qbar"></div></div>
   </div>
   <div class="q-body">
-    <div class="q-notice">생각하지 말고 평소의 나와 가장 가까운 답을 선택하는 것이 정확합니다.</div>
+    <div class="q-notice">지금의 나, 평소의 나와 가장 가까운 답을 선택하세요. 생각 말고 느낌으로!</div>
     <div class="q-text" id="qtext"></div>
     <div class="q-yesno">
       <button class="q-yn-btn yes" onclick="pick(true)" id="btn-yes">예</button>
@@ -182,24 +182,35 @@ body{font-family:var(--font);background:var(--bg);color:var(--tx);-webkit-font-s
 
 <script>
 const Q = [
-  {text:'계획을 갖추기 전에는 시작이 어렵다.', type:'perfect'},
-  {text:'한 번 틀어지면 "망했다"고 생각한다.', type:'perfect'},
-  {text:'노력한 만큼 눈에 보이는 변화가 없으면 의욕이 급격히 떨어진다.', type:'perfect'},
-  {text:'힘든 날에는 건강보다 기분부터 챙기게 된다.', type:'reward'},
-  {text:'미래의 나는 모르겠고 지금의 내가 중요하다.', type:'reward'},
-  {text:'"오늘 정도는 괜찮아."라는 생각이 자주 든다.', type:'reward'},
-  {text:'나와의 약속보다 남과의 약속을 더 잘 지킨다.', type:'social'},
-  {text:'운동은 운동 방법보다 함께하는 사람이 더 중요하다.', type:'social'},
-  {text:'혼자 하는 운동은 오래 못 가는 편이다.', type:'social'},
-  {text:'일, 인간관계, 운동 중 하나를 미뤄야 한다면 운동을 가장 먼저 미루게 된다.', type:'delay'},
-  {text:'운동을 못 하는 가장 큰 이유는 시간이 없기 때문이라고 생각한다.', type:'delay'},
-  {text:'여유가 생기면 운동할 수 있을 거라고 생각한다.', type:'delay'},
-  {text:'운동을 쉬면 괜히 불안하거나 죄책감이 든다.', type:'anxious'},
-  {text:'몸이 피곤해도 쉬기가 어렵다.', type:'anxious'},
-  {text:'운동을 못 한 날은 괜히 하루를 망친 기분이 든다.', type:'anxious'},
-  {text:'체중계 숫자가 그대로면 내가 잘하고 있는지 불안해진다.', type:'scale'},
-  {text:'체중이 늘면 식단이나 운동을 더 극단적으로 하게 된다.', type:'scale'},
-  {text:'눈바디나 컨디션보다 체중계 숫자를 더 믿는 편이다.', type:'scale'},
+  // 이번엔 진짜형 (perfect) - 완벽주의 패턴
+  {text:'스트레스를 받으면 "이번엔 제대로 해야 해"라는 생각이 든다.', type:'perfect'},
+  {text:'화가 나면 나 자신에게 더 엄격해지고 자책이 심해진다.', type:'perfect'},
+  {text:'한 번 어긋나면 처음부터 다시 시작하고 싶다.', type:'perfect'},
+
+  // 오늘만 보상할게형 (reward) - 보상 패턴
+  {text:'힘든 날 먹는 것으로 위로받는다.', type:'reward'},
+  {text:'잘 했을 때 "오늘은 좀 먹어도 돼"라는 생각이 든다.', type:'reward'},
+  {text:'화가 나거나 지치면 뭔가 사거나 먹고 싶어진다.', type:'reward'},
+
+  // 같이 하면 잘할형 (social) - 관계 의존 패턴
+  {text:'혼자 있는 날 스트레스가 더 쌓이는 편이다.', type:'social'},
+  {text:'행복감은 주로 누군가와 함께할 때 온다.', type:'social'},
+  {text:'화가 나면 하소연할 사람이 필요하다.', type:'social'},
+
+  // 내일의 나에게 맡겨형 (delay) - 미루기 패턴
+  {text:'스트레스를 받으면 "나중에 해결하자"가 된다.', type:'delay'},
+  {text:'화가 나면 아무것도 하기 싫어진다.', type:'delay'},
+  {text:'기분이 좋아지면 할 수 있을 것 같다는 생각이 자주 든다.', type:'delay'},
+
+  // 쉬면 불안형 (anxious) - 과부하 패턴
+  {text:'화가 나도 참고 계속하는 편이다.', type:'anxious'},
+  {text:'쉬면 뒤처질 것 같은 불안감이 든다.', type:'anxious'},
+  {text:'행복할 때도 "이러다 망하면 어떡하지"라는 생각이 든다.', type:'anxious'},
+
+  // 체중계 집착형 (scale) - 결과 집착 패턴
+  {text:'잘 하고 있는지 숫자나 눈에 보이는 결과로 확인해야 안심된다.', type:'scale'},
+  {text:'남들과 비교해서 뒤처진다는 느낌이 스트레스다.', type:'scale'},
+  {text:'결과가 눈에 안 보이면 하는 의미가 없다는 생각이 든다.', type:'scale'},
 ];
 
 const RD = {
@@ -342,11 +353,11 @@ function showResult(){
       <div class="tip-list">${tips}</div>
     </div>
     <div class="upsell-card">
-      <div class="upsell-eye">더 알고 싶으신가요?</div>
-      <div class="upsell-title">왜 이 패턴이<br>반복되는지 알고 싶다면</div>
-      <div class="upsell-desc">40문항 심층 분석으로<br>뇌과학 기반 패턴 원인과<br>맞춤 솔루션을 확인해보세요.</div>
+      <div class="upsell-eye">이 패턴이 일상에서 어떻게 나타나는지 궁금하다면</div>
+      <div class="upsell-title">다이어트 · 운동 · 인간관계<br>삶 전반에서 확인해보세요</div>
+      <div class="upsell-desc">40문항 심층 분석으로<br>이 패턴이 내 삶의 어느 영역에서<br>어떻게 반복되는지 뇌과학으로 분석해드려요.</div>
       <a href="payment.html" class="upsell-btn">심층 분석 시작하기 · ₩8,900</a>
-      <a href="https://open.kakao.com/o/sIL9syDi" target="_blank" class="upsell-kakao">💬 여왕쌤과 상담하기</a>
+      <a href="https://open.kakao.com/o/sIL9syDi" target="_blank" class="upsell-kakao">💬 여왕쌤과 먼저 이야기하기</a>
     </div>
   `;
 
