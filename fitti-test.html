@@ -107,6 +107,15 @@ body{font-family:var(--font);background:var(--bg);color:var(--tx);-webkit-font-s
 .cta-sub{font-size:13px;color:rgba(255,255,255,.5);margin-bottom:20px;line-height:1.7}
 .btn-main{display:block;width:100%;padding:16px;background:linear-gradient(135deg,var(--lav2),var(--lav3));color:#fff;font-size:15px;font-weight:800;border-radius:999px;border:none;cursor:pointer;font-family:var(--font);text-decoration:none;text-align:center;margin-bottom:10px}
 .btn-kakao{display:block;width:100%;padding:15px;background:#FEE500;color:#191919;font-size:15px;font-weight:800;border-radius:999px;text-decoration:none;text-align:center}
+.r-content{padding:20px;max-width:480px;margin:0 auto;width:100%;display:flex;flex-direction:column;gap:14px;padding-bottom:60px}
+.r-block{background:var(--white);border-radius:24px;padding:22px;border:1.5px solid var(--lav-m)}
+.r-block-eye{font-size:11px;font-weight:800;color:var(--lav2);letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px}
+.upsell-card{background:var(--navy);border-radius:24px;padding:28px 22px;text-align:center}
+.upsell-eye{font-size:11px;font-weight:800;color:rgba(200,182,255,.5);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}
+.upsell-title{font-size:22px;font-weight:900;color:#fff;line-height:1.3;margin-bottom:10px;letter-spacing:-.03em}
+.upsell-desc{font-size:14px;color:rgba(255,255,255,.55);line-height:1.7;margin-bottom:20px}
+.upsell-btn{display:block;width:100%;padding:17px;background:linear-gradient(135deg,var(--lav2),var(--lav3));color:#fff;font-size:15px;font-weight:800;border-radius:999px;text-decoration:none;margin-bottom:10px;box-shadow:0 8px 24px rgba(115,88,255,.28)}
+.upsell-kakao{display:block;width:100%;padding:15px;background:#FEE500;color:#191919;font-size:15px;font-weight:800;border-radius:999px;text-decoration:none}
 </style>
 </head>
 <body>
@@ -168,37 +177,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--tx);-webkit-font-s
       <div class="r-bubble"><p class="r-quote" id="rquote"></p></div>
     </div>
   </div>
-  <div class="r-content">
-    <div class="card">
-      <span class="card-eye">특징</span>
-      <div class="feat-list" id="rfeats"></div>
-    </div>
-    <div class="card">
-      <span class="card-eye">심리 상태</span>
-      <div class="psych-quote" id="rpsych-q"></div>
-      <div class="psych-desc" id="rpsych-d"></div>
-    </div>
-    <div class="card">
-      <div class="reason-title">왜 작심삼일이 될까?</div>
-      <div class="reason-desc" id="rreason-d"></div>
-      <div class="reason-quote" id="rreason-q"></div>
-    </div>
-    <div class="summary-box">
-      <span class="summary-label">한 줄 요약</span>
-      <div class="summary-text" id="rsummary"></div>
-    </div>
-    <div class="card">
-      <span class="card-eye">필요한 운동 방식</span>
-      <div class="tip-list" id="rtips"></div>
-    </div>
-    <div class="cta-card">
-      <span class="cta-eye">다음 단계</span>
-      <div class="cta-title">더 깊이 들여다보고 싶다면</div>
-      <div class="cta-sub">왜 이 패턴이 반복되는지<br>행동 심리로 분석해드려요.</div>
-      <a href="index.html" class="btn-main">무료 행동 패턴 검사하기</a>
-      <a href="https://open.kakao.com/o/sIL9syDi" target="_blank" class="btn-kakao">💬 여왕쌤과 상담하기</a>
-    </div>
-  </div>
+  <div class="r-content" id="rContent"></div>
 </div>
 
 <script>
@@ -336,17 +315,40 @@ function showResult(){
   document.getElementById('rname').textContent=D.name;
   document.getElementById('rquote').textContent=D.quote;
 
-  document.getElementById('rfeats').innerHTML=
-    D.feats.map(f=>`<div class="feat-item"><div class="feat-dot"></div><span>${f}</span></div>`).join('');
+  const feats=D.feats.map(f=>`<div class="feat-item"><div class="feat-dot"></div><span>${f}</span></div>`).join('');
+  const tips=D.tips.map(t=>`<div class="tip-item">${t}</div>`).join('');
 
-  document.getElementById('rpsych-q').textContent=D.psychQ;
-  document.getElementById('rpsych-d').textContent=D.psychD;
-  document.getElementById('rreason-d').textContent=D.reasonD;
-  document.getElementById('rreason-q').textContent=D.reasonQ;
-  document.getElementById('rsummary').textContent=D.summary;
-
-  document.getElementById('rtips').innerHTML=
-    D.tips.map(t=>`<div class="tip-item">${t}</div>`).join('');
+  document.getElementById('rContent').innerHTML=`
+    <div class="r-block">
+      <div class="r-block-eye">특징</div>
+      <div class="feat-list">${feats}</div>
+    </div>
+    <div class="r-block">
+      <div class="r-block-eye">심리 상태</div>
+      <div class="psych-quote">${D.psychQ}</div>
+      <div class="psych-desc">${D.psychD}</div>
+    </div>
+    <div class="r-block">
+      <div class="reason-title">왜 작심삼일이 될까?</div>
+      <div class="reason-desc">${D.reasonD}</div>
+      <div class="reason-quote">${D.reasonQ}</div>
+    </div>
+    <div class="summary-box">
+      <span class="summary-label">한 줄 요약</span>
+      <div class="summary-text">${D.summary}</div>
+    </div>
+    <div class="r-block">
+      <div class="r-block-eye">필요한 운동 방식</div>
+      <div class="tip-list">${tips}</div>
+    </div>
+    <div class="upsell-card">
+      <div class="upsell-eye">더 알고 싶으신가요?</div>
+      <div class="upsell-title">왜 이 패턴이<br>반복되는지 알고 싶다면</div>
+      <div class="upsell-desc">40문항 심층 분석으로<br>뇌과학 기반 패턴 원인과<br>맞춤 솔루션을 확인해보세요.</div>
+      <a href="payment.html" class="upsell-btn">심층 분석 시작하기 · ₩8,900</a>
+      <a href="https://open.kakao.com/o/sIL9syDi" target="_blank" class="upsell-kakao">💬 여왕쌤과 상담하기</a>
+    </div>
+  `;
 
   show('sr');window.scrollTo(0,0);
 }
