@@ -72,6 +72,11 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 [da]{opacity:0;transform:translateY(14px);transition:opacity .5s,transform .5s}
 [da].in{opacity:1;transform:translateY(0)}
 [da="1"]{transition-delay:.06s}[da="2"]{transition-delay:.12s}[da="3"]{transition-delay:.18s}[da="4"]{transition-delay:.24s}[da="5"]{transition-delay:.3s}[da="6"]{transition-delay:.36s}[da="7"]{transition-delay:.42s}
+.kisu-banner{background:linear-gradient(135deg,#9B7BFF,#7358FF);border-radius:20px;padding:18px 20px;margin-bottom:4px;box-shadow:0 8px 24px rgba(115,88,255,.25)}
+.kisu-banner-inner{display:flex;flex-direction:column;gap:4px}
+.kisu-badge{display:inline-block;font-size:11px;font-weight:800;color:rgba(255,255,255,.7);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
+.kisu-title{font-size:17px;font-weight:900;color:#fff}
+.kisu-sub{font-size:13px;color:rgba(255,255,255,.65)}
 </style>
 </head>
 <body>
@@ -90,6 +95,15 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
       <span class="tag">#운동심리</span>
       <span class="tag">#행동패턴분석</span>
       <span class="tag">#여왕쌤</span>
+    </div>
+  </div>
+
+  <!-- 1기 모집 배너 -->
+  <div class="kisu-banner" da>
+    <div class="kisu-banner-inner">
+      <span class="kisu-badge">🔥 모집 중</span>
+      <div class="kisu-title">RESET21 1기 · 9월 9일 시작</div>
+      <div class="kisu-sub">매달 9일, 이달의 마지막을 클린하게.</div>
     </div>
   </div>
 
