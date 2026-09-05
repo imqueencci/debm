@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
-<title>RESET21 | FIT-TI</title>
+<title>FITTI LOG · RESET21</title>
 <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
 <style>
 :root{
@@ -329,7 +329,7 @@ async function doLogin(){
     const data = await dbGet('members', {access_code: code}, true);
 
     if(!data){
-      $('login-err').textContent = '코드 ['+code+']를 찾을 수 없어요. 어드민에서 코드를 확인해주세요.';
+      $('login-err').textContent = '코드 ['+code+']를 찾을 수 없어요. FITTI LOG에서 코드를 확인해주세요.';
       $('login-err').classList.remove('hidden');
       return;
     }
