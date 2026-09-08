@@ -129,7 +129,7 @@ input,textarea{font-family:var(--font)}
 .toggle-btn.on{border-color:var(--lav2);background:var(--lav-s);color:var(--lav2)}
 
 /* Next btn */
-.form-next{width:100%;height:56px;background:linear-gradient(135deg,var(--lav2),var(--lav3));color:#fff;border-radius:999px;font-size:16px;font-weight:800;box-shadow:0 6px 24px rgba(155,123,255,.35);transition:transform .2s var(--spring);margin-top:8px}
+.form-next{width:100%;height:56px;background:linear-gradient(135deg,var(--lav2),var(--lav3));color:#fff;border-radius:999px;font-size:16px;font-weight:800;box-shadow:0 6px 24px rgba(155,123,255,.35);transition:transform .2s var(--spring);margin-top:8px;border:none;cursor:pointer;font-family:var(--font)}
 .form-next:hover{transform:translateY(-2px) scale(1.01)}
 .form-next:active{transform:scale(.97)}
 
@@ -696,8 +696,27 @@ async function submitCheckin(){
   if(submitBtn){ submitBtn.textContent='저장 중...'; submitBtn.disabled=true; }
 
   try {
-    const {error} = await db.from('checkins').upsert(payload, {onConflict:'member_id,checkin_date'});
-    if(error) throw error;
+    const qs = `member_id=eq.${payload.member_id}&checkin_date=eq.${payload.checkin_date}`;
+    const res = await fetch(`${BASE}/checkins?${qs}`, {
+      method: 'GET', headers: H
+    });
+    const existing = await res.json();
+
+    const method = (existing && existing.length > 0) ? 'PATCH' : 'POST';
+    const url = method === 'PATCH'
+      ? `${BASE}/checkins?${qs}`
+      : `${BASE}/checkins`;
+
+    const saveRes = await fetch(url, {
+      method,
+      headers: {...H, 'Prefer': 'return=minimal'},
+      body: JSON.stringify(payload)
+    });
+
+    if(!saveRes.ok) {
+      const errText = await saveRes.text();
+      throw new Error(errText);
+    }
 
     // 성공 → 로컬 백업 삭제
     clearProgress();
