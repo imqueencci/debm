@@ -208,8 +208,8 @@ input,textarea{font-family:var(--font)}
       <button class="status-btn" id="status-btn" onclick="goCheckin()">기록하기</button>
     </div>
 
-    <div class="week-box">
-      <div class="week-title">21일 진행 현황</div>
+    <div class="week-box" id="history-section">
+      <div class="week-title">📋 21일 기록 현황</div>
       <div class="week-grid" id="week-grid"></div>
     </div>
   </div>
@@ -237,7 +237,8 @@ input,textarea{font-family:var(--font)}
       <div class="complete-tip-title">💜 오늘의 리디자인 TIP</div>
       <div class="complete-tip-text" id="complete-tip"></div>
     </div>
-    <button class="back-dash-btn" onclick="goDash()">대시보드로 돌아가기</button>
+    <button class="back-dash-btn" onclick="goDash()">✅ 대시보드로 돌아가기</button>
+    <button class="back-dash-btn" style="margin-top:10px;background:#fff;color:var(--lav2);border:2px solid var(--lav2)" onclick="goDash(); setTimeout(()=>{ const el=document.getElementById('history-section'); if(el) el.scrollIntoView({behavior:'smooth'}); },400)">📋 지난 기록 보기</button>
   </div>
 </div>
 
